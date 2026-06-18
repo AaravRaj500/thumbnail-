@@ -42,7 +42,7 @@ Respond ONLY with a JSON array of 5 strings. No explanation, no markdown. Exampl
 ["INSANE FIRST ATTEMPT 😱", "I CAN'T BELIEVE THIS 🔥", "NOBODY EXPECTED THIS 💀", "This Changed Everything ⚡", "GONE WRONG... 😂"]`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
