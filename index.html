@@ -1,895 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ThumbAI — Free Thumbnail Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ThumbAI — Smart Thumbnail Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b10;--surface:#0e1420;--surface2:#151d2e;--border:#1e2d45;
+  --accent:#00e5ff;--accent2:#7c3aed;--glow:rgba(0,229,255,0.12);
+  --text:#e2eaf5;--muted:#5a7090;--danger:#ff4d6d;--success:#00e5a0;
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.28}
+.orb-1{width:400px;height:400px;background:#00e5ff20;top:-100px;left:-100px;animation:d1 13s ease-in-out infinite}
+.orb-2{width:320px;height:320px;background:#7c3aed20;bottom:-80px;right:-80px;animation:d2 16s ease-in-out infinite}
+@keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(45px,30px)}}
+@keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-45px)}}
 
-  :root {
-    --bg: #080b10;
-    --surface: #0e1420;
-    --surface2: #151d2e;
-    --border: #1e2d45;
-    --accent: #00e5ff;
-    --accent2: #7c3aed;
-    --accent-glow: rgba(0, 229, 255, 0.12);
-    --text: #e2eaf5;
-    --muted: #5a7090;
-    --danger: #ff4d6d;
-    --success: #00e5a0;
-    --font: 'Space Grotesk', sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-  }
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 20px 100px}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+header{padding:44px 0 50px;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--success);letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+h1{font-size:clamp(2rem,6vw,3.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;background:linear-gradient(135deg,#fff 25%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
+.sub{color:var(--muted);font-size:1rem;max-width:500px;margin:0 auto;line-height:1.65}
+.sub strong{color:var(--success)}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* How it works strip */
+.how-strip{display:flex;gap:0;margin-bottom:32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.how-step{flex:1;padding:16px 12px;text-align:center;border-right:1px solid var(--border);position:relative}
+.how-step:last-child{border-right:none}
+.how-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;display:block;margin-bottom:4px}
+.how-icon{font-size:1.5rem;display:block;margin-bottom:4px}
+.how-text{font-size:11px;color:var(--muted);line-height:1.4}
+@media(max-width:500px){.how-strip{flex-direction:column}.how-step{border-right:none;border-bottom:1px solid var(--border)}.how-step:last-child{border-bottom:none}}
 
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.3;
-  }
-  .orb-1 { width: 420px; height: 420px; background: #00e5ff20; top: -120px; left: -120px; animation: drift1 14s ease-in-out infinite; }
-  .orb-2 { width: 320px; height: 320px; background: #7c3aed20; bottom: -100px; right: -100px; animation: drift2 17s ease-in-out infinite; }
-  @keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(50px,35px)} }
-  @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-35px,-50px)} }
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin-bottom:16px}
+.step{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.step::before{content:'';width:22px;height:1px;background:var(--accent);display:inline-block}
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 20px 100px;
-  }
+/* Upload */
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:44px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg);overflow:hidden}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--glow)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;font-size:0}
+.u-icon{font-size:3rem;display:block;margin-bottom:12px;pointer-events:none}
+.u-title{font-size:1rem;font-weight:600;margin-bottom:6px;pointer-events:none}
+.u-sub{font-size:13px;color:var(--muted);pointer-events:none}
+.u-sub em{color:var(--accent);font-style:normal}
 
-  header {
-    padding: 44px 0 52px;
-    text-align: center;
-  }
+#vwrap{display:none;margin-top:18px}
+video{width:100%;max-height:300px;border-radius:10px;object-fit:contain;background:#000;border:1px solid var(--border);display:block}
+.vmeta{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:13px;color:var(--muted)}
+.vmeta strong{color:var(--text)}
+.clr-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:18px;transition:color .2s;padding:0 4px}
+.clr-btn:hover{color:var(--danger)}
 
-  .free-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,229,160,0.1);
-    border: 1px solid rgba(0,229,160,0.3);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--success);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 22px;
-  }
-  .free-badge::before { content: '✦'; }
+.scrub-wrap{margin-top:16px}
+.scrub-label{font-size:13px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.scrub-label span{color:var(--accent);font-family:var(--mono);font-size:12px}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:100px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(0,229,255,.5)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
 
-  h1 {
-    font-size: clamp(2rem, 6vw, 3.8rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.08;
-    background: linear-gradient(135deg, #ffffff 25%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 16px;
-  }
+.frame-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn-sm{padding:9px 18px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm.primary{background:var(--accent);color:#000;border-color:var(--accent)}
+.btn-sm.primary:hover{opacity:.85}
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 1rem;
-    max-width: 500px;
-    margin: 0 auto;
-    line-height: 1.65;
-  }
-  .subtitle strong { color: var(--success); }
+/* Frame captured */
+#frame-card{display:none}
+#frame-preview-canvas{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
 
-  /* Steps */
-  .step-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .step-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); display: inline-block; }
+/* AI title section */
+.ai-section{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(0,229,255,0.05));border:1px solid rgba(124,58,237,0.35);border-radius:14px;padding:22px;margin-bottom:18px}
+.ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.ai-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px}
+.ai-label::before{content:'✦';font-size:13px}
+.ai-badge{font-size:11px;background:rgba(0,229,160,.12);border:1px solid rgba(0,229,160,.3);color:var(--success);padding:3px 10px;border-radius:100px;font-family:var(--mono)}
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 16px;
-  }
+.ai-gen-btn{width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.ai-gen-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.ai-gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.spinner-sm{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.ai-gen-btn.loading .spinner-sm{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Upload */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 44px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    background: var(--bg);
-  }
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-  }
-  .upload-zone input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-  }
-  .upload-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
-  .upload-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-  .upload-sub { font-size: 13px; color: var(--muted); }
-  .upload-sub em { color: var(--accent); font-style: normal; }
+.suggestions{display:none;flex-direction:column;gap:8px;margin-top:14px}
+.suggestion-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:500}
+.suggestion-chip:hover{border-color:var(--accent);background:var(--glow);transform:translateX(4px)}
+.use-tag{font-size:11px;color:var(--accent);font-weight:700;font-family:var(--mono);white-space:nowrap;opacity:.7}
+.suggestion-chip:hover .use-tag{opacity:1}
 
-  #video-preview-wrap { display: none; margin-top: 18px; }
-  #video-preview {
-    width: 100%;
-    max-height: 300px;
-    border-radius: 10px;
-    object-fit: contain;
-    background: #000;
-    border: 1px solid var(--border);
-  }
-  .video-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-    padding: 10px 14px;
-    background: var(--surface2);
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .video-meta strong { color: var(--text); font-size: 13px; }
-  .clear-btn {
-    margin-left: auto;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    transition: color 0.2s;
-    padding: 0 4px;
-  }
-  .clear-btn:hover { color: var(--danger); }
+/* Form */
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:500}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;transition:border-color .2s;margin-bottom:14px}
+input[type=text]:focus{border-color:var(--accent)}
+input[type=text]::placeholder{color:var(--muted)}
+input[type=color]{width:40px;height:34px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--bg);padding:2px}
+select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;cursor:pointer;margin-bottom:14px}
+select:focus{border-color:var(--accent)}
+option{background:var(--surface)}
 
-  #frame-canvas { display: none; }
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.form-group{margin-bottom:4px}
 
-  /* Form elements */
-  label {
-    display: block;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    font-weight: 500;
-  }
-  textarea, input[type="text"] {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 14px;
-    padding: 13px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-    resize: vertical;
-  }
-  textarea:focus, input[type="text"]:focus { border-color: var(--accent); }
-  textarea::placeholder, input[type="text"]::placeholder { color: var(--muted); }
+.emoji-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;margin-bottom:14px}
+.emoji-chip{font-size:1.4rem;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s;line-height:1}
+.emoji-chip:hover{background:var(--surface2)}
 
-  /* Style grid */
-  .style-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 10px;
-  }
-  .style-opt {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 10px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    background: var(--bg);
-    user-select: none;
-  }
-  .style-opt:hover { border-color: var(--accent); background: var(--accent-glow); }
-  .style-opt.selected { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 0 0 1px var(--accent); }
-  .style-opt input { display: none; }
-  .s-icon { font-size: 1.7rem; display: block; margin-bottom: 6px; }
-  .s-name { font-size: 13px; font-weight: 600; color: var(--text); display: block; }
-  .s-desc { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
+/* Presets */
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px}
+.preset-opt{border:1px solid var(--border);border-radius:10px;padding:12px 8px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
+.preset-opt:hover{border-color:var(--accent);background:var(--glow)}
+.preset-opt.selected{border-color:var(--accent);background:var(--glow);box-shadow:0 0 0 1px var(--accent)}
+.p-icon{font-size:1.4rem;display:block;margin-bottom:5px}
+.p-name{font-size:12px;font-weight:600;color:var(--text);display:block}
 
-  /* Mood */
-  .mood-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .mood-chip {
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 6px 14px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: var(--bg);
-    color: var(--muted);
-    user-select: none;
-  }
-  .mood-chip:hover { border-color: var(--accent2); color: var(--text); }
-  .mood-chip.selected { border-color: var(--accent2); background: rgba(124,58,237,0.15); color: #c4b5fd; }
+/* Position grid */
+.position-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:180px}
+.pos-btn{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;transition:all .2s;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.pos-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pos-btn.selected{border-color:var(--accent);background:var(--glow);color:var(--accent)}
 
-  /* Generate button */
-  .generate-btn {
-    width: 100%;
-    padding: 20px;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent) 0%, #0096b7 100%);
-    color: #000;
-    font-family: var(--font);
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.01em;
-    transition: all 0.25s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-  .generate-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,229,255,0.28); }
-  .spinner {
-    width: 20px; height: 20px;
-    border: 2.5px solid rgba(0,0,0,0.25);
-    border-top-color: #000;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-  }
-  .generate-btn.loading .spinner { display: block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.color-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.color-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.range-group{margin-bottom:14px}
+.range-group label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.range-val{color:var(--accent);font-family:var(--mono);font-size:12px}
 
-  /* Progress */
-  #progress-wrap { display: none; margin-top: 16px; }
-  .progress-bar-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 100px;
-    transition: width 0.5s ease;
-    width: 0%;
-  }
-  .log-box {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    line-height: 2;
-    color: var(--muted);
-    max-height: 140px;
-    overflow-y: auto;
-  }
-  .log-line { display: block; }
-  .log-line.active { color: var(--accent); }
-  .log-line.done { color: var(--success); }
-  .log-line.err { color: var(--danger); }
+/* Output */
+#output-wrap{display:none;margin-top:20px}
+#output-canvas{width:100%;border-radius:12px;border:1px solid var(--border);display:block}
 
-  /* Results */
-  #results { display: none; margin-top: 20px; }
+.gen-btn{width:100%;padding:20px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent) 0%,#0096b7 100%);color:#000;font-family:var(--font);font-size:17px;font-weight:800;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,229,255,.28)}
+.dl-btn{width:100%;padding:15px;border:1px solid var(--accent);border-radius:12px;background:transparent;color:var(--accent);font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.dl-btn:hover{background:var(--glow)}
 
-  .result-image-wrap {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #000;
-    border: 1px solid var(--border);
-    position: relative;
-    margin-bottom: 16px;
-  }
-  #output-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-  }
-  .img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 14px;
-  }
+/* Footer */
+footer{text-align:center;padding-top:40px;font-size:12px;color:var(--muted)}
+footer a{color:var(--accent);text-decoration:none}
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  @media(max-width:560px) { .info-grid { grid-template-columns: 1fr; } }
-
-  .info-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .info-card-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-    display: block;
-  }
-  .info-card-text { font-size: 13px; line-height: 1.65; color: var(--text); }
-
-  .prompt-display {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: #8ab4d4;
-    line-height: 1.75;
-    position: relative;
-    word-break: break-word;
-    margin-bottom: 12px;
-  }
-  .copy-btn {
-    position: absolute;
-    top: 10px; right: 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: var(--font);
-    transition: all 0.2s;
-  }
-  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .action-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .dl-btn, .regen-btn {
-    flex: 1;
-    padding: 13px;
-    border-radius: 10px;
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-width: 140px;
-  }
-  .dl-btn {
-    background: var(--accent);
-    color: #000;
-    border: none;
-  }
-  .dl-btn:hover { opacity: 0.85; }
-  .regen-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-  .regen-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .alt-links {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 2;
-  }
-  .alt-links a { color: var(--accent); text-decoration: none; }
-  .alt-links a:hover { text-decoration: underline; }
-
-  /* Toast */
-  #toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 12px 24px;
-    border-radius: 100px;
-    z-index: 200;
-    transition: transform 0.3s ease;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  #toast.show { transform: translateX(-50%) translateY(0); }
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:12px 24px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
+<canvas id="frame-canvas" style="display:none"></canvas>
 
 <div class="wrap">
   <header>
-    <div class="free-badge">100% Free — No API Key Needed</div>
-    <h1>Turn your video into<br>a killer thumbnail</h1>
-    <p class="subtitle">Upload a video, describe it briefly, and AI generates a <strong>professional thumbnail</strong> — completely free, no sign-up.</p>
+    <div class="badge">✦ Free · AI-Powered · No Sign-up</div>
+    <h1>Thumbnails that<br>stop the scroll</h1>
+    <p class="sub">Extract any frame from your video, let <strong>AI write catchy titles</strong>, and download a pro thumbnail — instantly.</p>
   </header>
+
+  <!-- How it works -->
+  <div class="how-strip">
+    <div class="how-step">
+      <span class="how-num">01</span>
+      <span class="how-icon">🎬</span>
+      <div class="how-text">Upload your video</div>
+    </div>
+    <div class="how-step">
+      <span class="how-num">02</span>
+      <span class="how-icon">📸</span>
+      <div class="how-text">Capture a frame</div>
+    </div>
+    <div class="how-step">
+      <span class="how-num">03</span>
+      <span class="how-icon">✦</span>
+      <div class="how-text">AI writes titles</div>
+    </div>
+    <div class="how-step">
+      <span class="how-num">04</span>
+      <span class="how-icon">⬇</span>
+      <div class="how-text">Download thumbnail</div>
+    </div>
+  </div>
 
   <!-- Step 1: Upload -->
   <div class="card">
-    <div class="step-label">01 — Upload Your Video</div>
+    <div class="step">01 — Upload Your Video</div>
     <div class="upload-zone" id="upload-zone">
-      <input type="file" id="video-input" accept="video/*" />
-      <span class="upload-icon">🎬</span>
-      <div class="upload-title">Drop video here or click to browse</div>
-      <div class="upload-sub">MP4, MOV, AVI, WebM — <em>stays on your device, never uploaded</em></div>
+      <input type="file" id="video-input" accept="video/*"/>
+      <span class="u-icon">🎬</span>
+      <div class="u-title">Drop your video here or click to browse</div>
+      <div class="u-sub">MP4, MOV, AVI, WebM — <em>never leaves your device</em></div>
     </div>
-    <div id="video-preview-wrap">
-      <video id="video-preview" controls playsinline></video>
-      <div class="video-meta">
+    <div id="vwrap">
+      <video id="vprev" playsinline muted></video>
+      <div class="vmeta">
         <span>🎞</span>
-        <strong id="video-name">video.mp4</strong>
-        <button class="clear-btn" onclick="clearVideo()" title="Remove">✕</button>
+        <strong id="vname">video.mp4</strong>
+        <button class="clr-btn" onclick="clearVideo()">✕</button>
+      </div>
+      <div class="scrub-wrap">
+        <div class="scrub-label">
+          <span>Scrub to find the perfect frame</span>
+          <span id="time-display">0.0s</span>
+        </div>
+        <input type="range" id="scrubber" min="0" max="100" value="25" step="0.01" oninput="onScrub(this.value)"/>
+      </div>
+      <div class="frame-actions">
+        <button class="btn-sm primary" onclick="captureFrame()">📸 Capture This Frame</button>
+        <button class="btn-sm" onclick="autoPickFrame()">🎯 Auto Pick Frame</button>
       </div>
     </div>
-    <canvas id="frame-canvas"></canvas>
   </div>
 
-  <!-- Step 2: Describe -->
+  <!-- Step 2: Frame captured -->
+  <div class="card" id="frame-card">
+    <div class="step">02 — Frame Captured ✓</div>
+    <canvas id="frame-preview-canvas"></canvas>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">✓ Frame locked. Hit "AI Generate Titles" below or type your own.</p>
+  </div>
+
+  <!-- Step 3: Title -->
   <div class="card">
-    <div class="step-label">02 — Describe Your Video</div>
-    <label>What is your video about? <span style="color:var(--danger)">*</span></label>
-    <textarea id="description" rows="3" placeholder="E.g. 'Valorant ranked gameplay highlights with crazy clutch moments', 'Tutorial on making biryani at home', 'Unboxing and reviewing the new iPhone 16'..."></textarea>
+    <div class="step">03 — Add Catchy Title</div>
+
+    <div class="ai-section">
+      <div class="ai-header">
+        <div class="ai-label">AI Title Generator</div>
+        <span class="ai-badge">Powered by Gemini</span>
+      </div>
+      <button class="ai-gen-btn" id="ai-btn" onclick="generateTitles()">
+        <div class="spinner-sm"></div>
+        <span id="ai-btn-text">✦ Generate 5 Catchy Titles</span>
+      </button>
+      <div class="suggestions" id="suggestions"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Main Title <span style="color:var(--muted);font-weight:400">(or pick from AI suggestions above)</span></label>
+      <input type="text" id="main-text" placeholder="e.g. I ALMOST DIED 😱" oninput="livePreview()"/>
+    </div>
+    <div class="form-group">
+      <label>Subtitle <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+      <input type="text" id="sub-text" placeholder="e.g. Gone wrong in the mountains..." oninput="livePreview()"/>
+    </div>
+
+    <label>Quick Emoji</label>
+    <div class="emoji-row">
+      <span class="emoji-chip" onclick="addEmoji('🔥')">🔥</span>
+      <span class="emoji-chip" onclick="addEmoji('😱')">😱</span>
+      <span class="emoji-chip" onclick="addEmoji('💀')">💀</span>
+      <span class="emoji-chip" onclick="addEmoji('⚡')">⚡</span>
+      <span class="emoji-chip" onclick="addEmoji('🏆')">🏆</span>
+      <span class="emoji-chip" onclick="addEmoji('💥')">💥</span>
+      <span class="emoji-chip" onclick="addEmoji('🎯')">🎯</span>
+      <span class="emoji-chip" onclick="addEmoji('👑')">👑</span>
+      <span class="emoji-chip" onclick="addEmoji('🚀')">🚀</span>
+      <span class="emoji-chip" onclick="addEmoji('😂')">😂</span>
+      <span class="emoji-chip" onclick="addEmoji('❤️')">❤️</span>
+      <span class="emoji-chip" onclick="addEmoji('✅')">✅</span>
+    </div>
   </div>
 
-  <!-- Step 3: Style -->
+  <!-- Step 4: Style -->
   <div class="card">
-    <div class="step-label">03 — Pick a Style</div>
-    <div class="style-grid">
-      <label class="style-opt selected">
-        <input type="radio" name="style" value="cinematic" checked />
-        <span class="s-icon">🎥</span>
-        <span class="s-name">Cinematic</span>
-        <span class="s-desc">Epic & dramatic</span>
-      </label>
-      <label class="style-opt">
-        <input type="radio" name="style" value="realistic" />
-        <span class="s-icon">📸</span>
-        <span class="s-name">Realistic</span>
-        <span class="s-desc">Natural photo</span>
-      </label>
-      <label class="style-opt">
-        <input type="radio" name="style" value="illustrated" />
-        <span class="s-icon">🎨</span>
-        <span class="s-name">Illustrated</span>
-        <span class="s-desc">Artistic & bold</span>
-      </label>
-      <label class="style-opt">
-        <input type="radio" name="style" value="neon" />
-        <span class="s-icon">⚡</span>
-        <span class="s-name">Neon Cyber</span>
-        <span class="s-desc">Dark & glowing</span>
-      </label>
-      <label class="style-opt">
-        <input type="radio" name="style" value="anime" />
-        <span class="s-icon">✨</span>
-        <span class="s-name">Anime</span>
-        <span class="s-desc">Stylized art</span>
-      </label>
+    <div class="step">04 — Style Your Thumbnail</div>
+
+    <label style="margin-bottom:10px">Preset Style</label>
+    <div class="preset-grid">
+      <div class="preset-opt selected" data-preset="youtube" onclick="selectPreset(this)"><span class="p-icon">🔴</span><span class="p-name">YouTube</span></div>
+      <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">🔥</span><span class="p-name">Fire</span></div>
+      <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">⚡</span><span class="p-name">Neon</span></div>
+      <div class="preset-opt" data-preset="clean" onclick="selectPreset(this)"><span class="p-icon">✨</span><span class="p-name">Clean</span></div>
+      <div class="preset-opt" data-preset="horror" onclick="selectPreset(this)"><span class="p-icon">💀</span><span class="p-name">Horror</span></div>
+      <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">👑</span><span class="p-name">Gold</span></div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Font</label>
+        <select id="font-select" onchange="livePreview()">
+          <option value="Bebas Neue">Bebas Neue (Impact)</option>
+          <option value="Space Grotesk">Space Grotesk (Modern)</option>
+          <option value="Arial Black">Arial Black (Bold)</option>
+          <option value="Georgia">Georgia (Classic)</option>
+          <option value="Courier New">Courier New (Mono)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Text Position</label>
+        <div class="position-grid">
+          <button class="pos-btn" data-pos="top-left" onclick="selectPos(this)">↖</button>
+          <button class="pos-btn" data-pos="top-center" onclick="selectPos(this)">↑</button>
+          <button class="pos-btn" data-pos="top-right" onclick="selectPos(this)">↗</button>
+          <button class="pos-btn" data-pos="mid-left" onclick="selectPos(this)">←</button>
+          <button class="pos-btn" data-pos="mid-center" onclick="selectPos(this)">●</button>
+          <button class="pos-btn" data-pos="mid-right" onclick="selectPos(this)">→</button>
+          <button class="pos-btn selected" data-pos="bot-left" onclick="selectPos(this)">↙</button>
+          <button class="pos-btn" data-pos="bot-center" onclick="selectPos(this)">↓</button>
+          <button class="pos-btn" data-pos="bot-right" onclick="selectPos(this)">↘</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-row">
+      <div class="color-item"><input type="color" id="text-color" value="#ffffff" oninput="livePreview()"/><span>Text</span></div>
+      <div class="color-item"><input type="color" id="stroke-color" value="#000000" oninput="livePreview()"/><span>Outline</span></div>
+      <div class="color-item"><input type="color" id="bg-color" value="#ff0000" oninput="livePreview()"/><span>Highlight</span></div>
+    </div>
+
+    <div class="range-group">
+      <label>Font Size <span class="range-val" id="fs-val">72px</span></label>
+      <input type="range" id="font-size" min="24" max="120" value="72" oninput="document.getElementById('fs-val').textContent=this.value+'px';livePreview()"/>
+    </div>
+    <div class="range-group">
+      <label>Shadow <span class="range-val" id="sh-val">8</span></label>
+      <input type="range" id="shadow-size" min="0" max="30" value="8" oninput="document.getElementById('sh-val').textContent=this.value;livePreview()"/>
+    </div>
+    <div class="range-group">
+      <label>Dark Overlay <span class="range-val" id="ov-val">30%</span></label>
+      <input type="range" id="overlay-opacity" min="0" max="80" value="30" oninput="document.getElementById('ov-val').textContent=this.value+'%';livePreview()"/>
     </div>
   </div>
 
-  <!-- Step 4: Mood -->
-  <div class="card">
-    <div class="step-label">04 — Select Mood <span style="color:var(--muted);font-size:10px;margin-left:4px;">(pick any)</span></div>
-    <div class="mood-grid" id="mood-grid">
-      <span class="mood-chip" data-mood="intense">🔥 Intense</span>
-      <span class="mood-chip" data-mood="funny">😂 Funny</span>
-      <span class="mood-chip" data-mood="epic">💥 Epic</span>
-      <span class="mood-chip" data-mood="satisfying">😌 Satisfying</span>
-      <span class="mood-chip" data-mood="shocking">😱 Shocking</span>
-      <span class="mood-chip" data-mood="mysterious">🌑 Mysterious</span>
-      <span class="mood-chip" data-mood="motivational">💪 Motivational</span>
-      <span class="mood-chip" data-mood="chill">🌊 Chill</span>
+  <button class="gen-btn" onclick="generateThumbnail()">✦ Generate Thumbnail</button>
+
+  <div id="output-wrap">
+    <div class="card" style="margin-top:20px">
+      <div class="step">Your Thumbnail — 1280×720</div>
+      <canvas id="output-canvas"></canvas>
+      <button class="dl-btn" onclick="downloadThumb()">⬇ Download Thumbnail</button>
     </div>
   </div>
 
-  <!-- Generate -->
-  <button class="generate-btn" id="generate-btn" onclick="generate()">
-    <div class="spinner"></div>
-    <span id="btn-text">✦ Generate Thumbnail — Free</span>
-  </button>
-
-  <!-- Progress -->
-  <div id="progress-wrap">
-    <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-bar"></div></div>
-    <div class="log-box" id="log-box"></div>
-  </div>
-
-  <!-- Results -->
-  <div id="results">
-    <div class="card">
-      <div class="step-label">Generated Thumbnail</div>
-
-      <div class="result-image-wrap">
-        <div class="img-placeholder" id="img-placeholder">
-          <span style="font-size:2.5rem">🖼️</span>
-          <span>Your thumbnail will appear here</span>
-        </div>
-        <img id="output-image" alt="Generated thumbnail" />
-      </div>
-
-      <div class="info-grid">
-        <div class="info-card">
-          <span class="info-card-label">Concept Used</span>
-          <div class="info-card-text" id="concept-text">—</div>
-        </div>
-        <div class="info-card">
-          <span class="info-card-label">Style Applied</span>
-          <div class="info-card-text" id="style-text">—</div>
-        </div>
-      </div>
-
-      <div style="margin-bottom:8px;">
-        <span class="info-card-label" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px;">Full Prompt Used</span>
-        <div class="prompt-display" id="prompt-display">
-          —
-          <button class="copy-btn" onclick="copyPrompt()">Copy</button>
-        </div>
-      </div>
-
-      <div class="action-row">
-        <button class="dl-btn" onclick="downloadThumb()">⬇ Download Thumbnail</button>
-        <button class="regen-btn" onclick="regenerate()">↻ Try Different Seed</button>
-      </div>
-
-      <div class="alt-links">
-        💡 Want more control? Paste the prompt above into:
-        <a href="https://ideogram.ai" target="_blank">Ideogram.ai</a> ·
-        <a href="https://leonardo.ai" target="_blank">Leonardo.ai</a> ·
-        <a href="https://app.canva.com" target="_blank">Canva AI</a>
-      </div>
-    </div>
-  </div>
+  <footer>
+    <p>Made with ✦ by <a href="https://github.com/aaravraj500" target="_blank">Arav</a> · ThumbAI</p>
+  </footer>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ── Style selector ─────────────────────────────────────────────────────────
-document.querySelectorAll('.style-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    document.querySelectorAll('.style-opt').forEach(o => o.classList.remove('selected'));
-    opt.classList.add('selected');
-  });
-});
+let capturedFrame = null;
+let currentPos = 'bot-left';
+let currentPreset = 'youtube';
+let videoReady = false;
 
-// ── Mood chips ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.mood-chip').forEach(chip => {
-  chip.addEventListener('click', () => chip.classList.toggle('selected'));
-});
+const presets = {
+  youtube:{ textColor:'#ffffff', strokeColor:'#000000', bgColor:'#ff0000', shadow:8,  overlay:30 },
+  fire:   { textColor:'#ffdd00', strokeColor:'#ff4400', bgColor:'#ff6600', shadow:15, overlay:40 },
+  neon:   { textColor:'#00e5ff', strokeColor:'#7c3aed', bgColor:'#00e5ff', shadow:20, overlay:50 },
+  clean:  { textColor:'#ffffff', strokeColor:'#333333', bgColor:'#ffffff', shadow:4,  overlay:20 },
+  horror: { textColor:'#ff0000', strokeColor:'#000000', bgColor:'#8b0000', shadow:12, overlay:60 },
+  gold:   { textColor:'#ffd700', strokeColor:'#8b6914', bgColor:'#ffd700', shadow:10, overlay:35 },
+};
 
-function getSelectedMoods() {
-  return [...document.querySelectorAll('.mood-chip.selected')].map(c => c.dataset.mood);
-}
-
-// ── Video upload ───────────────────────────────────────────────────────────
-const videoInput = document.getElementById('video-input');
-const videoPreview = document.getElementById('video-preview');
+// ── Upload ─────────────────────────────────────────────────────────────────
 const uploadZone = document.getElementById('upload-zone');
+const fileInput  = document.getElementById('video-input');
+const vprev      = document.getElementById('vprev');
 
-videoInput.addEventListener('change', e => { if (e.target.files[0]) loadVideo(e.target.files[0]); });
-
+uploadZone.addEventListener('click', e => { if(e.target !== fileInput) fileInput.click(); });
+fileInput.addEventListener('change', () => { if(fileInput.files[0]) loadVideoFile(fileInput.files[0]); });
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
 uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.classList.remove('drag-over');
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
   const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('video/')) loadVideo(f);
+  if(f && f.type.startsWith('video/')) loadVideoFile(f);
+  else toast('Please drop a video file!');
 });
 
-function loadVideo(file) {
-  videoPreview.src = URL.createObjectURL(file);
-  document.getElementById('video-name').textContent = file.name;
-  document.getElementById('video-preview-wrap').style.display = 'block';
-  uploadZone.style.display = 'none';
+function loadVideoFile(file) {
+  const url = URL.createObjectURL(file);
+  vprev.src = url;
+  document.getElementById('vname').textContent = file.name;
+  vprev.addEventListener('loadedmetadata', function onMeta() {
+    vprev.removeEventListener('loadedmetadata', onMeta);
+    videoReady = true;
+    const dur = vprev.duration || 10;
+    const s = document.getElementById('scrubber');
+    s.max = dur; s.step = dur/1000; s.value = dur*0.25;
+    vprev.currentTime = dur * 0.25;
+    updateTimeDisplay(dur * 0.25);
+    document.getElementById('vwrap').style.display = 'block';
+    uploadZone.style.display = 'none';
+    toast('Video loaded! Scrub to find your frame ✓', true);
+  });
+  vprev.addEventListener('error', () => toast('Could not load video. Try MP4 format.'));
+  vprev.load();
 }
 
 function clearVideo() {
-  videoPreview.src = '';
-  videoInput.value = '';
-  document.getElementById('video-preview-wrap').style.display = 'none';
+  vprev.src = ''; fileInput.value = ''; videoReady = false; capturedFrame = null;
+  document.getElementById('vwrap').style.display = 'none';
   uploadZone.style.display = 'block';
+  document.getElementById('frame-card').style.display = 'none';
 }
 
-// ── Frame extractor ────────────────────────────────────────────────────────
-function extractFrame() {
-  return new Promise((resolve) => {
-    const canvas = document.getElementById('frame-canvas');
-    const ctx = canvas.getContext('2d');
-    const v = videoPreview;
-    const t = isFinite(v.duration) ? Math.min(v.duration * 0.3, v.duration - 0.1) : 0;
-    v.currentTime = t >= 0 ? t : 0;
-    v.onseeked = () => {
-      canvas.width = v.videoWidth || 1280;
-      canvas.height = v.videoHeight || 720;
-      ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
-      resolve(canvas.toDataURL('image/jpeg', 0.8));
-    };
-    // Fallback if no video loaded
-    setTimeout(() => resolve(null), 3000);
-  });
+function onScrub(val) {
+  if(!videoReady) return;
+  vprev.currentTime = parseFloat(val);
+  updateTimeDisplay(parseFloat(val));
+}
+function updateTimeDisplay(t) { document.getElementById('time-display').textContent = parseFloat(t).toFixed(1)+'s'; }
+
+// ── Frame capture ──────────────────────────────────────────────────────────
+function captureFrame() {
+  if(!videoReady || !vprev.src) { toast('Upload a video first!'); return; }
+  if(vprev.readyState < 2) { toast('Video still loading...'); return; }
+  const hc = document.getElementById('frame-canvas');
+  const ctx = hc.getContext('2d');
+  hc.width = vprev.videoWidth || 1280;
+  hc.height = vprev.videoHeight || 720;
+  ctx.drawImage(vprev, 0, 0, hc.width, hc.height);
+  capturedFrame = hc;
+
+  const pc = document.getElementById('frame-preview-canvas');
+  pc.width = hc.width; pc.height = hc.height;
+  pc.getContext('2d').drawImage(hc, 0, 0);
+  document.getElementById('frame-card').style.display = 'block';
+  document.getElementById('frame-card').scrollIntoView({ behavior:'smooth', block:'start' });
+  toast('Frame captured ✓', true);
+  livePreview();
 }
 
-// ── Prompt builder ─────────────────────────────────────────────────────────
-const stylePrompts = {
-  cinematic: 'cinematic lighting, dramatic shadows, movie poster composition, anamorphic lens flare, color graded, epic atmosphere, 8k ultra detailed',
-  realistic: 'ultra realistic photography, DSLR photo, natural lighting, sharp focus, high resolution, professional shot, photorealistic',
-  illustrated: 'vibrant digital illustration, bold graphic design, vivid colors, high contrast, painterly texture, dynamic composition, concept art style',
-  neon: 'neon cyberpunk aesthetic, glowing neon lights, dark background, electric cyan and purple colors, futuristic, digital glow, synthwave atmosphere',
-  anime: 'anime style, detailed anime art, vibrant colors, dynamic pose, high quality anime illustration, manga inspired, expressive'
-};
-
-const moodPrompts = {
-  intense: 'intense dramatic energy, high tension',
-  funny: 'comedic exaggerated expression, humorous',
-  epic: 'epic monumental scale, grand spectacle',
-  satisfying: 'clean satisfying composition, pleasing aesthetics',
-  shocking: 'shocking surprising moment, dramatic reveal',
-  mysterious: 'mysterious dark atmosphere, intriguing shadows',
-  motivational: 'powerful motivational energy, inspiring heroic',
-  chill: 'calm relaxed atmosphere, peaceful vibes'
-};
-
-function buildPrompt(description, style, moods) {
-  const styleStr = stylePrompts[style] || stylePrompts.cinematic;
-  const moodStr = moods.length > 0 ? moods.map(m => moodPrompts[m]).join(', ') + ', ' : '';
-  return `YouTube thumbnail for: ${description}. ${moodStr}${styleStr}, striking composition that stops the scroll, bold and eye-catching, professional YouTube thumbnail, 16:9 aspect ratio, no text overlays, high quality`.trim();
+function autoPickFrame() {
+  if(!videoReady) { toast('Upload a video first!'); return; }
+  const t = (vprev.duration||10) * 0.3;
+  vprev.currentTime = t;
+  document.getElementById('scrubber').value = t;
+  updateTimeDisplay(t);
+  vprev.onseeked = () => { captureFrame(); vprev.onseeked = null; };
 }
 
-// ── Progress helpers ───────────────────────────────────────────────────────
-let logLines = [];
+// ── AI Title Generation (calls backend) ───────────────────────────────────
+async function generateTitles() {
+  if(!capturedFrame) { toast('Capture a frame first!'); return; }
 
-function resetLog() {
-  logLines = [];
-  document.getElementById('log-box').innerHTML = '';
-  setProgress(0);
-}
-
-function log(msg, state = 'active') {
-  const box = document.getElementById('log-box');
-  const el = document.createElement('span');
-  el.className = `log-line ${state}`;
-  const icons = { active: '◈', done: '✓', err: '✕' };
-  el.textContent = `${icons[state]}  ${msg}`;
-  box.appendChild(el);
-  box.appendChild(document.createElement('br'));
-  box.scrollTop = box.scrollHeight;
-  logLines.push(el);
-  return el;
-}
-
-function markDone(el) { el.className = 'log-line done'; }
-function markErr(el) { el.className = 'log-line err'; }
-
-function setProgress(pct) {
-  document.getElementById('progress-bar').style.width = pct + '%';
-}
-
-// ── Toast ──────────────────────────────────────────────────────────────────
-function toast(msg, success = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = success ? 'var(--success)' : 'var(--danger)';
-  t.style.color = success ? '#000' : '#fff';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// ── Current prompt storage ─────────────────────────────────────────────────
-let currentPrompt = '';
-let currentImageUrl = '';
-
-// ── Main generate ──────────────────────────────────────────────────────────
-async function generate(customSeed = null) {
-  const description = document.getElementById('description').value.trim();
-  if (!description) { toast('Please describe your video first!'); document.getElementById('description').focus(); return; }
-
-  const style = document.querySelector('input[name="style"]:checked').value;
-  const moods = getSelectedMoods();
-
-  // Build prompt
-  currentPrompt = buildPrompt(description, style, moods);
-
-  const btn = document.getElementById('generate-btn');
-  btn.disabled = true;
-  btn.classList.add('loading');
-  document.getElementById('btn-text').textContent = 'Generating…';
-
-  // Show progress
-  document.getElementById('progress-wrap').style.display = 'block';
-  resetLog();
+  const btn = document.getElementById('ai-btn');
+  btn.disabled = true; btn.classList.add('loading');
+  document.getElementById('ai-btn-text').textContent = 'AI is thinking…';
 
   try {
-    // Step 1
-    const l1 = log('Building AI prompt from your description…');
-    await delay(400);
-    setProgress(20);
-    markDone(l1);
+    const b64 = capturedFrame.toDataURL('image/jpeg', 0.8).split(',')[1];
 
-    // Step 2: Extract frame if video loaded
-    let frameDataUrl = null;
-    if (videoPreview.src && videoPreview.src !== window.location.href) {
-      const l2 = log('Extracting frame from video…');
-      frameDataUrl = await extractFrame();
-      markDone(l2);
-      setProgress(40);
-    }
+    const res = await fetch('/api/titles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: b64 })
+    });
 
-    // Step 3: Generate image via Pollinations
-    const l3 = log('Sending to Pollinations AI (free image gen)…');
-    setProgress(55);
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Server error');
 
-    const seed = customSeed || Math.floor(Math.random() * 999999);
-    const imageUrl = await generateWithPollinations(currentPrompt, seed);
+    showSuggestions(data.titles);
+    toast('AI titles ready! Pick one ✓', true);
 
-    markDone(l3);
-    setProgress(85);
-
-    // Step 4: Load image
-    const l4 = log('Loading your thumbnail…');
-    await loadImage(imageUrl);
-    markDone(l4);
-    setProgress(100);
-
-    // Show results
-    currentImageUrl = imageUrl;
-    const img = document.getElementById('output-image');
-    img.src = imageUrl;
-    img.style.display = 'block';
-    document.getElementById('img-placeholder').style.display = 'none';
-
-    document.getElementById('concept-text').textContent = `${description.slice(0, 100)}${description.length > 100 ? '…' : ''}`;
-    document.getElementById('style-text').textContent = `${style.charAt(0).toUpperCase() + style.slice(1)}${moods.length ? ' · ' + moods.join(', ') : ''}`;
-    document.getElementById('prompt-display').innerHTML = currentPrompt + '<button class="copy-btn" onclick="copyPrompt()">Copy</button>';
-
-    log('Thumbnail ready! ✦', 'done');
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } catch (err) {
-    log(`Failed: ${err.message}`, 'err');
-    log('Try again or use the prompt in Ideogram.ai', 'err');
-    toast('Generation failed — try again');
+  } catch(err) {
+    toast('Error: ' + err.message.slice(0, 60));
     console.error(err);
   } finally {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    document.getElementById('btn-text').textContent = '✦ Generate Thumbnail — Free';
+    btn.disabled = false; btn.classList.remove('loading');
+    document.getElementById('ai-btn-text').textContent = '✦ Generate 5 Catchy Titles';
   }
 }
 
-// ── Pollinations API (completely free, no key) ─────────────────────────────
-async function generateWithPollinations(prompt, seed) {
-  const encoded = encodeURIComponent(prompt);
-  // Pollinations free image API — no auth required
-  const url = `https://image.pollinations.ai/prompt/${encoded}?width=1280&height=720&seed=${seed}&model=flux&nologo=true&enhance=true`;
-  return url; // Pollinations returns the image directly at this URL
-}
-
-// ── Load image with timeout ────────────────────────────────────────────────
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = resolve;
-    img.onerror = () => reject(new Error('Image failed to load from Pollinations'));
-    img.src = url;
-    setTimeout(() => reject(new Error('Timeout — Pollinations took too long')), 60000);
+function showSuggestions(titles) {
+  const wrap = document.getElementById('suggestions');
+  wrap.innerHTML = '';
+  titles.forEach(title => {
+    const chip = document.createElement('div');
+    chip.className = 'suggestion-chip';
+    chip.innerHTML = `<span>${title}</span><span class="use-tag">USE →</span>`;
+    chip.onclick = () => {
+      document.getElementById('main-text').value = title;
+      livePreview();
+      toast('Title applied! ✓', true);
+    };
+    wrap.appendChild(chip);
   });
+  wrap.style.display = 'flex';
 }
 
-// ── Regenerate with new seed ───────────────────────────────────────────────
-function regenerate() {
-  document.getElementById('output-image').style.display = 'none';
-  document.getElementById('img-placeholder').style.display = 'flex';
-  document.getElementById('results').style.display = 'none';
-  generate(Math.floor(Math.random() * 999999));
+// ── Style controls ─────────────────────────────────────────────────────────
+function selectPreset(el) {
+  document.querySelectorAll('.preset-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected'); currentPreset = el.dataset.preset;
+  const p = presets[currentPreset];
+  document.getElementById('text-color').value   = p.textColor;
+  document.getElementById('stroke-color').value = p.strokeColor;
+  document.getElementById('bg-color').value     = p.bgColor;
+  document.getElementById('shadow-size').value  = p.shadow;
+  document.getElementById('sh-val').textContent = p.shadow;
+  document.getElementById('overlay-opacity').value = p.overlay;
+  document.getElementById('ov-val').textContent = p.overlay+'%';
+  livePreview();
 }
 
-// ── Download ───────────────────────────────────────────────────────────────
-async function downloadThumb() {
-  if (!currentImageUrl) return;
-  try {
-    const response = await fetch(currentImageUrl);
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'thumbnail.jpg';
-    a.click();
-    URL.revokeObjectURL(url);
-  } catch {
-    // Fallback: open in new tab
-    window.open(currentImageUrl, '_blank');
+function selectPos(el) {
+  document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected'); currentPos = el.dataset.pos; livePreview();
+}
+
+function addEmoji(e) {
+  const i = document.getElementById('main-text');
+  i.value += e; i.focus(); livePreview();
+}
+
+// ── Canvas drawing ─────────────────────────────────────────────────────────
+function drawThumbnail(canvas) {
+  const W=1280, H=720;
+  canvas.width=W; canvas.height=H;
+  const ctx = canvas.getContext('2d');
+
+  if(capturedFrame) {
+    ctx.drawImage(capturedFrame,0,0,W,H);
+  } else {
+    const g=ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#0e1420'); g.addColorStop(1,'#151d2e');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#2a3a55'; ctx.font='bold 26px Space Grotesk';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('📸 Capture a frame to preview', W/2, H/2);
+    return;
+  }
+
+  const op = parseInt(document.getElementById('overlay-opacity').value)/100;
+  if(op>0){ ctx.fillStyle=`rgba(0,0,0,${op})`; ctx.fillRect(0,0,W,H); }
+
+  const mainText = document.getElementById('main-text').value||'';
+  const subText  = document.getElementById('sub-text').value||'';
+  if(!mainText && !subText) return;
+
+  const fontSize  = parseInt(document.getElementById('font-size').value);
+  const fontFace  = document.getElementById('font-select').value;
+  const textColor = document.getElementById('text-color').value;
+  const strokeCol = document.getElementById('stroke-color').value;
+  const bgColor   = document.getElementById('bg-color').value;
+  const shadow    = parseInt(document.getElementById('shadow-size').value);
+
+  const pad=50;
+  let x,y,align;
+  if(currentPos.includes('left'))       {x=pad;   align='left';}
+  else if(currentPos.includes('right')) {x=W-pad; align='right';}
+  else                                  {x=W/2;   align='center';}
+  if(currentPos.startsWith('top'))      y=pad+fontSize;
+  else if(currentPos.startsWith('mid')) y=H/2;
+  else                                  y=H-pad-(subText?fontSize*0.55:0);
+
+  ctx.textAlign=align; ctx.textBaseline='alphabetic';
+
+  if(mainText) {
+    ctx.font=`900 ${fontSize}px "${fontFace}", Arial Black, Impact, sans-serif`;
+    if(['youtube','fire','gold'].includes(currentPreset)){
+      const m=ctx.measureText(mainText), bp=14;
+      let bx = align==='left'?x-bp:align==='right'?x-m.width-bp:x-m.width/2-bp;
+      ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0;
+      ctx.fillStyle=bgColor;
+      rrect(ctx,bx,y-fontSize*0.82,m.width+bp*2,fontSize*1.08,10); ctx.fill();
+    }
+    setShadow(ctx,shadow);
+    ctx.strokeStyle=strokeCol; ctx.lineWidth=Math.max(2,fontSize*0.06); ctx.lineJoin='round';
+    ctx.strokeText(mainText,x,y);
+    ctx.fillStyle=textColor; ctx.fillText(mainText,x,y);
+    clrShadow(ctx);
+  }
+
+  if(subText){
+    const ss=Math.max(22,fontSize*0.4);
+    ctx.font=`600 ${ss}px "${fontFace}", Arial, sans-serif`;
+    const sy=y+ss+12;
+    setShadow(ctx,shadow*.7);
+    ctx.strokeStyle=strokeCol; ctx.lineWidth=Math.max(1,ss*0.05);
+    ctx.strokeText(subText,x,sy);
+    ctx.fillStyle=textColor; ctx.fillText(subText,x,sy);
+    clrShadow(ctx);
   }
 }
 
-// ── Copy prompt ────────────────────────────────────────────────────────────
-function copyPrompt() {
-  navigator.clipboard.writeText(currentPrompt).then(() => toast('Prompt copied!', true));
+function setShadow(ctx,s){if(s<=0)return;ctx.shadowColor='rgba(0,0,0,0.95)';ctx.shadowBlur=s;ctx.shadowOffsetX=s*.4;ctx.shadowOffsetY=s*.4;}
+function clrShadow(ctx){ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetX=0;ctx.shadowOffsetY=0;}
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+let pd=null;
+function livePreview(){
+  clearTimeout(pd);
+  pd=setTimeout(()=>{
+    const c=document.getElementById('output-canvas');
+    drawThumbnail(c);
+    document.getElementById('output-wrap').style.display='block';
+  },80);
 }
 
-// ── Util ───────────────────────────────────────────────────────────────────
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function generateThumbnail(){
+  if(!capturedFrame){toast('Capture a frame first!');return;}
+  const c=document.getElementById('output-canvas');
+  drawThumbnail(c);
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+  toast('Thumbnail ready ✓',true);
+}
+
+function downloadThumb(){
+  const c=document.getElementById('output-canvas');
+  if(!c.width){toast('Generate a thumbnail first!');return;}
+  const a=document.createElement('a');
+  a.href=c.toDataURL('image/jpeg',0.95);
+  a.download='thumbnail.jpg'; a.click();
+  toast('Downloading…',true);
+}
+
+function toast(msg,success=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=success?'var(--success)':'var(--danger)';
+  t.style.color=success?'#000':'#fff';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
 </script>
 </body>
 </html>
