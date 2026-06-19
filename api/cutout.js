@@ -20,9 +20,10 @@ export default async function handler(req, res) {
     const GEMINI_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server not configured' });
 
-    // Step 1: Ask Gemini 2.5 Flash to generate a segmentation mask for the main person
-    const segRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+    // Use gemini-2.5-flash-image on v1 to generate a cutout of the main subject
+    // We ask it to return the subject on transparent background as PNG
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,47 +31,43 @@ export default async function handler(req, res) {
           contents: [{
             parts: [
               { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
-              { text: `Detect the main person or subject in this image and return a segmentation mask.
-Output a JSON object with this exact format and nothing else:
-{"box_2d": [y1, x1, y2, x2], "mask": "<base64 PNG mask>"}
-
-Where:
-- box_2d contains normalized coordinates (0-1000 scale) as [top, left, bottom, right]
-- mask is a base64-encoded PNG image (same dimensions as input) where the person is WHITE and background is BLACK
-
-Return ONLY the JSON. No explanation, no markdown.` }
+              { text: 'Remove the background from this image completely. Keep only the main person or subject. Return the result as a PNG image with a transparent background — the subject should be on transparent (checkerboard) background, everything else removed. Return only the edited PNG image.' }
             ]
           }],
           generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 8192,
-            thinkingConfig: { thinkingBudget: 0 }
+            responseModalities: ['IMAGE', 'TEXT'],
+            temperature: 1,
+            maxOutputTokens: 8192
           }
         })
       }
     );
 
-    const segRaw = await segRes.text();
-    if (!segRes.ok) {
-      let msg = 'Segmentation failed';
-      try { msg = JSON.parse(segRaw).error?.message || msg; } catch(e) {}
+    const raw = await geminiRes.text();
+    if (!geminiRes.ok) {
+      let msg = 'Gemini API error';
+      try { msg = JSON.parse(raw).error?.message || msg; } catch(e) {}
       throw new Error(msg);
     }
 
-    const segData = JSON.parse(segRaw);
-    const segText = segData.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || '';
+    let data;
+    try { data = JSON.parse(raw); }
+    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 120)); }
 
-    // Try to extract JSON from response
-    const jsonMatch = segText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('No mask data returned. Try a clearer image with a visible person.');
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    const imagePart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
 
-    let parsed;
-    try { parsed = JSON.parse(jsonMatch[0]); }
-    catch(e) { throw new Error('Could not parse mask data from Gemini.'); }
+    if (!imagePart) {
+      const textPart = parts.find(p => p.text);
+      throw new Error(textPart?.text?.slice(0, 150) || 'No cutout returned. Make sure there is a clear person in the frame.');
+    }
 
-    if (!parsed.mask) throw new Error('No mask in response. Make sure there is a clear person in the frame.');
-
-    return res.status(200).json({ maskBase64: parsed.mask });
+    // For cutout we return the image directly (with transparency) instead of a mask
+    // The frontend will use it as a compositing layer directly
+    return res.status(200).json({
+      cutoutBase64: imagePart.inlineData.data,
+      mimeType: imagePart.inlineData.mimeType
+    });
 
   } catch (err) {
     console.error('Cutout API error:', err.message);
