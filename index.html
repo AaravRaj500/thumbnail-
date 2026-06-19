@@ -608,7 +608,7 @@ async function doCutout(){
     var res=await fetch('/api/cutout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64})});
     var data=await res.json();
     if(!res.ok)throw new Error(data.error||'Cutout failed');
-    await applyMask(data.maskBase64);
+    await applyCutout(data.cutoutBase64, data.mimeType);
     document.getElementById('layer-underlay').disabled=false;
     document.getElementById('cutout-status').textContent='Subject cut out — underlay enabled!';
     document.getElementById('cutout-status').className='cutout-status done';
@@ -623,24 +623,12 @@ async function doCutout(){
   }
 }
 
-function applyMask(maskB64){
+function applyCutout(b64, mime){
   return new Promise(function(resolve,reject){
-    var maskImg=new Image();
-    maskImg.onload=function(){
-      var W=capturedFrame.width,H=capturedFrame.height;
-      var tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;
-      var ctx=tmp.getContext('2d');ctx.drawImage(capturedFrame,0,0,W,H);
-      var mc=document.createElement('canvas');mc.width=W;mc.height=H;
-      mc.getContext('2d').drawImage(maskImg,0,0,W,H);
-      var id=ctx.getImageData(0,0,W,H),md=mc.getContext('2d').getImageData(0,0,W,H);
-      for(var i=0;i<id.data.length;i+=4)id.data[i+3]=md.data[i];
-      ctx.putImageData(id,0,0);
-      var img=new Image();
-      img.onload=function(){cutoutImage=img;resolve();};img.onerror=reject;
-      img.src=tmp.toDataURL('image/png');
-    };
-    maskImg.onerror=function(){reject(new Error('Mask load failed'));};
-    maskImg.src='data:image/png;base64,'+maskB64;
+    var img=new Image();
+    img.onload=function(){cutoutImage=img;resolve();};
+    img.onerror=function(){reject(new Error('Cutout image load failed'));};
+    img.src='data:'+(mime||'image/png')+';base64,'+b64;
   });
 }
 
