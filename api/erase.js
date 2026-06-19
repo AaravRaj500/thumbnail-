@@ -16,29 +16,23 @@ export default async function handler(req, res) {
   try {
     const { imageBase64, maskBase64 } = req.body;
     if (!imageBase64 || !maskBase64) return res.status(400).json({ error: 'Image and mask required' });
-
     const GEMINI_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server not configured' });
 
-    // gemini-2.5-flash-image on v1 supports image output (Nano Banana)
+    // v1beta + gemini-2.5-flash-image, NO responseModalities in body
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{
             parts: [
+              { text: 'The second image is a white-on-black mask. Remove everything covered by white areas in the first image. Fill those areas naturally with background so it looks seamless, like the objects were never there. Return only the edited image.' },
               { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
-              { inline_data: { mime_type: 'image/png',  data: maskBase64  } },
-              { text: 'The second image is a white-on-black mask. Remove everything covered by the white areas in the first image. Fill those areas naturally with the surrounding background so it looks seamless, as if the objects were never there. Return only the edited image.' }
+              { inline_data: { mime_type: 'image/png',  data: maskBase64  } }
             ]
-          }],
-          generationConfig: {
-            responseModalities: ['IMAGE', 'TEXT'],
-            temperature: 1,
-            maxOutputTokens: 8192
-          }
+          }]
         })
       }
     );
@@ -52,23 +46,18 @@ export default async function handler(req, res) {
 
     let data;
     try { data = JSON.parse(raw); }
-    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 120)); }
+    catch(e) { throw new Error('Bad response: ' + raw.slice(0, 120)); }
 
     const parts = data.candidates?.[0]?.content?.parts || [];
     const imagePart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-
     if (!imagePart) {
-      const textPart = parts.find(p => p.text);
-      throw new Error(textPart?.text?.slice(0, 150) || 'Gemini returned no image. Try painting a larger area.');
+      const txt = parts.find(p => p.text);
+      throw new Error(txt?.text?.slice(0, 150) || 'No image returned. Try painting a larger area.');
     }
 
-    return res.status(200).json({
-      editedImageBase64: imagePart.inlineData.data,
-      mimeType: imagePart.inlineData.mimeType
-    });
-
+    return res.status(200).json({ editedImageBase64: imagePart.inlineData.data, mimeType: imagePart.inlineData.mimeType });
   } catch (err) {
-    console.error('Erase API error:', err.message);
+    console.error('Erase error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 }
