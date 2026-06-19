@@ -20,9 +20,9 @@ export default async function handler(req, res) {
     const GEMINI_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server not configured' });
 
-    // gemini-2.5-flash-preview-05-20 supports image output (Nano Banana)
+    // gemini-2.5-flash-image on v1 supports image output (Nano Banana)
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
             parts: [
               { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
               { inline_data: { mime_type: 'image/png',  data: maskBase64  } },
-              { text: `The second image is a white-on-black mask. Remove everything in the white masked regions from the first image. Fill the removed areas naturally with the surrounding background so it looks like those objects were never there. Return the edited image only.` }
+              { text: 'The second image is a white-on-black mask. Remove everything covered by the white areas in the first image. Fill those areas naturally with the surrounding background so it looks seamless, as if the objects were never there. Return only the edited image.' }
             ]
           }],
           generationConfig: {
@@ -44,7 +44,6 @@ export default async function handler(req, res) {
     );
 
     const raw = await geminiRes.text();
-
     if (!geminiRes.ok) {
       let msg = 'Gemini API error';
       try { msg = JSON.parse(raw).error?.message || msg; } catch(e) {}
@@ -53,15 +52,14 @@ export default async function handler(req, res) {
 
     let data;
     try { data = JSON.parse(raw); }
-    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 100)); }
+    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 120)); }
 
     const parts = data.candidates?.[0]?.content?.parts || [];
     const imagePart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
 
     if (!imagePart) {
-      // Log what we got for debugging
       const textPart = parts.find(p => p.text);
-      throw new Error(textPart?.text?.slice(0, 120) || 'Gemini returned no image. Try painting a larger area.');
+      throw new Error(textPart?.text?.slice(0, 150) || 'Gemini returned no image. Try painting a larger area.');
     }
 
     return res.status(200).json({
