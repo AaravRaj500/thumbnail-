@@ -3,336 +3,315 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ThumbAI — Smart Thumbnail Maker</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<title>ThumbAI — Elevexy Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#080b10;--surface:#0e1420;--surface2:#151d2e;--border:#1e2d45;
-  --accent:#00e5ff;--accent2:#7c3aed;--glow:rgba(0,229,255,0.12);
+  --accent:#00e5ff;--accent2:#7c3aed;--glow:rgba(0,229,255,0.08);
   --text:#e2eaf5;--muted:#5a7090;--danger:#ff4d6d;--success:#00e5a0;
   --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.28}
-.orb-1{width:400px;height:400px;background:#00e5ff20;top:-100px;left:-100px;animation:d1 13s ease-in-out infinite}
-.orb-2{width:320px;height:320px;background:#7c3aed20;bottom:-80px;right:-80px;animation:d2 16s ease-in-out infinite}
-@keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(45px,30px)}}
-@keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-45px)}}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;opacity:.2}
+.orb-1{width:500px;height:500px;background:#00e5ff18;top:-150px;left:-150px;animation:d1 14s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:#7c3aed18;bottom:-100px;right:-100px;animation:d2 18s ease-in-out infinite}
+@keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,35px)}}
+@keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-35px,-50px)}}
 
-.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 20px 100px}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 100px}
 
-header{padding:44px 0 50px;text-align:center}
-.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--success);letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
-h1{font-size:clamp(2rem,6vw,3.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;background:linear-gradient(135deg,#fff 25%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
-.sub{color:var(--muted);font-size:1rem;max-width:500px;margin:0 auto;line-height:1.65}
-.sub strong{color:var(--success)}
+header{padding:48px 0 52px;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--success);letter-spacing:.1em;text-transform:uppercase;margin-bottom:22px}
+h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.06;background:linear-gradient(135deg,#fff 20%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
+.sub{color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto;line-height:1.65}
+.sub strong{color:var(--accent)}
 
-/* How it works strip */
-.how-strip{display:flex;gap:0;margin-bottom:32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.how-step{flex:1;padding:16px 12px;text-align:center;border-right:1px solid var(--border);position:relative}
+.how-strip{display:flex;margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.how-step{flex:1;padding:16px 10px;text-align:center;border-right:1px solid var(--border)}
 .how-step:last-child{border-right:none}
-.how-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;display:block;margin-bottom:4px}
-.how-icon{font-size:1.5rem;display:block;margin-bottom:4px}
+.how-num{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:.12em;display:block;margin-bottom:4px}
+.how-icon{font-size:1.4rem;display:block;margin-bottom:3px}
 .how-text{font-size:11px;color:var(--muted);line-height:1.4}
 @media(max-width:500px){.how-strip{flex-direction:column}.how-step{border-right:none;border-bottom:1px solid var(--border)}.how-step:last-child{border-bottom:none}}
 
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin-bottom:16px}
-.step{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.step::before{content:'';width:22px;height:1px;background:var(--accent);display:inline-block}
+/* Main layout: side by side on desktop */
+.main-layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+@media(max-width:760px){.main-layout{grid-template-columns:1fr}}
+
+.controls-col{}
+.preview-col{position:sticky;top:20px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:16px}
+.step-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.step-label::before{content:'';width:20px;height:1px;background:var(--accent);display:inline-block}
 
 /* Upload */
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:44px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg);overflow:hidden}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg)}
 .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--glow)}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;font-size:0}
-.u-icon{font-size:3rem;display:block;margin-bottom:12px;pointer-events:none}
-.u-title{font-size:1rem;font-weight:600;margin-bottom:6px;pointer-events:none}
-.u-sub{font-size:13px;color:var(--muted);pointer-events:none}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.u-icon{font-size:2.6rem;display:block;margin-bottom:10px;pointer-events:none}
+.u-title{font-size:.95rem;font-weight:600;margin-bottom:5px;pointer-events:none}
+.u-sub{font-size:12px;color:var(--muted);pointer-events:none}
 .u-sub em{color:var(--accent);font-style:normal}
 
-#vwrap{display:none;margin-top:18px}
-video{width:100%;max-height:300px;border-radius:10px;object-fit:contain;background:#000;border:1px solid var(--border);display:block}
-.vmeta{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:13px;color:var(--muted)}
+#vwrap{display:none;margin-top:16px}
+video{width:100%;max-height:260px;border-radius:10px;object-fit:contain;background:#000;border:1px solid var(--border);display:block}
+.vmeta{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted)}
 .vmeta strong{color:var(--text)}
-.clr-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:18px;transition:color .2s;padding:0 4px}
+.clr-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:16px;transition:color .2s}
 .clr-btn:hover{color:var(--danger)}
 
-.scrub-wrap{margin-top:16px}
-.scrub-label{font-size:13px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
-.scrub-label span{color:var(--accent);font-family:var(--mono);font-size:12px}
-input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:100px;background:var(--border);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(0,229,255,.5)}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.scrub-wrap{margin-top:14px}
+.scrub-label{font-size:12px;color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between}
+.scrub-label span{color:var(--accent);font-family:var(--mono);font-size:11px}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:3px;border-radius:100px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(0,229,255,.5)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
 
-.frame-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-.btn-sm{padding:9px 18px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
+.frame-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-sm{padding:9px 16px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
 .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
 .btn-sm.primary{background:var(--accent);color:#000;border-color:var(--accent)}
 .btn-sm.primary:hover{opacity:.85}
 
-/* Frame captured */
-#frame-card{display:none}
-#frame-preview-canvas{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+/* Person detection */
+.detect-box{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(0,229,255,0.04));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:18px;margin-bottom:14px}
+.detect-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.detect-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:6px}
+.detect-label::before{content:'✦';font-size:12px}
+.detect-badge{font-size:10px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);color:var(--success);padding:3px 10px;border-radius:100px;font-family:var(--mono)}
 
-/* AI title section */
-.ai-section{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(0,229,255,0.05));border:1px solid rgba(124,58,237,0.35);border-radius:14px;padding:22px;margin-bottom:18px}
-.ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
-.ai-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px}
-.ai-label::before{content:'✦';font-size:13px}
-.ai-badge{font-size:11px;background:rgba(0,229,160,.12);border:1px solid rgba(0,229,160,.3);color:var(--success);padding:3px 10px;border-radius:100px;font-family:var(--mono)}
-
-.ai-gen-btn{width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.ai-gen-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
-.ai-gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.spinner-sm{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
-.ai-gen-btn.loading .spinner-sm{display:block}
+.detect-btn{width:100%;padding:12px;border-radius:9px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.detect-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.detect-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.spinner-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.detect-btn.loading .spinner-sm{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.suggestions{display:none;flex-direction:column;gap:8px;margin-top:14px}
-.suggestion-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:500}
-.suggestion-chip:hover{border-color:var(--accent);background:var(--glow);transform:translateX(4px)}
-.use-tag{font-size:11px;color:var(--accent);font-weight:700;font-family:var(--mono);white-space:nowrap;opacity:.7}
-.suggestion-chip:hover .use-tag{opacity:1}
+/* Name ask box */
+#name-ask{display:none;margin-top:12px;padding:14px;background:var(--surface2);border-radius:10px;border:1px solid rgba(255,200,0,.2)}
+.name-ask-title{font-size:12px;color:#fbbf24;margin-bottom:10px;font-weight:600}
+.name-ask-title span{font-size:16px;margin-right:6px}
+.name-row{display:flex;gap:8px}
+.name-row input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none}
+.name-row input:focus{border-color:var(--accent)}
+.name-row button{padding:10px 16px;border-radius:8px;background:var(--accent);border:none;color:#000;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
 
-/* Form */
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:500}
-input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;transition:border-color .2s;margin-bottom:14px}
-input[type=text]:focus{border-color:var(--accent)}
-input[type=text]::placeholder{color:var(--muted)}
-input[type=color]{width:40px;height:34px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--bg);padding:2px}
-select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;cursor:pointer;margin-bottom:14px}
+/* AI result */
+#ai-result{display:none;margin-top:12px}
+.person-found{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:8px;margin-bottom:10px;font-size:13px}
+.person-found strong{color:var(--success)}
+.quotes-list{display:flex;flex-direction:column;gap:7px}
+.quote-chip{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:11px 14px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;gap:10px;line-height:1.4}
+.quote-chip:hover{border-color:var(--accent);background:var(--glow);transform:translateX(3px)}
+.use-tag{font-size:10px;color:var(--accent);font-weight:700;font-family:var(--mono);white-space:nowrap;opacity:.6}
+.quote-chip:hover .use-tag{opacity:1}
+
+/* Text controls */
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:500}
+input[type=text],textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;transition:border-color .2s;margin-bottom:12px}
+input[type=text]:focus,textarea:focus{border-color:var(--accent)}
+input[type=text]::placeholder,textarea::placeholder{color:var(--muted)}
+textarea{resize:vertical;min-height:70px}
+
+select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;cursor:pointer;margin-bottom:12px}
 select:focus{border-color:var(--accent)}
 option{background:var(--surface)}
 
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:560px){.row{grid-template-columns:1fr}}
-.form-group{margin-bottom:4px}
-
-.emoji-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;margin-bottom:14px}
-.emoji-chip{font-size:1.4rem;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s;line-height:1}
-.emoji-chip:hover{background:var(--surface2)}
-
-/* Presets */
-.preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px}
-.preset-opt{border:1px solid var(--border);border-radius:10px;padding:12px 8px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
+/* Style presets */
+.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.preset-opt{border:1px solid var(--border);border-radius:9px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
 .preset-opt:hover{border-color:var(--accent);background:var(--glow)}
 .preset-opt.selected{border-color:var(--accent);background:var(--glow);box-shadow:0 0 0 1px var(--accent)}
-.p-icon{font-size:1.4rem;display:block;margin-bottom:5px}
-.p-name{font-size:12px;font-weight:600;color:var(--text);display:block}
+.p-icon{font-size:1.2rem;display:block;margin-bottom:4px}
+.p-name{font-size:11px;font-weight:600;color:var(--text);display:block}
 
-/* Position grid */
-.position-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:180px}
-.pos-btn{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;transition:all .2s;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center}
-.pos-btn:hover{border-color:var(--accent);color:var(--accent)}
-.pos-btn.selected{border-color:var(--accent);background:var(--glow);color:var(--accent)}
+.range-group{margin-bottom:12px}
+.range-group label{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.range-val{color:var(--accent);font-family:var(--mono);font-size:11px}
+input[type=color]{width:36px;height:30px;border:1px solid var(--border);border-radius:7px;cursor:pointer;background:var(--bg);padding:2px}
+.color-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.color-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
 
-.color-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-.color-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.range-group{margin-bottom:14px}
-.range-group label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.range-val{color:var(--accent);font-family:var(--mono);font-size:12px}
+/* Format toggle */
+.format-toggle{display:flex;gap:8px;margin-bottom:14px}
+.fmt-btn{flex:1;padding:9px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.fmt-btn.selected{border-color:var(--accent);color:var(--accent);background:var(--glow)}
 
-/* Output */
-#output-wrap{display:none;margin-top:20px}
-#output-canvas{width:100%;border-radius:12px;border:1px solid var(--border);display:block}
-
-.gen-btn{width:100%;padding:20px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent) 0%,#0096b7 100%);color:#000;font-family:var(--font);font-size:17px;font-weight:800;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
-.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,229,255,.28)}
-.dl-btn{width:100%;padding:15px;border:1px solid var(--accent);border-radius:12px;background:transparent;color:var(--accent);font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+/* Preview column */
+.preview-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center}
+#output-canvas{width:100%;border-radius:12px;border:1px solid var(--border);display:block;background:#000}
+.dl-btn{width:100%;padding:13px;border:1px solid var(--accent);border-radius:10px;background:transparent;color:var(--accent);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
 .dl-btn:hover{background:var(--glow)}
+.gen-btn{width:100%;padding:17px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--accent) 0%,#0096b7 100%);color:#000;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,229,255,.25)}
 
-/* Footer */
 footer{text-align:center;padding-top:40px;font-size:12px;color:var(--muted)}
 footer a{color:var(--accent);text-decoration:none}
 
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:12px 24px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:11px 22px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
+
+#frame-canvas{display:none}
 </style>
 </head>
 <body>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
-<canvas id="frame-canvas" style="display:none"></canvas>
+<canvas id="frame-canvas"></canvas>
 
 <div class="wrap">
   <header>
-    <div class="badge">✦ Free · AI-Powered · No Sign-up</div>
+    <div class="badge">✦ Elevexy Style · AI-Powered · Free</div>
     <h1>Thumbnails that<br>stop the scroll</h1>
-    <p class="sub">Extract any frame from your video, let <strong>AI write catchy titles</strong>, and download a pro thumbnail — instantly.</p>
+    <p class="sub">Extract a frame, let <strong>Gemini AI</strong> detect the person & write the perfect quote — styled exactly like Elevexy.</p>
   </header>
 
-  <!-- How it works -->
   <div class="how-strip">
-    <div class="how-step">
-      <span class="how-num">01</span>
-      <span class="how-icon">🎬</span>
-      <div class="how-text">Upload your video</div>
-    </div>
-    <div class="how-step">
-      <span class="how-num">02</span>
-      <span class="how-icon">📸</span>
-      <div class="how-text">Capture a frame</div>
-    </div>
-    <div class="how-step">
-      <span class="how-num">03</span>
-      <span class="how-icon">✦</span>
-      <div class="how-text">AI writes titles</div>
-    </div>
-    <div class="how-step">
-      <span class="how-num">04</span>
-      <span class="how-icon">⬇</span>
-      <div class="how-text">Download thumbnail</div>
-    </div>
+    <div class="how-step"><span class="how-num">01</span><span class="how-icon">🎬</span><div class="how-text">Upload video</div></div>
+    <div class="how-step"><span class="how-num">02</span><span class="how-icon">📸</span><div class="how-text">Capture frame</div></div>
+    <div class="how-step"><span class="how-num">03</span><span class="how-icon">✦</span><div class="how-text">AI detects & quotes</div></div>
+    <div class="how-step"><span class="how-num">04</span><span class="how-icon">⬇</span><div class="how-text">Download</div></div>
   </div>
 
-  <!-- Step 1: Upload -->
-  <div class="card">
-    <div class="step">01 — Upload Your Video</div>
-    <div class="upload-zone" id="upload-zone">
-      <input type="file" id="video-input" accept="video/*"/>
-      <span class="u-icon">🎬</span>
-      <div class="u-title">Drop your video here or click to browse</div>
-      <div class="u-sub">MP4, MOV, AVI, WebM — <em>never leaves your device</em></div>
-    </div>
-    <div id="vwrap">
-      <video id="vprev" playsinline muted></video>
-      <div class="vmeta">
-        <span>🎞</span>
-        <strong id="vname">video.mp4</strong>
-        <button class="clr-btn" onclick="clearVideo()">✕</button>
-      </div>
-      <div class="scrub-wrap">
-        <div class="scrub-label">
-          <span>Scrub to find the perfect frame</span>
-          <span id="time-display">0.0s</span>
+  <div class="main-layout">
+    <div class="controls-col">
+
+      <!-- Step 1: Upload -->
+      <div class="card">
+        <div class="step-label">01 — Upload Video</div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="video-input" accept="video/*"/>
+          <span class="u-icon">🎬</span>
+          <div class="u-title">Drop your video here or click to browse</div>
+          <div class="u-sub">MP4, MOV, AVI, WebM — <em>never leaves your device</em></div>
         </div>
-        <input type="range" id="scrubber" min="0" max="100" value="25" step="0.01" oninput="onScrub(this.value)"/>
+        <div id="vwrap">
+          <video id="vprev" playsinline muted></video>
+          <div class="vmeta">
+            <span>🎞</span>
+            <strong id="vname">video.mp4</strong>
+            <button class="clr-btn" onclick="clearVideo()">✕</button>
+          </div>
+          <div class="scrub-wrap">
+            <div class="scrub-label">
+              <span>Scrub to find the perfect frame</span>
+              <span id="time-display">0.0s</span>
+            </div>
+            <input type="range" id="scrubber" min="0" max="100" value="25" step="0.01" oninput="onScrub(this.value)"/>
+          </div>
+          <div class="frame-actions">
+            <button class="btn-sm primary" onclick="captureFrame()">📸 Capture Frame</button>
+            <button class="btn-sm" onclick="autoPickFrame()">🎯 Auto Pick</button>
+          </div>
+        </div>
       </div>
-      <div class="frame-actions">
-        <button class="btn-sm primary" onclick="captureFrame()">📸 Capture This Frame</button>
-        <button class="btn-sm" onclick="autoPickFrame()">🎯 Auto Pick Frame</button>
+
+      <!-- Step 2: AI Detect + Quote -->
+      <div class="card" id="ai-card" style="display:none">
+        <div class="step-label">02 — AI Detect & Quote</div>
+
+        <div class="detect-box">
+          <div class="detect-header">
+            <div class="detect-label">Gemini Vision</div>
+            <span class="detect-badge">2.5 Flash</span>
+          </div>
+          <button class="detect-btn" id="detect-btn" onclick="detectAndQuote()">
+            <div class="spinner-sm"></div>
+            <span id="detect-btn-text">✦ Detect Person & Generate Quotes</span>
+          </button>
+
+          <!-- Ask name fallback -->
+          <div id="name-ask">
+            <div class="name-ask-title"><span>🤔</span>Gemini couldn't identify this person. Who are they?</div>
+            <div class="name-row">
+              <input type="text" id="person-name-input" placeholder="e.g. Elon Musk, Virat Kohli..."/>
+              <button onclick="generateWithName()">Generate</button>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div id="ai-result">
+            <div class="person-found" id="person-found-bar"></div>
+            <div class="quotes-list" id="quotes-list"></div>
+          </div>
+        </div>
+
+        <div>
+          <label>Quote / Title <span style="color:var(--muted);font-weight:400">(edit freely)</span></label>
+          <textarea id="quote-text" placeholder="e.g. THE HARDER THING IS THE RIGHT THING" oninput="livePreview()" rows="3"></textarea>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Step 2: Frame captured -->
-  <div class="card" id="frame-card">
-    <div class="step">02 — Frame Captured ✓</div>
-    <canvas id="frame-preview-canvas"></canvas>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px;">✓ Frame locked. Hit "AI Generate Titles" below or type your own.</p>
-  </div>
+      <!-- Step 3: Style -->
+      <div class="card" id="style-card" style="display:none">
+        <div class="step-label">03 — Style</div>
 
-  <!-- Step 3: Title -->
-  <div class="card">
-    <div class="step">03 — Add Catchy Title</div>
+        <label style="margin-bottom:8px">Format</label>
+        <div class="format-toggle">
+          <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait (Elevexy)</button>
+          <button class="fmt-btn" data-fmt="landscape" onclick="selectFormat(this)">16:9 YouTube</button>
+          <button class="fmt-btn" data-fmt="square" onclick="selectFormat(this)">1:1 Square</button>
+        </div>
 
-    <div class="ai-section">
-      <div class="ai-header">
-        <div class="ai-label">AI Title Generator</div>
-        <span class="ai-badge">Powered by Gemini</span>
-      </div>
-      <button class="ai-gen-btn" id="ai-btn" onclick="generateTitles()">
-        <div class="spinner-sm"></div>
-        <span id="ai-btn-text">✦ Generate 5 Catchy Titles</span>
-      </button>
-      <div class="suggestions" id="suggestions"></div>
-    </div>
+        <label style="margin-bottom:8px">Preset</label>
+        <div class="preset-grid">
+          <div class="preset-opt selected" data-preset="elevexy" onclick="selectPreset(this)"><span class="p-icon">🖤</span><span class="p-name">Elevexy</span></div>
+          <div class="preset-opt" data-preset="cinematic" onclick="selectPreset(this)"><span class="p-icon">🎬</span><span class="p-name">Cinematic</span></div>
+          <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">⚡</span><span class="p-name">Neon</span></div>
+          <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">🔥</span><span class="p-name">Fire</span></div>
+          <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">👑</span><span class="p-name">Gold</span></div>
+          <div class="preset-opt" data-preset="minimal" onclick="selectPreset(this)"><span class="p-icon">✨</span><span class="p-name">Minimal</span></div>
+        </div>
 
-    <div class="form-group">
-      <label>Main Title <span style="color:var(--muted);font-weight:400">(or pick from AI suggestions above)</span></label>
-      <input type="text" id="main-text" placeholder="e.g. I ALMOST DIED 😱" oninput="livePreview()"/>
-    </div>
-    <div class="form-group">
-      <label>Subtitle <span style="color:var(--muted);font-weight:400">(optional)</span></label>
-      <input type="text" id="sub-text" placeholder="e.g. Gone wrong in the mountains..." oninput="livePreview()"/>
-    </div>
-
-    <label>Quick Emoji</label>
-    <div class="emoji-row">
-      <span class="emoji-chip" onclick="addEmoji('🔥')">🔥</span>
-      <span class="emoji-chip" onclick="addEmoji('😱')">😱</span>
-      <span class="emoji-chip" onclick="addEmoji('💀')">💀</span>
-      <span class="emoji-chip" onclick="addEmoji('⚡')">⚡</span>
-      <span class="emoji-chip" onclick="addEmoji('🏆')">🏆</span>
-      <span class="emoji-chip" onclick="addEmoji('💥')">💥</span>
-      <span class="emoji-chip" onclick="addEmoji('🎯')">🎯</span>
-      <span class="emoji-chip" onclick="addEmoji('👑')">👑</span>
-      <span class="emoji-chip" onclick="addEmoji('🚀')">🚀</span>
-      <span class="emoji-chip" onclick="addEmoji('😂')">😂</span>
-      <span class="emoji-chip" onclick="addEmoji('❤️')">❤️</span>
-      <span class="emoji-chip" onclick="addEmoji('✅')">✅</span>
-    </div>
-  </div>
-
-  <!-- Step 4: Style -->
-  <div class="card">
-    <div class="step">04 — Style Your Thumbnail</div>
-
-    <label style="margin-bottom:10px">Preset Style</label>
-    <div class="preset-grid">
-      <div class="preset-opt selected" data-preset="youtube" onclick="selectPreset(this)"><span class="p-icon">🔴</span><span class="p-name">YouTube</span></div>
-      <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">🔥</span><span class="p-name">Fire</span></div>
-      <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">⚡</span><span class="p-name">Neon</span></div>
-      <div class="preset-opt" data-preset="clean" onclick="selectPreset(this)"><span class="p-icon">✨</span><span class="p-name">Clean</span></div>
-      <div class="preset-opt" data-preset="horror" onclick="selectPreset(this)"><span class="p-icon">💀</span><span class="p-name">Horror</span></div>
-      <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">👑</span><span class="p-name">Gold</span></div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
         <label>Font</label>
         <select id="font-select" onchange="livePreview()">
-          <option value="Bebas Neue">Bebas Neue (Impact)</option>
+          <option value="Anton">Anton (Elevexy Style)</option>
+          <option value="Impact">Impact (Classic Bold)</option>
           <option value="Space Grotesk">Space Grotesk (Modern)</option>
-          <option value="Arial Black">Arial Black (Bold)</option>
+          <option value="Arial Black">Arial Black</option>
           <option value="Georgia">Georgia (Classic)</option>
-          <option value="Courier New">Courier New (Mono)</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label>Text Position</label>
-        <div class="position-grid">
-          <button class="pos-btn" data-pos="top-left" onclick="selectPos(this)">↖</button>
-          <button class="pos-btn" data-pos="top-center" onclick="selectPos(this)">↑</button>
-          <button class="pos-btn" data-pos="top-right" onclick="selectPos(this)">↗</button>
-          <button class="pos-btn" data-pos="mid-left" onclick="selectPos(this)">←</button>
-          <button class="pos-btn" data-pos="mid-center" onclick="selectPos(this)">●</button>
-          <button class="pos-btn" data-pos="mid-right" onclick="selectPos(this)">→</button>
-          <button class="pos-btn selected" data-pos="bot-left" onclick="selectPos(this)">↙</button>
-          <button class="pos-btn" data-pos="bot-center" onclick="selectPos(this)">↓</button>
-          <button class="pos-btn" data-pos="bot-right" onclick="selectPos(this)">↘</button>
+
+        <div class="color-row">
+          <div class="color-item"><input type="color" id="text-color" value="#ffffff" oninput="livePreview()"/><span>Text</span></div>
+          <div class="color-item"><input type="color" id="accent-color" value="#00e5ff" oninput="livePreview()"/><span>Accent</span></div>
+        </div>
+
+        <div class="range-group">
+          <label>Text Opacity <span class="range-val" id="to-val">80%</span></label>
+          <input type="range" id="text-opacity" min="20" max="100" value="80" oninput="document.getElementById('to-val').textContent=this.value+'%';livePreview()"/>
+        </div>
+        <div class="range-group">
+          <label>Font Size <span class="range-val" id="fs-val">Auto</span></label>
+          <input type="range" id="font-size" min="30" max="160" value="0" oninput="document.getElementById('fs-val').textContent=this.value==0?'Auto':this.value+'px';livePreview()"/>
+        </div>
+        <div class="range-group">
+          <label>Dark Overlay <span class="range-val" id="ov-val">35%</span></label>
+          <input type="range" id="overlay-opacity" min="0" max="85" value="35" oninput="document.getElementById('ov-val').textContent=this.value+'%';livePreview()"/>
+        </div>
+        <div class="range-group">
+          <label>Vignette <span class="range-val" id="vi-val">60%</span></label>
+          <input type="range" id="vignette" min="0" max="100" value="60" oninput="document.getElementById('vi-val').textContent=this.value+'%';livePreview()"/>
+        </div>
+        <div class="range-group">
+          <label>Desaturate <span class="range-val" id="ds-val">30%</span></label>
+          <input type="range" id="desaturate" min="0" max="100" value="30" oninput="document.getElementById('ds-val').textContent=this.value+'%';livePreview()"/>
         </div>
       </div>
+
     </div>
 
-    <div class="color-row">
-      <div class="color-item"><input type="color" id="text-color" value="#ffffff" oninput="livePreview()"/><span>Text</span></div>
-      <div class="color-item"><input type="color" id="stroke-color" value="#000000" oninput="livePreview()"/><span>Outline</span></div>
-      <div class="color-item"><input type="color" id="bg-color" value="#ff0000" oninput="livePreview()"/><span>Highlight</span></div>
-    </div>
-
-    <div class="range-group">
-      <label>Font Size <span class="range-val" id="fs-val">72px</span></label>
-      <input type="range" id="font-size" min="24" max="120" value="72" oninput="document.getElementById('fs-val').textContent=this.value+'px';livePreview()"/>
-    </div>
-    <div class="range-group">
-      <label>Shadow <span class="range-val" id="sh-val">8</span></label>
-      <input type="range" id="shadow-size" min="0" max="30" value="8" oninput="document.getElementById('sh-val').textContent=this.value;livePreview()"/>
-    </div>
-    <div class="range-group">
-      <label>Dark Overlay <span class="range-val" id="ov-val">30%</span></label>
-      <input type="range" id="overlay-opacity" min="0" max="80" value="30" oninput="document.getElementById('ov-val').textContent=this.value+'%';livePreview()"/>
-    </div>
-  </div>
-
-  <button class="gen-btn" onclick="generateThumbnail()">✦ Generate Thumbnail</button>
-
-  <div id="output-wrap">
-    <div class="card" style="margin-top:20px">
-      <div class="step">Your Thumbnail — 1280×720</div>
-      <canvas id="output-canvas"></canvas>
-      <button class="dl-btn" onclick="downloadThumb()">⬇ Download Thumbnail</button>
+    <!-- Preview col -->
+    <div class="preview-col">
+      <div class="card">
+        <div class="preview-label">Live Preview</div>
+        <canvas id="output-canvas"></canvas>
+        <button class="dl-btn" onclick="downloadThumb()">⬇ Download Thumbnail</button>
+      </div>
     </div>
   </div>
 
@@ -345,17 +324,24 @@ footer a{color:var(--accent);text-decoration:none}
 
 <script>
 let capturedFrame = null;
-let currentPos = 'bot-left';
-let currentPreset = 'youtube';
 let videoReady = false;
+let currentFormat = 'portrait';
+let currentPreset = 'elevexy';
+let pd = null;
+
+const DIMS = {
+  portrait:  { w: 1080, h: 1920 },
+  landscape: { w: 1280, h: 720  },
+  square:    { w: 1080, h: 1080 }
+};
 
 const presets = {
-  youtube:{ textColor:'#ffffff', strokeColor:'#000000', bgColor:'#ff0000', shadow:8,  overlay:30 },
-  fire:   { textColor:'#ffdd00', strokeColor:'#ff4400', bgColor:'#ff6600', shadow:15, overlay:40 },
-  neon:   { textColor:'#00e5ff', strokeColor:'#7c3aed', bgColor:'#00e5ff', shadow:20, overlay:50 },
-  clean:  { textColor:'#ffffff', strokeColor:'#333333', bgColor:'#ffffff', shadow:4,  overlay:20 },
-  horror: { textColor:'#ff0000', strokeColor:'#000000', bgColor:'#8b0000', shadow:12, overlay:60 },
-  gold:   { textColor:'#ffd700', strokeColor:'#8b6914', bgColor:'#ffd700', shadow:10, overlay:35 },
+  elevexy:   { textColor: '#ffffff', accentColor: '#ffffff', overlay: 35, vignette: 65, desaturate: 30, textOpacity: 78, font: 'Anton' },
+  cinematic: { textColor: '#ffffff', accentColor: '#c0a060', overlay: 45, vignette: 75, desaturate: 50, textOpacity: 85, font: 'Anton' },
+  neon:      { textColor: '#00e5ff', accentColor: '#7c3aed', overlay: 55, vignette: 70, desaturate: 20, textOpacity: 90, font: 'Anton' },
+  fire:      { textColor: '#ffdd00', accentColor: '#ff6600', overlay: 40, vignette: 60, desaturate: 10, textOpacity: 90, font: 'Impact' },
+  gold:      { textColor: '#ffd700', accentColor: '#c8960a', overlay: 38, vignette: 55, desaturate: 25, textOpacity: 88, font: 'Anton' },
+  minimal:   { textColor: '#ffffff', accentColor: '#ffffff', overlay: 20, vignette: 30, desaturate: 0,  textOpacity: 95, font: 'Space Grotesk' },
 };
 
 // ── Upload ─────────────────────────────────────────────────────────────────
@@ -363,14 +349,14 @@ const uploadZone = document.getElementById('upload-zone');
 const fileInput  = document.getElementById('video-input');
 const vprev      = document.getElementById('vprev');
 
-uploadZone.addEventListener('click', e => { if(e.target !== fileInput) fileInput.click(); });
-fileInput.addEventListener('change', () => { if(fileInput.files[0]) loadVideoFile(fileInput.files[0]); });
+uploadZone.addEventListener('click', e => { if (e.target !== fileInput) fileInput.click(); });
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadVideoFile(fileInput.files[0]); });
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
 uploadZone.addEventListener('drop', e => {
   e.preventDefault(); uploadZone.classList.remove('drag-over');
   const f = e.dataTransfer.files[0];
-  if(f && f.type.startsWith('video/')) loadVideoFile(f);
+  if (f && f.type.startsWith('video/')) loadVideoFile(f);
   else toast('Please drop a video file!');
 });
 
@@ -383,14 +369,14 @@ function loadVideoFile(file) {
     videoReady = true;
     const dur = vprev.duration || 10;
     const s = document.getElementById('scrubber');
-    s.max = dur; s.step = dur/1000; s.value = dur*0.25;
+    s.max = dur; s.step = dur / 1000; s.value = dur * 0.25;
     vprev.currentTime = dur * 0.25;
     updateTimeDisplay(dur * 0.25);
     document.getElementById('vwrap').style.display = 'block';
     uploadZone.style.display = 'none';
-    toast('Video loaded! Scrub to find your frame ✓', true);
+    toast('Video loaded! Scrub to your frame ✓', true);
   });
-  vprev.addEventListener('error', () => toast('Could not load video. Try MP4 format.'));
+  vprev.addEventListener('error', () => toast('Could not load video. Try MP4.'));
   vprev.load();
 }
 
@@ -398,92 +384,127 @@ function clearVideo() {
   vprev.src = ''; fileInput.value = ''; videoReady = false; capturedFrame = null;
   document.getElementById('vwrap').style.display = 'none';
   uploadZone.style.display = 'block';
-  document.getElementById('frame-card').style.display = 'none';
+  document.getElementById('ai-card').style.display = 'none';
+  document.getElementById('style-card').style.display = 'none';
 }
 
 function onScrub(val) {
-  if(!videoReady) return;
+  if (!videoReady) return;
   vprev.currentTime = parseFloat(val);
   updateTimeDisplay(parseFloat(val));
 }
-function updateTimeDisplay(t) { document.getElementById('time-display').textContent = parseFloat(t).toFixed(1)+'s'; }
+function updateTimeDisplay(t) { document.getElementById('time-display').textContent = parseFloat(t).toFixed(1) + 's'; }
 
 // ── Frame capture ──────────────────────────────────────────────────────────
 function captureFrame() {
-  if(!videoReady || !vprev.src) { toast('Upload a video first!'); return; }
-  if(vprev.readyState < 2) { toast('Video still loading...'); return; }
+  if (!videoReady || !vprev.src) { toast('Upload a video first!'); return; }
+  if (vprev.readyState < 2) { toast('Video still loading...'); return; }
   const hc = document.getElementById('frame-canvas');
   const ctx = hc.getContext('2d');
-  hc.width = vprev.videoWidth || 1280;
-  hc.height = vprev.videoHeight || 720;
+  hc.width = vprev.videoWidth || 1080;
+  hc.height = vprev.videoHeight || 1920;
   ctx.drawImage(vprev, 0, 0, hc.width, hc.height);
   capturedFrame = hc;
-
-  const pc = document.getElementById('frame-preview-canvas');
-  pc.width = hc.width; pc.height = hc.height;
-  pc.getContext('2d').drawImage(hc, 0, 0);
-  document.getElementById('frame-card').style.display = 'block';
-  document.getElementById('frame-card').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('ai-card').style.display = 'block';
+  document.getElementById('style-card').style.display = 'block';
+  document.getElementById('ai-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
   toast('Frame captured ✓', true);
   livePreview();
 }
 
 function autoPickFrame() {
-  if(!videoReady) { toast('Upload a video first!'); return; }
-  const t = (vprev.duration||10) * 0.3;
+  if (!videoReady) { toast('Upload a video first!'); return; }
+  const t = (vprev.duration || 10) * 0.3;
   vprev.currentTime = t;
   document.getElementById('scrubber').value = t;
   updateTimeDisplay(t);
   vprev.onseeked = () => { captureFrame(); vprev.onseeked = null; };
 }
 
-// ── AI Title Generation (calls backend) ───────────────────────────────────
-async function generateTitles() {
-  if(!capturedFrame) { toast('Capture a frame first!'); return; }
+// ── AI Detect + Quote ──────────────────────────────────────────────────────
+async function detectAndQuote() {
+  if (!capturedFrame) { toast('Capture a frame first!'); return; }
 
-  const btn = document.getElementById('ai-btn');
+  const btn = document.getElementById('detect-btn');
   btn.disabled = true; btn.classList.add('loading');
-  document.getElementById('ai-btn-text').textContent = 'AI is thinking…';
+  document.getElementById('detect-btn-text').textContent = 'Analyzing frame…';
+  document.getElementById('name-ask').style.display = 'none';
+  document.getElementById('ai-result').style.display = 'none';
 
   try {
-    const b64 = capturedFrame.toDataURL('image/jpeg', 0.8).split(',')[1];
-
+    const b64 = capturedFrame.toDataURL('image/jpeg', 0.85).split(',')[1];
     const res = await fetch('/api/titles', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageBase64: b64 })
+      body: JSON.stringify({ imageBase64: b64, mode: 'detect' })
     });
-
     const data = await res.json();
-    if(!res.ok) throw new Error(data.error || 'Server error');
+    if (!res.ok) throw new Error(data.error || 'Server error');
 
-    showSuggestions(data.titles);
-    toast('AI titles ready! Pick one ✓', true);
-
-  } catch(err) {
+    if (data.personFound) {
+      showResults(data.person, data.quotes);
+      toast(`Detected: ${data.person} ✓`, true);
+    } else {
+      // Gemini couldn't identify — ask user
+      document.getElementById('name-ask').style.display = 'block';
+      toast('Who is this person? Tell me below 👇');
+    }
+  } catch (err) {
     toast('Error: ' + err.message.slice(0, 60));
-    console.error(err);
   } finally {
     btn.disabled = false; btn.classList.remove('loading');
-    document.getElementById('ai-btn-text').textContent = '✦ Generate 5 Catchy Titles';
+    document.getElementById('detect-btn-text').textContent = '✦ Detect Person & Generate Quotes';
   }
 }
 
-function showSuggestions(titles) {
-  const wrap = document.getElementById('suggestions');
-  wrap.innerHTML = '';
-  titles.forEach(title => {
+async function generateWithName() {
+  const name = document.getElementById('person-name-input').value.trim();
+  if (!name) { toast('Please enter a name!'); return; }
+
+  const b64 = capturedFrame.toDataURL('image/jpeg', 0.85).split(',')[1];
+  const btn = document.getElementById('detect-btn');
+  btn.disabled = true; btn.classList.add('loading');
+  document.getElementById('detect-btn-text').textContent = `Generating quotes for ${name}…`;
+
+  try {
+    const res = await fetch('/api/titles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: b64, mode: 'named', personName: name })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Server error');
+    showResults(name, data.quotes);
+    document.getElementById('name-ask').style.display = 'none';
+    toast(`Quotes for ${name} ready ✓`, true);
+  } catch (err) {
+    toast('Error: ' + err.message.slice(0, 60));
+  } finally {
+    btn.disabled = false; btn.classList.remove('loading');
+    document.getElementById('detect-btn-text').textContent = '✦ Detect Person & Generate Quotes';
+  }
+}
+
+function showResults(person, quotes) {
+  const resultDiv = document.getElementById('ai-result');
+  const personBar = document.getElementById('person-found-bar');
+  personBar.innerHTML = `<span>✓</span> <strong>${person}</strong> — quotes generated`;
+
+  const list = document.getElementById('quotes-list');
+  list.innerHTML = '';
+  quotes.forEach(q => {
     const chip = document.createElement('div');
-    chip.className = 'suggestion-chip';
-    chip.innerHTML = `<span>${title}</span><span class="use-tag">USE →</span>`;
+    chip.className = 'quote-chip';
+    chip.innerHTML = `<span>${q}</span><span class="use-tag">USE →</span>`;
     chip.onclick = () => {
-      document.getElementById('main-text').value = title;
+      document.getElementById('quote-text').value = q;
       livePreview();
-      toast('Title applied! ✓', true);
+      toast('Quote applied ✓', true);
     };
-    wrap.appendChild(chip);
+    list.appendChild(chip);
   });
-  wrap.style.display = 'flex';
+
+  resultDiv.style.display = 'block';
 }
 
 // ── Style controls ─────────────────────────────────────────────────────────
@@ -491,137 +512,184 @@ function selectPreset(el) {
   document.querySelectorAll('.preset-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected'); currentPreset = el.dataset.preset;
   const p = presets[currentPreset];
-  document.getElementById('text-color').value   = p.textColor;
-  document.getElementById('stroke-color').value = p.strokeColor;
-  document.getElementById('bg-color').value     = p.bgColor;
-  document.getElementById('shadow-size').value  = p.shadow;
-  document.getElementById('sh-val').textContent = p.shadow;
+  document.getElementById('text-color').value    = p.textColor;
+  document.getElementById('accent-color').value  = p.accentColor;
   document.getElementById('overlay-opacity').value = p.overlay;
-  document.getElementById('ov-val').textContent = p.overlay+'%';
+  document.getElementById('ov-val').textContent  = p.overlay + '%';
+  document.getElementById('vignette').value      = p.vignette;
+  document.getElementById('vi-val').textContent  = p.vignette + '%';
+  document.getElementById('desaturate').value    = p.desaturate;
+  document.getElementById('ds-val').textContent  = p.desaturate + '%';
+  document.getElementById('text-opacity').value  = p.textOpacity;
+  document.getElementById('to-val').textContent  = p.textOpacity + '%';
+  document.getElementById('font-select').value   = p.font;
   livePreview();
 }
 
-function selectPos(el) {
-  document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected'); currentPos = el.dataset.pos; livePreview();
-}
-
-function addEmoji(e) {
-  const i = document.getElementById('main-text');
-  i.value += e; i.focus(); livePreview();
+function selectFormat(el) {
+  document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected'); currentFormat = el.dataset.fmt; livePreview();
 }
 
 // ── Canvas drawing ─────────────────────────────────────────────────────────
 function drawThumbnail(canvas) {
-  const W=1280, H=720;
-  canvas.width=W; canvas.height=H;
+  const { w, h } = DIMS[currentFormat];
+  canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
 
-  if(capturedFrame) {
-    ctx.drawImage(capturedFrame,0,0,W,H);
-  } else {
-    const g=ctx.createLinearGradient(0,0,W,H);
-    g.addColorStop(0,'#0e1420'); g.addColorStop(1,'#151d2e');
-    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#2a3a55'; ctx.font='bold 26px Space Grotesk';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText('📸 Capture a frame to preview', W/2, H/2);
+  if (!capturedFrame) {
+    // Placeholder
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, '#0e1420'); g.addColorStop(1, '#151d2e');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#2a3a55';
+    ctx.font = `bold ${Math.round(w * 0.025)}px Space Grotesk`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('📸 Capture a frame to preview', w / 2, h / 2);
     return;
   }
 
-  const op = parseInt(document.getElementById('overlay-opacity').value)/100;
-  if(op>0){ ctx.fillStyle=`rgba(0,0,0,${op})`; ctx.fillRect(0,0,W,H); }
+  // 1. Draw frame (cover fill)
+  const scaleX = w / capturedFrame.width;
+  const scaleY = h / capturedFrame.height;
+  const scale  = Math.max(scaleX, scaleY);
+  const dx = (w - capturedFrame.width * scale) / 2;
+  const dy = (h - capturedFrame.height * scale) / 2;
 
-  const mainText = document.getElementById('main-text').value||'';
-  const subText  = document.getElementById('sub-text').value||'';
-  if(!mainText && !subText) return;
-
-  const fontSize  = parseInt(document.getElementById('font-size').value);
-  const fontFace  = document.getElementById('font-select').value;
-  const textColor = document.getElementById('text-color').value;
-  const strokeCol = document.getElementById('stroke-color').value;
-  const bgColor   = document.getElementById('bg-color').value;
-  const shadow    = parseInt(document.getElementById('shadow-size').value);
-
-  const pad=50;
-  let x,y,align;
-  if(currentPos.includes('left'))       {x=pad;   align='left';}
-  else if(currentPos.includes('right')) {x=W-pad; align='right';}
-  else                                  {x=W/2;   align='center';}
-  if(currentPos.startsWith('top'))      y=pad+fontSize;
-  else if(currentPos.startsWith('mid')) y=H/2;
-  else                                  y=H-pad-(subText?fontSize*0.55:0);
-
-  ctx.textAlign=align; ctx.textBaseline='alphabetic';
-
-  if(mainText) {
-    ctx.font=`900 ${fontSize}px "${fontFace}", Arial Black, Impact, sans-serif`;
-    if(['youtube','fire','gold'].includes(currentPreset)){
-      const m=ctx.measureText(mainText), bp=14;
-      let bx = align==='left'?x-bp:align==='right'?x-m.width-bp:x-m.width/2-bp;
-      ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0;
-      ctx.fillStyle=bgColor;
-      rrect(ctx,bx,y-fontSize*0.82,m.width+bp*2,fontSize*1.08,10); ctx.fill();
+  // Desaturate via temp canvas
+  const ds = parseInt(document.getElementById('desaturate').value) / 100;
+  if (ds > 0) {
+    const tmp = document.createElement('canvas');
+    tmp.width = capturedFrame.width; tmp.height = capturedFrame.height;
+    const tc = tmp.getContext('2d');
+    tc.drawImage(capturedFrame, 0, 0);
+    if (ds > 0) {
+      tc.globalCompositeOperation = 'saturation';
+      tc.fillStyle = `rgba(128,128,128,${ds})`;
+      tc.fillRect(0, 0, tmp.width, tmp.height);
+      tc.globalCompositeOperation = 'source-over';
     }
-    setShadow(ctx,shadow);
-    ctx.strokeStyle=strokeCol; ctx.lineWidth=Math.max(2,fontSize*0.06); ctx.lineJoin='round';
-    ctx.strokeText(mainText,x,y);
-    ctx.fillStyle=textColor; ctx.fillText(mainText,x,y);
-    clrShadow(ctx);
+    ctx.drawImage(tmp, dx, dy, capturedFrame.width * scale, capturedFrame.height * scale);
+  } else {
+    ctx.drawImage(capturedFrame, dx, dy, capturedFrame.width * scale, capturedFrame.height * scale);
   }
 
-  if(subText){
-    const ss=Math.max(22,fontSize*0.4);
-    ctx.font=`600 ${ss}px "${fontFace}", Arial, sans-serif`;
-    const sy=y+ss+12;
-    setShadow(ctx,shadow*.7);
-    ctx.strokeStyle=strokeCol; ctx.lineWidth=Math.max(1,ss*0.05);
-    ctx.strokeText(subText,x,sy);
-    ctx.fillStyle=textColor; ctx.fillText(subText,x,sy);
-    clrShadow(ctx);
+  // 2. Dark overlay
+  const ov = parseInt(document.getElementById('overlay-opacity').value) / 100;
+  if (ov > 0) {
+    ctx.fillStyle = `rgba(0,0,0,${ov})`;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  // 3. Vignette (radial gradient)
+  const vi = parseInt(document.getElementById('vignette').value) / 100;
+  if (vi > 0) {
+    const vg = ctx.createRadialGradient(w/2, h/2, h*0.2, w/2, h/2, h*0.85);
+    vg.addColorStop(0, 'rgba(0,0,0,0)');
+    vg.addColorStop(1, `rgba(0,0,0,${vi * 0.9})`);
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  // 4. Bottom gradient for text readability
+  const bg = ctx.createLinearGradient(0, h * 0.55, 0, h);
+  bg.addColorStop(0, 'rgba(0,0,0,0)');
+  bg.addColorStop(1, 'rgba(0,0,0,0.75)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // 5. Text
+  const rawText = document.getElementById('quote-text').value.trim();
+  if (!rawText) return;
+
+  const textColor   = document.getElementById('text-color').value;
+  const textOpacity = parseInt(document.getElementById('text-opacity').value) / 100;
+  const fontFace    = document.getElementById('font-select').value;
+  const manualSize  = parseInt(document.getElementById('font-size').value);
+
+  // Convert hex to rgba
+  const r = parseInt(textColor.slice(1,3),16);
+  const g2 = parseInt(textColor.slice(3,5),16);
+  const b2 = parseInt(textColor.slice(5,7),16);
+  const rgba = `rgba(${r},${g2},${b2},${textOpacity})`;
+
+  // Split text into words, wrap into lines of ~12 chars each
+  const words = rawText.toUpperCase().split(/\s+/);
+  const lines = [];
+  let cur = '';
+  words.forEach(word => {
+    const test = cur ? cur + ' ' + word : word;
+    if (test.length > 14 && cur) { lines.push(cur); cur = word; }
+    else cur = test;
+  });
+  if (cur) lines.push(cur);
+
+  // Auto font size based on format and line count
+  let fontSize = manualSize > 0 ? manualSize : Math.round(w * (currentFormat === 'portrait' ? 0.11 : 0.075));
+  if (lines.length > 3) fontSize = Math.round(fontSize * 0.85);
+
+  ctx.font = `900 ${fontSize}px "${fontFace}", Anton, Impact, Arial Black, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+
+  // Letter spacing workaround — draw char by char
+  const letterSpacing = fontSize * 0.04;
+  const padX = w * 0.06;
+  const lineH = fontSize * 1.08;
+  const totalH = lines.length * lineH;
+  let startY = h - (w * 0.08) - totalH + fontSize;
+
+  // Elevexy: NO outline, NO stroke, NO shadow — just clean bold semi-transparent text
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+
+  lines.forEach((line, i) => {
+    const y = startY + i * lineH;
+    ctx.fillStyle = rgba;
+    drawTrackedText(ctx, line, padX, y, letterSpacing);
+  });
+}
+
+function drawTrackedText(ctx, text, x, y, spacing) {
+  let cx = x;
+  for (const ch of text) {
+    ctx.fillText(ch, cx, y);
+    cx += ctx.measureText(ch).width + spacing;
   }
 }
 
-function setShadow(ctx,s){if(s<=0)return;ctx.shadowColor='rgba(0,0,0,0.95)';ctx.shadowBlur=s;ctx.shadowOffsetX=s*.4;ctx.shadowOffsetY=s*.4;}
-function clrShadow(ctx){ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetX=0;ctx.shadowOffsetY=0;}
-function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
-
-let pd=null;
-function livePreview(){
-  clearTimeout(pd);
-  pd=setTimeout(()=>{
-    const c=document.getElementById('output-canvas');
+let previewTimer = null;
+function livePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
+    const c = document.getElementById('output-canvas');
     drawThumbnail(c);
-    document.getElementById('output-wrap').style.display='block';
-  },80);
+  }, 60);
 }
 
-function generateThumbnail(){
-  if(!capturedFrame){toast('Capture a frame first!');return;}
-  const c=document.getElementById('output-canvas');
-  drawThumbnail(c);
-  document.getElementById('output-wrap').style.display='block';
-  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-  toast('Thumbnail ready ✓',true);
+function downloadThumb() {
+  const c = document.getElementById('output-canvas');
+  if (!c.width || !capturedFrame) { toast('Capture a frame first!'); return; }
+  drawThumbnail(c); // Final high-res draw
+  const a = document.createElement('a');
+  a.href = c.toDataURL('image/jpeg', 0.96);
+  const fmt = currentFormat === 'portrait' ? '1080x1920' : currentFormat === 'landscape' ? '1280x720' : '1080x1080';
+  a.download = `thumbnail-${fmt}.jpg`;
+  a.click();
+  toast('Downloading ✓', true);
 }
 
-function downloadThumb(){
-  const c=document.getElementById('output-canvas');
-  if(!c.width){toast('Generate a thumbnail first!');return;}
-  const a=document.createElement('a');
-  a.href=c.toDataURL('image/jpeg',0.95);
-  a.download='thumbnail.jpg'; a.click();
-  toast('Downloading…',true);
-}
-
-function toast(msg,success=false){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.style.background=success?'var(--success)':'var(--danger)';
-  t.style.color=success?'#000':'#fff';
+function toast(msg, success = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = success ? 'var(--success)' : 'var(--danger)';
+  t.style.color = success ? '#000' : '#fff';
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3200);
+  setTimeout(() => t.classList.remove('show'), 3200);
 }
+
+// Init preview
+livePreview();
 </script>
 </body>
 </html>
