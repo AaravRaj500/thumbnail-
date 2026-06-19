@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/titles.js": {
-      "maxDuration": 15
+      "maxDuration": 20
     }
   }
 }
