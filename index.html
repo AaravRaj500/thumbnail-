@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ThumbAI — Elevexy Style</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,146 +15,138 @@
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;opacity:.2}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;opacity:.18}
 .orb-1{width:500px;height:500px;background:#00e5ff18;top:-150px;left:-150px;animation:d1 14s ease-in-out infinite}
 .orb-2{width:400px;height:400px;background:#7c3aed18;bottom:-100px;right:-100px;animation:d2 18s ease-in-out infinite}
 @keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,35px)}}
 @keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-35px,-50px)}}
-
-.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 100px}
-
-header{padding:48px 0 52px;text-align:center}
-.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--success);letter-spacing:.1em;text-transform:uppercase;margin-bottom:22px}
-h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.06;background:linear-gradient(135deg,#fff 20%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
-.sub{color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto;line-height:1.65}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 100px}
+header{padding:44px 0 48px;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.22);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--success);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+h1{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.06;background:linear-gradient(135deg,#fff 20%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.sub{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto;line-height:1.65}
 .sub strong{color:var(--accent)}
-
-.how-strip{display:flex;margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.how-step{flex:1;padding:16px 10px;text-align:center;border-right:1px solid var(--border)}
-.how-step:last-child{border-right:none}
-.how-num{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:.12em;display:block;margin-bottom:4px}
-.how-icon{font-size:1.4rem;display:block;margin-bottom:3px}
-.how-text{font-size:11px;color:var(--muted);line-height:1.4}
-@media(max-width:500px){.how-strip{flex-direction:column}.how-step{border-right:none;border-bottom:1px solid var(--border)}.how-step:last-child{border-bottom:none}}
-
-/* Main layout: side by side on desktop */
-.main-layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
-@media(max-width:760px){.main-layout{grid-template-columns:1fr}}
-
-.controls-col{}
-.preview-col{position:sticky;top:20px}
-
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:16px}
-.step-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.step-label::before{content:'';width:20px;height:1px;background:var(--accent);display:inline-block}
-
-/* Upload */
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg)}
+.main-layout{display:grid;grid-template-columns:1fr 400px;gap:20px;align-items:start}
+@media(max-width:800px){.main-layout{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:16px}
+.step-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step-label::before{content:'';width:18px;height:1px;background:var(--accent);display:inline-block}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg)}
 .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--glow)}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.u-icon{font-size:2.6rem;display:block;margin-bottom:10px;pointer-events:none}
-.u-title{font-size:.95rem;font-weight:600;margin-bottom:5px;pointer-events:none}
+.u-icon{font-size:2.4rem;display:block;margin-bottom:8px;pointer-events:none}
+.u-title{font-size:.9rem;font-weight:600;margin-bottom:4px;pointer-events:none}
 .u-sub{font-size:12px;color:var(--muted);pointer-events:none}
 .u-sub em{color:var(--accent);font-style:normal}
-
-#vwrap{display:none;margin-top:16px}
-video{width:100%;max-height:260px;border-radius:10px;object-fit:contain;background:#000;border:1px solid var(--border);display:block}
+#vwrap{display:none;margin-top:14px}
+video{width:100%;max-height:240px;border-radius:10px;object-fit:contain;background:#000;border:1px solid var(--border);display:block}
 .vmeta{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted)}
 .vmeta strong{color:var(--text)}
-.clr-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:16px;transition:color .2s}
+.clr-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:15px;transition:color .2s}
 .clr-btn:hover{color:var(--danger)}
-
-.scrub-wrap{margin-top:14px}
-.scrub-label{font-size:12px;color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between}
+.scrub-wrap{margin-top:12px}
+.scrub-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
 .scrub-label span{color:var(--accent);font-family:var(--mono);font-size:11px}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:3px;border-radius:100px;background:var(--border);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(0,229,255,.5)}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
-
-.frame-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.btn-sm{padding:9px 16px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 6px rgba(0,229,255,.5)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.frame-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn-sm{padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
 .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
 .btn-sm.primary{background:var(--accent);color:#000;border-color:var(--accent)}
 .btn-sm.primary:hover{opacity:.85}
+.btn-sm.danger{background:var(--danger);color:#fff;border-color:var(--danger)}
+.btn-sm.active{border-color:#ff4d6d;color:#ff4d6d;background:rgba(255,77,109,0.1)}
 
-/* Person detection */
-.detect-box{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(0,229,255,0.04));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:18px;margin-bottom:14px}
-.detect-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.detect-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:6px}
-.detect-label::before{content:'✦';font-size:12px}
-.detect-badge{font-size:10px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);color:var(--success);padding:3px 10px;border-radius:100px;font-family:var(--mono)}
-
-.detect-btn{width:100%;padding:12px;border-radius:9px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.detect-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
-.detect-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
-.spinner-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
-.detect-btn.loading .spinner-sm{display:block}
+/* AI box */
+.ai-box{background:linear-gradient(135deg,rgba(124,58,237,0.07),rgba(0,229,255,0.03));border:1px solid rgba(124,58,237,0.28);border-radius:12px;padding:16px;margin-bottom:14px}
+.ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.ai-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:6px}
+.ai-badge{font-size:10px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.22);color:var(--success);padding:3px 9px;border-radius:100px;font-family:var(--mono)}
+.ai-btn{width:100%;padding:11px;border-radius:9px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.ai-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.ai-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.spinner-sm{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.ai-btn.loading .spinner-sm{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Name ask box */
-#name-ask{display:none;margin-top:12px;padding:14px;background:var(--surface2);border-radius:10px;border:1px solid rgba(255,200,0,.2)}
-.name-ask-title{font-size:12px;color:#fbbf24;margin-bottom:10px;font-weight:600}
-.name-ask-title span{font-size:16px;margin-right:6px}
-.name-row{display:flex;gap:8px}
-.name-row input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none}
+#name-ask{display:none;margin-top:10px;padding:12px;background:var(--surface2);border-radius:9px;border:1px solid rgba(255,200,0,.18)}
+.name-ask-title{font-size:12px;color:#fbbf24;margin-bottom:8px;font-weight:600}
+.name-row{display:flex;gap:7px}
+.name-row input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:9px 12px;outline:none}
 .name-row input:focus{border-color:var(--accent)}
-.name-row button{padding:10px 16px;border-radius:8px;background:var(--accent);border:none;color:#000;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
-
-/* AI result */
-#ai-result{display:none;margin-top:12px}
-.person-found{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:8px;margin-bottom:10px;font-size:13px}
+.name-row button{padding:9px 14px;border-radius:7px;background:var(--accent);border:none;color:#000;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
+#ai-result{display:none;margin-top:10px}
+.person-found{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,229,160,.07);border:1px solid rgba(0,229,160,.18);border-radius:7px;margin-bottom:8px;font-size:12px}
 .person-found strong{color:var(--success)}
-.quotes-list{display:flex;flex-direction:column;gap:7px}
-.quote-chip{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:11px 14px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;gap:10px;line-height:1.4}
+.quotes-list{display:flex;flex-direction:column;gap:6px}
+.quote-chip{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;gap:8px;line-height:1.35}
 .quote-chip:hover{border-color:var(--accent);background:var(--glow);transform:translateX(3px)}
 .use-tag{font-size:10px;color:var(--accent);font-weight:700;font-family:var(--mono);white-space:nowrap;opacity:.6}
 .quote-chip:hover .use-tag{opacity:1}
-
-/* Text controls */
-label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:500}
-input[type=text],textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;transition:border-color .2s;margin-bottom:12px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+input[type=text],textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 13px;outline:none;transition:border-color .2s;margin-bottom:11px}
 input[type=text]:focus,textarea:focus{border-color:var(--accent)}
 input[type=text]::placeholder,textarea::placeholder{color:var(--muted)}
-textarea{resize:vertical;min-height:70px}
-
-select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;cursor:pointer;margin-bottom:12px}
+textarea{resize:vertical;min-height:65px}
+select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 13px;outline:none;cursor:pointer;margin-bottom:11px}
 select:focus{border-color:var(--accent)}
 option{background:var(--surface)}
-
-/* Style presets */
-.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-.preset-opt{border:1px solid var(--border);border-radius:9px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
+.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.preset-opt{border:1px solid var(--border);border-radius:8px;padding:9px 5px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
 .preset-opt:hover{border-color:var(--accent);background:var(--glow)}
 .preset-opt.selected{border-color:var(--accent);background:var(--glow);box-shadow:0 0 0 1px var(--accent)}
-.p-icon{font-size:1.2rem;display:block;margin-bottom:4px}
+.p-icon{font-size:1.1rem;display:block;margin-bottom:3px}
 .p-name{font-size:11px;font-weight:600;color:var(--text);display:block}
-
-.range-group{margin-bottom:12px}
-.range-group label{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.range-val{color:var(--accent);font-family:var(--mono);font-size:11px}
-input[type=color]{width:36px;height:30px;border:1px solid var(--border);border-radius:7px;cursor:pointer;background:var(--bg);padding:2px}
-.color-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.color-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
-
-/* Format toggle */
-.format-toggle{display:flex;gap:8px;margin-bottom:14px}
-.fmt-btn{flex:1;padding:9px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.format-toggle{display:flex;gap:6px;margin-bottom:12px}
+.fmt-btn{flex:1;padding:8px 4px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
 .fmt-btn.selected{border-color:var(--accent);color:var(--accent);background:var(--glow)}
+.range-group{margin-bottom:10px}
+.range-group label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.range-val{color:var(--accent);font-family:var(--mono);font-size:11px}
+input[type=color]{width:34px;height:28px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg);padding:2px}
+.color-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px}
+.color-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.layer-toggle{display:flex;gap:6px;margin-bottom:12px}
+.layer-btn{flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.layer-btn.selected{border-color:var(--accent2);color:#a78bfa;background:rgba(124,58,237,0.1)}
+.layer-btn:disabled{opacity:.3;cursor:not-allowed}
+.cutout-btn{width:100%;padding:11px;border-radius:9px;background:linear-gradient(135deg,#0f766e,#0891b2);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:11px}
+.cutout-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.cutout-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.cutout-status{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;font-family:var(--mono)}
+.cutout-status.done{color:var(--success)}
+.cutout-status.err{color:var(--danger)}
 
-/* Preview column */
-.preview-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center}
-#output-canvas{width:100%;border-radius:12px;border:1px solid var(--border);display:block;background:#000}
-.dl-btn{width:100%;padding:13px;border:1px solid var(--accent);border-radius:10px;background:transparent;color:var(--accent);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+/* Eraser tool */
+.eraser-box{background:linear-gradient(135deg,rgba(255,77,109,0.07),rgba(255,100,0,0.03));border:1px solid rgba(255,77,109,0.25);border-radius:12px;padding:16px;margin-bottom:14px}
+.eraser-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.eraser-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#fb923c;display:flex;align-items:center;gap:6px}
+.eraser-badge{font-size:10px;background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.25);color:#fb923c;padding:3px 9px;border-radius:100px;font-family:var(--mono)}
+.eraser-canvas-wrap{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#000;margin-bottom:10px}
+#eraser-canvas{width:100%;display:block;cursor:crosshair}
+.eraser-tools{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.brush-size-wrap{display:flex;align-items:center;gap:8px;flex:1}
+.brush-size-wrap label{margin:0;white-space:nowrap;font-size:11px}
+.erase-actions{display:flex;gap:8px;flex-wrap:wrap}
+.erase-btn{flex:1;padding:10px;border-radius:9px;background:linear-gradient(135deg,#dc2626,#b91c1c);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.erase-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.erase-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.erase-status{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;font-family:var(--mono);min-height:18px}
+.erase-status.done{color:var(--success)}
+.erase-status.err{color:var(--danger)}
+
+/* Preview */
+.preview-col{position:sticky;top:20px}
+.preview-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center}
+.canvas-wrap{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#000;cursor:move;user-select:none;touch-action:none}
+#output-canvas{width:100%;display:block}
+.drag-hint{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);font-size:10px;padding:4px 10px;border-radius:100px;font-family:var(--mono);pointer-events:none;transition:opacity .4s;white-space:nowrap}
+.dl-btn{width:100%;padding:12px;border:1px solid var(--accent);border-radius:9px;background:transparent;color:var(--accent);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px}
 .dl-btn:hover{background:var(--glow)}
-.gen-btn{width:100%;padding:17px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--accent) 0%,#0096b7 100%);color:#000;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
-.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,229,255,.25)}
-
 footer{text-align:center;padding-top:40px;font-size:12px;color:var(--muted)}
 footer a{color:var(--accent);text-decoration:none}
-
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:11px 22px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
-
 #frame-canvas{display:none}
 </style>
 </head>
@@ -165,531 +157,680 @@ footer a{color:var(--accent);text-decoration:none}
 
 <div class="wrap">
   <header>
-    <div class="badge">✦ Elevexy Style · AI-Powered · Free</div>
+    <div class="badge">&#10022; Elevexy Style &middot; Drag Text &middot; Object Eraser &middot; Cutout</div>
     <h1>Thumbnails that<br>stop the scroll</h1>
-    <p class="sub">Extract a frame, let <strong>Gemini AI</strong> detect the person & write the perfect quote — styled exactly like Elevexy.</p>
+    <p class="sub">Capture frame &middot; <strong>AI detects &amp; quotes</strong> &middot; erase objects &middot; drag text &middot; cutout underlay</p>
   </header>
-
-  <div class="how-strip">
-    <div class="how-step"><span class="how-num">01</span><span class="how-icon">🎬</span><div class="how-text">Upload video</div></div>
-    <div class="how-step"><span class="how-num">02</span><span class="how-icon">📸</span><div class="how-text">Capture frame</div></div>
-    <div class="how-step"><span class="how-num">03</span><span class="how-icon">✦</span><div class="how-text">AI detects & quotes</div></div>
-    <div class="how-step"><span class="how-num">04</span><span class="how-icon">⬇</span><div class="how-text">Download</div></div>
-  </div>
 
   <div class="main-layout">
     <div class="controls-col">
 
       <!-- Step 1: Upload -->
       <div class="card">
-        <div class="step-label">01 — Upload Video</div>
+        <div class="step-label">01 &mdash; Upload Video</div>
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="video-input" accept="video/*"/>
-          <span class="u-icon">🎬</span>
-          <div class="u-title">Drop your video here or click to browse</div>
-          <div class="u-sub">MP4, MOV, AVI, WebM — <em>never leaves your device</em></div>
+          <span class="u-icon">&#127916;</span>
+          <div class="u-title">Drop video here or click to browse</div>
+          <div class="u-sub">MP4, MOV, WebM &mdash; <em>never leaves your device</em></div>
         </div>
         <div id="vwrap">
           <video id="vprev" playsinline muted></video>
-          <div class="vmeta">
-            <span>🎞</span>
-            <strong id="vname">video.mp4</strong>
-            <button class="clr-btn" onclick="clearVideo()">✕</button>
-          </div>
+          <div class="vmeta"><span>&#127902;</span><strong id="vname">video.mp4</strong><button class="clr-btn" onclick="clearVideo()">&#x2715;</button></div>
           <div class="scrub-wrap">
-            <div class="scrub-label">
-              <span>Scrub to find the perfect frame</span>
-              <span id="time-display">0.0s</span>
-            </div>
+            <div class="scrub-label"><span>Scrub to find your frame</span><span id="time-display">0.0s</span></div>
             <input type="range" id="scrubber" min="0" max="100" value="25" step="0.01" oninput="onScrub(this.value)"/>
           </div>
           <div class="frame-actions">
-            <button class="btn-sm primary" onclick="captureFrame()">📸 Capture Frame</button>
-            <button class="btn-sm" onclick="autoPickFrame()">🎯 Auto Pick</button>
+            <button class="btn-sm primary" onclick="captureFrame()">&#128247; Capture Frame</button>
+            <button class="btn-sm" onclick="autoPickFrame()">&#127919; Auto Pick</button>
           </div>
         </div>
       </div>
 
-      <!-- Step 2: AI Detect + Quote -->
-      <div class="card" id="ai-card" style="display:none">
-        <div class="step-label">02 — AI Detect & Quote</div>
-
-        <div class="detect-box">
-          <div class="detect-header">
-            <div class="detect-label">Gemini Vision</div>
-            <span class="detect-badge">2.5 Flash</span>
+      <!-- Step 2: Object Eraser -->
+      <div class="card" id="eraser-card" style="display:none">
+        <div class="step-label">02 &mdash; Object Eraser</div>
+        <div class="eraser-box">
+          <div class="eraser-header">
+            <div class="eraser-label">&#9998; Samsung-style Object Eraser</div>
+            <span class="eraser-badge">AI Fill</span>
           </div>
-          <button class="detect-btn" id="detect-btn" onclick="detectAndQuote()">
-            <div class="spinner-sm"></div>
-            <span id="detect-btn-text">✦ Detect Person & Generate Quotes</span>
-          </button>
-
-          <!-- Ask name fallback -->
-          <div id="name-ask">
-            <div class="name-ask-title"><span>🤔</span>Gemini couldn't identify this person. Who are they?</div>
-            <div class="name-row">
-              <input type="text" id="person-name-input" placeholder="e.g. Elon Musk, Virat Kohli..."/>
-              <button onclick="generateWithName()">Generate</button>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">Paint over anything to remove it. AI fills the background naturally.</p>
+          <div class="eraser-canvas-wrap">
+            <canvas id="eraser-canvas"></canvas>
+          </div>
+          <div class="eraser-tools">
+            <div class="brush-size-wrap">
+              <label>Brush</label>
+              <input type="range" id="brush-size" min="5" max="80" value="28" style="margin:0"/>
+              <span style="font-family:var(--mono);font-size:11px;color:var(--accent);min-width:28px" id="brush-val">28</span>
             </div>
           </div>
+          <div class="erase-actions">
+            <button class="btn-sm" onclick="clearMask()" style="flex:0 0 auto">&#8635; Clear</button>
+            <button class="erase-btn" id="erase-btn" onclick="doErase()">
+              <div class="spinner-sm" id="erase-spin" style="display:none"></div>
+              <span id="erase-btn-text">&#9986; Erase Selected</span>
+            </button>
+          </div>
+          <div class="erase-status" id="erase-status">Paint over objects you want removed</div>
+        </div>
+      </div>
 
-          <!-- Results -->
+      <!-- Step 3: AI Quote -->
+      <div class="card" id="ai-card" style="display:none">
+        <div class="step-label">03 &mdash; AI Detect &amp; Quote</div>
+        <div class="ai-box">
+          <div class="ai-header">
+            <div class="ai-label">Gemini Vision</div>
+            <span class="ai-badge">2.5 Flash</span>
+          </div>
+          <button class="ai-btn" id="detect-btn" onclick="detectAndQuote()">
+            <div class="spinner-sm"></div>
+            <span id="detect-btn-text">&#10022; Detect Person &amp; Generate Quotes</span>
+          </button>
+          <div id="name-ask">
+            <div class="name-ask-title">&#129300; Couldn't identify &mdash; who is this?</div>
+            <div class="name-row">
+              <input type="text" id="person-name-input" placeholder="e.g. Virat Kohli, Elon Musk..."/>
+              <button onclick="generateWithName()">Go</button>
+            </div>
+          </div>
           <div id="ai-result">
             <div class="person-found" id="person-found-bar"></div>
             <div class="quotes-list" id="quotes-list"></div>
           </div>
         </div>
+        <label>Quote / Title <span style="color:var(--muted);font-weight:400">(drag on preview to reposition)</span></label>
+        <textarea id="quote-text" placeholder="THE HARDER THING IS THE RIGHT THING" oninput="redraw()" rows="3"></textarea>
+      </div>
 
-        <div>
-          <label>Quote / Title <span style="color:var(--muted);font-weight:400">(edit freely)</span></label>
-          <textarea id="quote-text" placeholder="e.g. THE HARDER THING IS THE RIGHT THING" oninput="livePreview()" rows="3"></textarea>
+      <!-- Step 4: Cutout -->
+      <div class="card" id="cutout-card" style="display:none">
+        <div class="step-label">04 &mdash; Subject Cutout</div>
+        <button class="cutout-btn" id="cutout-btn" onclick="doCutout()">
+          <div class="spinner-sm" id="cutout-spin" style="display:none"></div>
+          <span id="cutout-btn-text">&#9986; Cut Out Subject (Instagram Style)</span>
+        </button>
+        <div class="cutout-status" id="cutout-status">Cuts the person out so text can go behind them</div>
+        <label>Text Layer</label>
+        <div class="layer-toggle">
+          <button class="layer-btn selected" id="layer-overlay" onclick="setLayer('overlay')">&#11014; Overlay &mdash; text in front</button>
+          <button class="layer-btn" id="layer-underlay" onclick="setLayer('underlay')" disabled>&#11015; Underlay &mdash; text behind</button>
         </div>
       </div>
 
-      <!-- Step 3: Style -->
+      <!-- Step 5: Style -->
       <div class="card" id="style-card" style="display:none">
-        <div class="step-label">03 — Style</div>
-
-        <label style="margin-bottom:8px">Format</label>
+        <div class="step-label">05 &mdash; Style</div>
+        <label style="margin-bottom:7px">Format</label>
         <div class="format-toggle">
-          <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait (Elevexy)</button>
+          <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait</button>
           <button class="fmt-btn" data-fmt="landscape" onclick="selectFormat(this)">16:9 YouTube</button>
           <button class="fmt-btn" data-fmt="square" onclick="selectFormat(this)">1:1 Square</button>
         </div>
-
-        <label style="margin-bottom:8px">Preset</label>
+        <label style="margin-bottom:7px">Preset</label>
         <div class="preset-grid">
-          <div class="preset-opt selected" data-preset="elevexy" onclick="selectPreset(this)"><span class="p-icon">🖤</span><span class="p-name">Elevexy</span></div>
-          <div class="preset-opt" data-preset="cinematic" onclick="selectPreset(this)"><span class="p-icon">🎬</span><span class="p-name">Cinematic</span></div>
-          <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">⚡</span><span class="p-name">Neon</span></div>
-          <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">🔥</span><span class="p-name">Fire</span></div>
-          <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">👑</span><span class="p-name">Gold</span></div>
-          <div class="preset-opt" data-preset="minimal" onclick="selectPreset(this)"><span class="p-icon">✨</span><span class="p-name">Minimal</span></div>
+          <div class="preset-opt selected" data-preset="elevexy" onclick="selectPreset(this)"><span class="p-icon">&#128420;</span><span class="p-name">Elevexy</span></div>
+          <div class="preset-opt" data-preset="cinematic" onclick="selectPreset(this)"><span class="p-icon">&#127902;</span><span class="p-name">Cinematic</span></div>
+          <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">&#9889;</span><span class="p-name">Neon</span></div>
+          <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">&#128293;</span><span class="p-name">Fire</span></div>
+          <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">&#128081;</span><span class="p-name">Gold</span></div>
+          <div class="preset-opt" data-preset="minimal" onclick="selectPreset(this)"><span class="p-icon">&#10024;</span><span class="p-name">Minimal</span></div>
         </div>
-
         <label>Font</label>
-        <select id="font-select" onchange="livePreview()">
-          <option value="Anton">Anton (Elevexy Style)</option>
-          <option value="Impact">Impact (Classic Bold)</option>
-          <option value="Space Grotesk">Space Grotesk (Modern)</option>
+        <select id="font-select" onchange="redraw()">
+          <option value="Anton">Anton (Elevexy)</option>
+          <option value="Impact">Impact (Classic)</option>
+          <option value="Space Grotesk">Space Grotesk</option>
           <option value="Arial Black">Arial Black</option>
-          <option value="Georgia">Georgia (Classic)</option>
+          <option value="Georgia">Georgia</option>
         </select>
-
         <div class="color-row">
-          <div class="color-item"><input type="color" id="text-color" value="#ffffff" oninput="livePreview()"/><span>Text</span></div>
-          <div class="color-item"><input type="color" id="accent-color" value="#00e5ff" oninput="livePreview()"/><span>Accent</span></div>
+          <div class="color-item"><input type="color" id="text-color" value="#ffffff" oninput="redraw()"/><span>Text</span></div>
         </div>
-
         <div class="range-group">
           <label>Text Opacity <span class="range-val" id="to-val">80%</span></label>
-          <input type="range" id="text-opacity" min="20" max="100" value="80" oninput="document.getElementById('to-val').textContent=this.value+'%';livePreview()"/>
+          <input type="range" id="text-opacity" min="20" max="100" value="80" oninput="document.getElementById('to-val').textContent=this.value+'%';redraw()"/>
         </div>
         <div class="range-group">
           <label>Font Size <span class="range-val" id="fs-val">Auto</span></label>
-          <input type="range" id="font-size" min="30" max="160" value="0" oninput="document.getElementById('fs-val').textContent=this.value==0?'Auto':this.value+'px';livePreview()"/>
+          <input type="range" id="font-size" min="0" max="200" value="0" oninput="document.getElementById('fs-val').textContent=this.value==0?'Auto':this.value+'px';redraw()"/>
+        </div>
+        <div class="range-group">
+          <label>Letter Spacing <span class="range-val" id="ls-val">4%</span></label>
+          <input type="range" id="letter-spacing" min="0" max="20" value="4" oninput="document.getElementById('ls-val').textContent=this.value+'%';redraw()"/>
         </div>
         <div class="range-group">
           <label>Dark Overlay <span class="range-val" id="ov-val">35%</span></label>
-          <input type="range" id="overlay-opacity" min="0" max="85" value="35" oninput="document.getElementById('ov-val').textContent=this.value+'%';livePreview()"/>
+          <input type="range" id="overlay-opacity" min="0" max="85" value="35" oninput="document.getElementById('ov-val').textContent=this.value+'%';redraw()"/>
         </div>
         <div class="range-group">
           <label>Vignette <span class="range-val" id="vi-val">60%</span></label>
-          <input type="range" id="vignette" min="0" max="100" value="60" oninput="document.getElementById('vi-val').textContent=this.value+'%';livePreview()"/>
+          <input type="range" id="vignette" min="0" max="100" value="60" oninput="document.getElementById('vi-val').textContent=this.value+'%';redraw()"/>
         </div>
         <div class="range-group">
           <label>Desaturate <span class="range-val" id="ds-val">30%</span></label>
-          <input type="range" id="desaturate" min="0" max="100" value="30" oninput="document.getElementById('ds-val').textContent=this.value+'%';livePreview()"/>
+          <input type="range" id="desaturate" min="0" max="100" value="30" oninput="document.getElementById('ds-val').textContent=this.value+'%';redraw()"/>
         </div>
       </div>
 
-    </div>
+    </div><!-- /controls-col -->
 
-    <!-- Preview col -->
+    <!-- Preview -->
     <div class="preview-col">
       <div class="card">
-        <div class="preview-label">Live Preview</div>
-        <canvas id="output-canvas"></canvas>
-        <button class="dl-btn" onclick="downloadThumb()">⬇ Download Thumbnail</button>
+        <div class="preview-label">Live Preview &mdash; drag text to reposition</div>
+        <div class="canvas-wrap" id="canvas-wrap">
+          <canvas id="output-canvas"></canvas>
+          <div class="drag-hint" id="drag-hint">&#10022; Drag text to move it</div>
+        </div>
+        <button class="dl-btn" onclick="downloadThumb()">&#11015; Download Thumbnail</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    <p>Made with ✦ by <a href="https://github.com/aaravraj500" target="_blank">Arav</a> · ThumbAI</p>
-  </footer>
+  <footer><p>Made with &#10022; by <a href="https://github.com/aaravraj500" target="_blank">Arav</a> &middot; ThumbAI</p></footer>
 </div>
-
 <div id="toast"></div>
 
 <script>
-let capturedFrame = null;
-let videoReady = false;
-let currentFormat = 'portrait';
-let currentPreset = 'elevexy';
-let pd = null;
+// ── State ──────────────────────────────────────────────────────────────────
+var capturedFrame=null, cutoutImage=null;
+var currentFormat='portrait', currentPreset='elevexy', textLayer='overlay', videoReady=false;
+var textPos={x:0.06,y:0.82}, isDragging=false, dragStart={mx:0,my:0,tx:0,ty:0}, hintHidden=false;
 
-const DIMS = {
-  portrait:  { w: 1080, h: 1920 },
-  landscape: { w: 1280, h: 720  },
-  square:    { w: 1080, h: 1080 }
-};
+// Eraser state
+var eraserCanvas=null, eraserCtx=null, maskCanvas=null, maskCtx=null;
+var isPainting=false, brushSize=28, hasMask=false;
 
-const presets = {
-  elevexy:   { textColor: '#ffffff', accentColor: '#ffffff', overlay: 35, vignette: 65, desaturate: 30, textOpacity: 78, font: 'Anton' },
-  cinematic: { textColor: '#ffffff', accentColor: '#c0a060', overlay: 45, vignette: 75, desaturate: 50, textOpacity: 85, font: 'Anton' },
-  neon:      { textColor: '#00e5ff', accentColor: '#7c3aed', overlay: 55, vignette: 70, desaturate: 20, textOpacity: 90, font: 'Anton' },
-  fire:      { textColor: '#ffdd00', accentColor: '#ff6600', overlay: 40, vignette: 60, desaturate: 10, textOpacity: 90, font: 'Impact' },
-  gold:      { textColor: '#ffd700', accentColor: '#c8960a', overlay: 38, vignette: 55, desaturate: 25, textOpacity: 88, font: 'Anton' },
-  minimal:   { textColor: '#ffffff', accentColor: '#ffffff', overlay: 20, vignette: 30, desaturate: 0,  textOpacity: 95, font: 'Space Grotesk' },
+var DIMS={portrait:{w:1080,h:1920},landscape:{w:1280,h:720},square:{w:1080,h:1080}};
+var presets={
+  elevexy:  {textColor:'#ffffff',overlay:35,vignette:65,desaturate:30,textOpacity:78,font:'Anton',ls:4},
+  cinematic:{textColor:'#ffffff',overlay:45,vignette:75,desaturate:50,textOpacity:85,font:'Anton',ls:3},
+  neon:     {textColor:'#00e5ff',overlay:55,vignette:70,desaturate:20,textOpacity:90,font:'Anton',ls:5},
+  fire:     {textColor:'#ffdd00',overlay:40,vignette:60,desaturate:10,textOpacity:90,font:'Impact',ls:3},
+  gold:     {textColor:'#ffd700',overlay:38,vignette:55,desaturate:25,textOpacity:88,font:'Anton',ls:4},
+  minimal:  {textColor:'#ffffff',overlay:20,vignette:30,desaturate:0, textOpacity:95,font:'Space Grotesk',ls:2}
 };
 
 // ── Upload ─────────────────────────────────────────────────────────────────
-const uploadZone = document.getElementById('upload-zone');
-const fileInput  = document.getElementById('video-input');
-const vprev      = document.getElementById('vprev');
+var uploadZone=document.getElementById('upload-zone');
+var fileInput=document.getElementById('video-input');
+var vprev=document.getElementById('vprev');
+var outputCanvas=document.getElementById('output-canvas');
 
-uploadZone.addEventListener('click', e => { if (e.target !== fileInput) fileInput.click(); });
-fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadVideoFile(fileInput.files[0]); });
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('drag-over');
-  const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('video/')) loadVideoFile(f);
-  else toast('Please drop a video file!');
+uploadZone.addEventListener('click',function(e){if(e.target!==fileInput)fileInput.click();});
+fileInput.addEventListener('change',function(){if(fileInput.files[0])loadVideoFile(fileInput.files[0]);});
+uploadZone.addEventListener('dragover',function(e){e.preventDefault();uploadZone.classList.add('drag-over');});
+uploadZone.addEventListener('dragleave',function(){uploadZone.classList.remove('drag-over');});
+uploadZone.addEventListener('drop',function(e){
+  e.preventDefault();uploadZone.classList.remove('drag-over');
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('video/'))loadVideoFile(f);
+  else toast('Drop a video file!');
 });
 
-function loadVideoFile(file) {
-  const url = URL.createObjectURL(file);
-  vprev.src = url;
-  document.getElementById('vname').textContent = file.name;
-  vprev.addEventListener('loadedmetadata', function onMeta() {
-    vprev.removeEventListener('loadedmetadata', onMeta);
-    videoReady = true;
-    const dur = vprev.duration || 10;
-    const s = document.getElementById('scrubber');
-    s.max = dur; s.step = dur / 1000; s.value = dur * 0.25;
-    vprev.currentTime = dur * 0.25;
-    updateTimeDisplay(dur * 0.25);
-    document.getElementById('vwrap').style.display = 'block';
-    uploadZone.style.display = 'none';
-    toast('Video loaded! Scrub to your frame ✓', true);
+function loadVideoFile(file){
+  vprev.src=URL.createObjectURL(file);
+  document.getElementById('vname').textContent=file.name;
+  vprev.addEventListener('loadedmetadata',function onMeta(){
+    vprev.removeEventListener('loadedmetadata',onMeta);
+    videoReady=true;
+    var dur=vprev.duration||10;
+    var s=document.getElementById('scrubber');
+    s.max=dur;s.step=dur/1000;s.value=dur*0.25;
+    vprev.currentTime=dur*0.25; updateTimeDisplay(dur*0.25);
+    document.getElementById('vwrap').style.display='block';
+    uploadZone.style.display='none';
+    toast('Video loaded! Find your frame',true);
   });
-  vprev.addEventListener('error', () => toast('Could not load video. Try MP4.'));
+  vprev.addEventListener('error',function(){toast('Could not load video. Try MP4.');});
   vprev.load();
 }
 
-function clearVideo() {
-  vprev.src = ''; fileInput.value = ''; videoReady = false; capturedFrame = null;
-  document.getElementById('vwrap').style.display = 'none';
-  uploadZone.style.display = 'block';
-  document.getElementById('ai-card').style.display = 'none';
-  document.getElementById('style-card').style.display = 'none';
+function clearVideo(){
+  vprev.src='';fileInput.value='';videoReady=false;
+  capturedFrame=null;cutoutImage=null;hasMask=false;
+  document.getElementById('vwrap').style.display='none';
+  uploadZone.style.display='block';
+  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){document.getElementById(id).style.display='none';});
+  resetCutoutUI();redraw();
 }
 
-function onScrub(val) {
-  if (!videoReady) return;
-  vprev.currentTime = parseFloat(val);
-  updateTimeDisplay(parseFloat(val));
-}
-function updateTimeDisplay(t) { document.getElementById('time-display').textContent = parseFloat(t).toFixed(1) + 's'; }
+function onScrub(v){if(!videoReady)return;vprev.currentTime=parseFloat(v);updateTimeDisplay(parseFloat(v));}
+function updateTimeDisplay(t){document.getElementById('time-display').textContent=parseFloat(t).toFixed(1)+'s';}
 
-// ── Frame capture ──────────────────────────────────────────────────────────
-function captureFrame() {
-  if (!videoReady || !vprev.src) { toast('Upload a video first!'); return; }
-  if (vprev.readyState < 2) { toast('Video still loading...'); return; }
-  const hc = document.getElementById('frame-canvas');
-  const ctx = hc.getContext('2d');
-  hc.width = vprev.videoWidth || 1080;
-  hc.height = vprev.videoHeight || 1920;
-  ctx.drawImage(vprev, 0, 0, hc.width, hc.height);
-  capturedFrame = hc;
-  document.getElementById('ai-card').style.display = 'block';
-  document.getElementById('style-card').style.display = 'block';
-  document.getElementById('ai-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  toast('Frame captured ✓', true);
-  livePreview();
+// ── Frame capture ─────────────────────────────────────────────────────────
+function captureFrame(){
+  if(!videoReady||!vprev.src){toast('Upload a video first!');return;}
+  if(vprev.readyState<2){toast('Video still loading...');return;}
+  var hc=document.getElementById('frame-canvas');
+  hc.width=vprev.videoWidth||1080;hc.height=vprev.videoHeight||1920;
+  hc.getContext('2d').drawImage(vprev,0,0,hc.width,hc.height);
+  capturedFrame=hc;cutoutImage=null;hasMask=false;
+  resetCutoutUI();
+  initEraserCanvas();
+  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){document.getElementById(id).style.display='block';});
+  document.getElementById('eraser-card').scrollIntoView({behavior:'smooth',block:'start'});
+  textPos={x:0.06,y:0.82};
+  toast('Frame captured',true);redraw();
 }
 
-function autoPickFrame() {
-  if (!videoReady) { toast('Upload a video first!'); return; }
-  const t = (vprev.duration || 10) * 0.3;
-  vprev.currentTime = t;
-  document.getElementById('scrubber').value = t;
-  updateTimeDisplay(t);
-  vprev.onseeked = () => { captureFrame(); vprev.onseeked = null; };
+function autoPickFrame(){
+  if(!videoReady){toast('Upload a video first!');return;}
+  var t=(vprev.duration||10)*0.3;
+  vprev.currentTime=t;document.getElementById('scrubber').value=t;updateTimeDisplay(t);
+  vprev.onseeked=function(){captureFrame();vprev.onseeked=null;};
 }
 
-// ── AI Detect + Quote ──────────────────────────────────────────────────────
-async function detectAndQuote() {
-  if (!capturedFrame) { toast('Capture a frame first!'); return; }
+// ── Eraser ────────────────────────────────────────────────────────────────
+function initEraserCanvas(){
+  eraserCanvas=document.getElementById('eraser-canvas');
+  eraserCtx=eraserCanvas.getContext('2d');
 
-  const btn = document.getElementById('detect-btn');
-  btn.disabled = true; btn.classList.add('loading');
-  document.getElementById('detect-btn-text').textContent = 'Analyzing frame…';
-  document.getElementById('name-ask').style.display = 'none';
-  document.getElementById('ai-result').style.display = 'none';
+  // Display canvas: shows frame + red paint overlay
+  eraserCanvas.width=capturedFrame.width;
+  eraserCanvas.height=capturedFrame.height;
+  eraserCtx.drawImage(capturedFrame,0,0);
 
-  try {
-    const b64 = capturedFrame.toDataURL('image/jpeg', 0.85).split(',')[1];
-    const res = await fetch('/api/titles', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageBase64: b64, mode: 'detect' })
+  // Invisible mask canvas: white where painted
+  maskCanvas=document.createElement('canvas');
+  maskCanvas.width=capturedFrame.width;
+  maskCanvas.height=capturedFrame.height;
+  maskCtx=maskCanvas.getContext('2d');
+  maskCtx.fillStyle='black';
+  maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+
+  // Brush size input
+  document.getElementById('brush-size').oninput=function(){
+    brushSize=parseInt(this.value);
+    document.getElementById('brush-val').textContent=brushSize;
+  };
+
+  // Painting events
+  eraserCanvas.onmousedown=function(e){isPainting=true;paint(e);};
+  eraserCanvas.onmousemove=function(e){if(isPainting)paint(e);};
+  eraserCanvas.onmouseup=function(){isPainting=false;};
+  eraserCanvas.onmouseleave=function(){isPainting=false;};
+  eraserCanvas.ontouchstart=function(e){e.preventDefault();isPainting=true;paint(e.touches[0]);};
+  eraserCanvas.ontouchmove=function(e){e.preventDefault();if(isPainting)paint(e.touches[0]);};
+  eraserCanvas.ontouchend=function(){isPainting=false;};
+
+  document.getElementById('erase-status').textContent='Paint over objects you want removed';
+  document.getElementById('erase-status').className='erase-status';
+}
+
+function getEraserPos(e){
+  var rect=eraserCanvas.getBoundingClientRect();
+  var sx=eraserCanvas.width/rect.width,sy=eraserCanvas.height/rect.height;
+  return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};
+}
+
+function paint(e){
+  if(!capturedFrame)return;
+  var pos=getEraserPos(e);
+  var r=brushSize*(eraserCanvas.width/eraserCanvas.getBoundingClientRect().width);
+
+  // Draw red tint on display canvas
+  eraserCtx.save();
+  eraserCtx.globalAlpha=0.45;
+  eraserCtx.fillStyle='#ff4d6d';
+  eraserCtx.beginPath();eraserCtx.arc(pos.x,pos.y,r,0,Math.PI*2);eraserCtx.fill();
+  eraserCtx.restore();
+
+  // Draw white on mask
+  maskCtx.fillStyle='white';
+  maskCtx.beginPath();maskCtx.arc(pos.x,pos.y,r,0,Math.PI*2);maskCtx.fill();
+  hasMask=true;
+}
+
+function clearMask(){
+  if(!capturedFrame)return;
+  eraserCtx.clearRect(0,0,eraserCanvas.width,eraserCanvas.height);
+  eraserCtx.drawImage(capturedFrame,0,0);
+  maskCtx.fillStyle='black';
+  maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+  hasMask=false;
+  document.getElementById('erase-status').textContent='Paint over objects you want removed';
+  document.getElementById('erase-status').className='erase-status';
+}
+
+async function doErase(){
+  if(!hasMask){toast('Paint over something first!');return;}
+  var btn=document.getElementById('erase-btn');
+  var spin=document.getElementById('erase-spin');
+  btn.disabled=true;spin.style.display='block';
+  document.getElementById('erase-btn-text').textContent='Erasing...';
+  document.getElementById('erase-status').textContent='AI is removing objects and filling background...';
+  document.getElementById('erase-status').className='erase-status';
+
+  try{
+    var imgB64=capturedFrame.toDataURL('image/jpeg',0.9).split(',')[1];
+    var mskB64=maskCanvas.toDataURL('image/png').split(',')[1];
+
+    var res=await fetch('/api/erase',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({imageBase64:imgB64,maskBase64:mskB64})
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Server error');
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Erase failed');
 
-    if (data.personFound) {
-      showResults(data.person, data.quotes);
-      toast(`Detected: ${data.person} ✓`, true);
-    } else {
-      // Gemini couldn't identify — ask user
-      document.getElementById('name-ask').style.display = 'block';
-      toast('Who is this person? Tell me below 👇');
-    }
-  } catch (err) {
-    toast('Error: ' + err.message.slice(0, 60));
-  } finally {
-    btn.disabled = false; btn.classList.remove('loading');
-    document.getElementById('detect-btn-text').textContent = '✦ Detect Person & Generate Quotes';
-  }
-}
-
-async function generateWithName() {
-  const name = document.getElementById('person-name-input').value.trim();
-  if (!name) { toast('Please enter a name!'); return; }
-
-  const b64 = capturedFrame.toDataURL('image/jpeg', 0.85).split(',')[1];
-  const btn = document.getElementById('detect-btn');
-  btn.disabled = true; btn.classList.add('loading');
-  document.getElementById('detect-btn-text').textContent = `Generating quotes for ${name}…`;
-
-  try {
-    const res = await fetch('/api/titles', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageBase64: b64, mode: 'named', personName: name })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Server error');
-    showResults(name, data.quotes);
-    document.getElementById('name-ask').style.display = 'none';
-    toast(`Quotes for ${name} ready ✓`, true);
-  } catch (err) {
-    toast('Error: ' + err.message.slice(0, 60));
-  } finally {
-    btn.disabled = false; btn.classList.remove('loading');
-    document.getElementById('detect-btn-text').textContent = '✦ Detect Person & Generate Quotes';
-  }
-}
-
-function showResults(person, quotes) {
-  const resultDiv = document.getElementById('ai-result');
-  const personBar = document.getElementById('person-found-bar');
-  personBar.innerHTML = `<span>✓</span> <strong>${person}</strong> — quotes generated`;
-
-  const list = document.getElementById('quotes-list');
-  list.innerHTML = '';
-  quotes.forEach(q => {
-    const chip = document.createElement('div');
-    chip.className = 'quote-chip';
-    chip.innerHTML = `<span>${q}</span><span class="use-tag">USE →</span>`;
-    chip.onclick = () => {
-      document.getElementById('quote-text').value = q;
-      livePreview();
-      toast('Quote applied ✓', true);
+    // Load result back as the new capturedFrame
+    var img=new Image();
+    img.onload=function(){
+      var hc=document.getElementById('frame-canvas');
+      hc.width=img.width;hc.height=img.height;
+      hc.getContext('2d').drawImage(img,0,0);
+      capturedFrame=hc;
+      cutoutImage=null;resetCutoutUI();
+      initEraserCanvas();
+      document.getElementById('erase-status').textContent='Object removed! Paint again or continue.';
+      document.getElementById('erase-status').className='erase-status done';
+      toast('Object erased!',true);
+      redraw();
     };
+    img.src='data:'+data.mimeType+';base64,'+data.editedImageBase64;
+
+  }catch(err){
+    document.getElementById('erase-status').textContent='Failed: '+err.message;
+    document.getElementById('erase-status').className='erase-status err';
+    toast('Error: '+err.message.slice(0,50));
+  }finally{
+    btn.disabled=false;spin.style.display='none';
+    document.getElementById('erase-btn-text').textContent='Erase Selected';
+  }
+}
+
+// ── AI Detect + Quote ─────────────────────────────────────────────────────
+async function detectAndQuote(){
+  if(!capturedFrame){toast('Capture a frame first!');return;}
+  setDetectLoading(true,'Analyzing frame...');
+  document.getElementById('name-ask').style.display='none';
+  document.getElementById('ai-result').style.display='none';
+  try{
+    var b64=capturedFrame.toDataURL('image/jpeg',0.85).split(',')[1];
+    var res=await fetch('/api/titles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mode:'detect'})});
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Server error');
+    if(data.personFound){showResults(data.person,data.quotes);toast('Detected: '+data.person,true);}
+    else{document.getElementById('name-ask').style.display='block';toast("Type their name below");}
+  }catch(err){toast('Error: '+err.message.slice(0,60));}
+  finally{setDetectLoading(false);}
+}
+
+async function generateWithName(){
+  var name=document.getElementById('person-name-input').value.trim();
+  if(!name){toast('Enter a name!');return;}
+  setDetectLoading(true,'Generating quotes...');
+  try{
+    var b64=capturedFrame.toDataURL('image/jpeg',0.85).split(',')[1];
+    var res=await fetch('/api/titles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mode:'named',personName:name})});
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Server error');
+    showResults(name,data.quotes);
+    document.getElementById('name-ask').style.display='none';
+    toast('Quotes ready',true);
+  }catch(err){toast('Error: '+err.message.slice(0,60));}
+  finally{setDetectLoading(false);}
+}
+
+function setDetectLoading(on,txt){
+  var btn=document.getElementById('detect-btn');
+  btn.disabled=on;btn.classList.toggle('loading',on);
+  document.getElementById('detect-btn-text').textContent=on?txt:'&#10022; Detect Person & Generate Quotes';
+}
+
+function showResults(person,quotes){
+  document.getElementById('person-found-bar').innerHTML='&#10003; <strong>'+person+'</strong>';
+  var list=document.getElementById('quotes-list');list.innerHTML='';
+  quotes.forEach(function(q){
+    var chip=document.createElement('div');chip.className='quote-chip';
+    chip.innerHTML='<span>'+q+'</span><span class="use-tag">USE</span>';
+    chip.onclick=function(){document.getElementById('quote-text').value=q;redraw();toast('Applied',true);};
     list.appendChild(chip);
   });
+  document.getElementById('ai-result').style.display='block';
+}
 
-  resultDiv.style.display = 'block';
+// ── Cutout ─────────────────────────────────────────────────────────────────
+async function doCutout(){
+  if(!capturedFrame){toast('Capture a frame first!');return;}
+  var btn=document.getElementById('cutout-btn');
+  var spin=document.getElementById('cutout-spin');
+  btn.disabled=true;spin.style.display='block';
+  document.getElementById('cutout-btn-text').textContent='Cutting out subject...';
+  document.getElementById('cutout-status').textContent='Gemini is segmenting the person...';
+  document.getElementById('cutout-status').className='cutout-status';
+  try{
+    var b64=capturedFrame.toDataURL('image/jpeg',0.85).split(',')[1];
+    var res=await fetch('/api/cutout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64})});
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Cutout failed');
+    await applyMask(data.maskBase64);
+    document.getElementById('layer-underlay').disabled=false;
+    document.getElementById('cutout-status').textContent='Subject cut out — underlay enabled!';
+    document.getElementById('cutout-status').className='cutout-status done';
+    toast('Cutout done',true);redraw();
+  }catch(err){
+    document.getElementById('cutout-status').textContent='Failed: '+err.message;
+    document.getElementById('cutout-status').className='cutout-status err';
+    toast('Cutout error: '+err.message.slice(0,50));
+  }finally{
+    btn.disabled=false;spin.style.display='none';
+    document.getElementById('cutout-btn-text').textContent='Cut Out Subject (Instagram Style)';
+  }
+}
+
+function applyMask(maskB64){
+  return new Promise(function(resolve,reject){
+    var maskImg=new Image();
+    maskImg.onload=function(){
+      var W=capturedFrame.width,H=capturedFrame.height;
+      var tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;
+      var ctx=tmp.getContext('2d');ctx.drawImage(capturedFrame,0,0,W,H);
+      var mc=document.createElement('canvas');mc.width=W;mc.height=H;
+      mc.getContext('2d').drawImage(maskImg,0,0,W,H);
+      var id=ctx.getImageData(0,0,W,H),md=mc.getContext('2d').getImageData(0,0,W,H);
+      for(var i=0;i<id.data.length;i+=4)id.data[i+3]=md.data[i];
+      ctx.putImageData(id,0,0);
+      var img=new Image();
+      img.onload=function(){cutoutImage=img;resolve();};img.onerror=reject;
+      img.src=tmp.toDataURL('image/png');
+    };
+    maskImg.onerror=function(){reject(new Error('Mask load failed'));};
+    maskImg.src='data:image/png;base64,'+maskB64;
+  });
+}
+
+function resetCutoutUI(){
+  cutoutImage=null;
+  document.getElementById('layer-underlay').disabled=true;
+  document.getElementById('cutout-status').textContent='Cuts the person out so text can go behind them';
+  document.getElementById('cutout-status').className='cutout-status';
+  if(textLayer==='underlay')setLayer('overlay');
+}
+
+function setLayer(mode){
+  textLayer=mode;
+  document.getElementById('layer-overlay').classList.toggle('selected',mode==='overlay');
+  document.getElementById('layer-underlay').classList.toggle('selected',mode==='underlay');
+  redraw();
 }
 
 // ── Style controls ─────────────────────────────────────────────────────────
-function selectPreset(el) {
-  document.querySelectorAll('.preset-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected'); currentPreset = el.dataset.preset;
-  const p = presets[currentPreset];
-  document.getElementById('text-color').value    = p.textColor;
-  document.getElementById('accent-color').value  = p.accentColor;
-  document.getElementById('overlay-opacity').value = p.overlay;
-  document.getElementById('ov-val').textContent  = p.overlay + '%';
-  document.getElementById('vignette').value      = p.vignette;
-  document.getElementById('vi-val').textContent  = p.vignette + '%';
-  document.getElementById('desaturate').value    = p.desaturate;
-  document.getElementById('ds-val').textContent  = p.desaturate + '%';
-  document.getElementById('text-opacity').value  = p.textOpacity;
-  document.getElementById('to-val').textContent  = p.textOpacity + '%';
-  document.getElementById('font-select').value   = p.font;
-  livePreview();
+function selectPreset(el){
+  document.querySelectorAll('.preset-opt').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');currentPreset=el.dataset.preset;
+  var p=presets[currentPreset];
+  document.getElementById('text-color').value=p.textColor;
+  document.getElementById('overlay-opacity').value=p.overlay;document.getElementById('ov-val').textContent=p.overlay+'%';
+  document.getElementById('vignette').value=p.vignette;document.getElementById('vi-val').textContent=p.vignette+'%';
+  document.getElementById('desaturate').value=p.desaturate;document.getElementById('ds-val').textContent=p.desaturate+'%';
+  document.getElementById('text-opacity').value=p.textOpacity;document.getElementById('to-val').textContent=p.textOpacity+'%';
+  document.getElementById('font-select').value=p.font;
+  document.getElementById('letter-spacing').value=p.ls;document.getElementById('ls-val').textContent=p.ls+'%';
+  redraw();
 }
 
-function selectFormat(el) {
-  document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected'); currentFormat = el.dataset.fmt; livePreview();
+function selectFormat(el){
+  document.querySelectorAll('.fmt-btn').forEach(function(b){b.classList.remove('selected');});
+  el.classList.add('selected');currentFormat=el.dataset.fmt;redraw();
 }
 
 // ── Canvas drawing ─────────────────────────────────────────────────────────
-function drawThumbnail(canvas) {
-  const { w, h } = DIMS[currentFormat];
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
-
-  if (!capturedFrame) {
-    // Placeholder
-    const g = ctx.createLinearGradient(0, 0, w, h);
-    g.addColorStop(0, '#0e1420'); g.addColorStop(1, '#151d2e');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#2a3a55';
-    ctx.font = `bold ${Math.round(w * 0.025)}px Space Grotesk`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('📸 Capture a frame to preview', w / 2, h / 2);
-    return;
+function drawThumbnail(canvas,forExport){
+  var dim=DIMS[currentFormat],w=dim.w,h=dim.h;
+  canvas.width=w;canvas.height=h;
+  var ctx=canvas.getContext('2d');
+  if(!capturedFrame){
+    var g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#0e1420');g.addColorStop(1,'#151d2e');
+    ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#2a3a55';ctx.font='bold '+Math.round(w*0.024)+'px Space Grotesk';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('Capture a frame to preview',w/2,h/2);return;
   }
+  var ds=parseInt(document.getElementById('desaturate').value)/100;
+  var ov=parseInt(document.getElementById('overlay-opacity').value)/100;
+  var vi=parseInt(document.getElementById('vignette').value)/100;
+  var scaleX=w/capturedFrame.width,scaleY=h/capturedFrame.height,scale=Math.max(scaleX,scaleY);
+  var dx=(w-capturedFrame.width*scale)/2,dy=(h-capturedFrame.height*scale)/2;
 
-  // 1. Draw frame (cover fill)
-  const scaleX = w / capturedFrame.width;
-  const scaleY = h / capturedFrame.height;
-  const scale  = Math.max(scaleX, scaleY);
-  const dx = (w - capturedFrame.width * scale) / 2;
-  const dy = (h - capturedFrame.height * scale) / 2;
+  if(ds>0){
+    var tmp=document.createElement('canvas');tmp.width=capturedFrame.width;tmp.height=capturedFrame.height;
+    var tc=tmp.getContext('2d');tc.drawImage(capturedFrame,0,0);
+    tc.globalCompositeOperation='saturation';tc.fillStyle='rgba(128,128,128,'+ds+')';tc.fillRect(0,0,tmp.width,tmp.height);
+    tc.globalCompositeOperation='source-over';ctx.drawImage(tmp,dx,dy,capturedFrame.width*scale,capturedFrame.height*scale);
+  }else{ctx.drawImage(capturedFrame,dx,dy,capturedFrame.width*scale,capturedFrame.height*scale);}
 
-  // Desaturate via temp canvas
-  const ds = parseInt(document.getElementById('desaturate').value) / 100;
-  if (ds > 0) {
-    const tmp = document.createElement('canvas');
-    tmp.width = capturedFrame.width; tmp.height = capturedFrame.height;
-    const tc = tmp.getContext('2d');
-    tc.drawImage(capturedFrame, 0, 0);
-    if (ds > 0) {
-      tc.globalCompositeOperation = 'saturation';
-      tc.fillStyle = `rgba(128,128,128,${ds})`;
-      tc.fillRect(0, 0, tmp.width, tmp.height);
-      tc.globalCompositeOperation = 'source-over';
-    }
-    ctx.drawImage(tmp, dx, dy, capturedFrame.width * scale, capturedFrame.height * scale);
-  } else {
-    ctx.drawImage(capturedFrame, dx, dy, capturedFrame.width * scale, capturedFrame.height * scale);
+  if(ov>0){ctx.fillStyle='rgba(0,0,0,'+ov+')';ctx.fillRect(0,0,w,h);}
+  if(vi>0){
+    var vg=ctx.createRadialGradient(w/2,h/2,h*0.2,w/2,h/2,h*0.85);
+    vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,'+(vi*0.9)+')');
+    ctx.fillStyle=vg;ctx.fillRect(0,0,w,h);
   }
+  var bg=ctx.createLinearGradient(0,h*0.5,0,h);bg.addColorStop(0,'rgba(0,0,0,0)');bg.addColorStop(1,'rgba(0,0,0,0.7)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
 
-  // 2. Dark overlay
-  const ov = parseInt(document.getElementById('overlay-opacity').value) / 100;
-  if (ov > 0) {
-    ctx.fillStyle = `rgba(0,0,0,${ov})`;
-    ctx.fillRect(0, 0, w, h);
+  var rawText=document.getElementById('quote-text').value.trim();
+  var textColor=document.getElementById('text-color').value;
+  var textOpacity=parseInt(document.getElementById('text-opacity').value)/100;
+  var fontFace=document.getElementById('font-select').value;
+  var manualSize=parseInt(document.getElementById('font-size').value);
+  var ls=parseInt(document.getElementById('letter-spacing').value)/100;
+
+  if(textLayer==='underlay'&&cutoutImage){
+    if(rawText)drawText(ctx,rawText,w,h,fontFace,manualSize,textColor,textOpacity,ls);
+    ctx.drawImage(cutoutImage,dx,dy,capturedFrame.width*scale,capturedFrame.height*scale);
+  }else{
+    if(rawText)drawText(ctx,rawText,w,h,fontFace,manualSize,textColor,textOpacity,ls);
   }
+  if(!forExport&&rawText)drawBBox(ctx,rawText,w,h,fontFace,manualSize,ls);
+}
 
-  // 3. Vignette (radial gradient)
-  const vi = parseInt(document.getElementById('vignette').value) / 100;
-  if (vi > 0) {
-    const vg = ctx.createRadialGradient(w/2, h/2, h*0.2, w/2, h/2, h*0.85);
-    vg.addColorStop(0, 'rgba(0,0,0,0)');
-    vg.addColorStop(1, `rgba(0,0,0,${vi * 0.9})`);
-    ctx.fillStyle = vg;
-    ctx.fillRect(0, 0, w, h);
-  }
+function wrapText(raw){
+  var words=raw.toUpperCase().split(/\s+/),lines=[],cur='';
+  words.forEach(function(word){var t=cur?cur+' '+word:word;if(t.length>13&&cur){lines.push(cur);cur=word;}else cur=t;});
+  if(cur)lines.push(cur);return lines;
+}
 
-  // 4. Bottom gradient for text readability
-  const bg = ctx.createLinearGradient(0, h * 0.55, 0, h);
-  bg.addColorStop(0, 'rgba(0,0,0,0)');
-  bg.addColorStop(1, 'rgba(0,0,0,0.75)');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, w, h);
+function getFontSize(w,lines,ms){
+  var fs=ms>0?ms:Math.round(w*(currentFormat==='portrait'?0.11:0.075));
+  if(lines.length>3)fs=Math.round(fs*0.85);return fs;
+}
 
-  // 5. Text
-  const rawText = document.getElementById('quote-text').value.trim();
-  if (!rawText) return;
-
-  const textColor   = document.getElementById('text-color').value;
-  const textOpacity = parseInt(document.getElementById('text-opacity').value) / 100;
-  const fontFace    = document.getElementById('font-select').value;
-  const manualSize  = parseInt(document.getElementById('font-size').value);
-
-  // Convert hex to rgba
-  const r = parseInt(textColor.slice(1,3),16);
-  const g2 = parseInt(textColor.slice(3,5),16);
-  const b2 = parseInt(textColor.slice(5,7),16);
-  const rgba = `rgba(${r},${g2},${b2},${textOpacity})`;
-
-  // Split text into words, wrap into lines of ~12 chars each
-  const words = rawText.toUpperCase().split(/\s+/);
-  const lines = [];
-  let cur = '';
-  words.forEach(word => {
-    const test = cur ? cur + ' ' + word : word;
-    if (test.length > 14 && cur) { lines.push(cur); cur = word; }
-    else cur = test;
-  });
-  if (cur) lines.push(cur);
-
-  // Auto font size based on format and line count
-  let fontSize = manualSize > 0 ? manualSize : Math.round(w * (currentFormat === 'portrait' ? 0.11 : 0.075));
-  if (lines.length > 3) fontSize = Math.round(fontSize * 0.85);
-
-  ctx.font = `900 ${fontSize}px "${fontFace}", Anton, Impact, Arial Black, sans-serif`;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-
-  // Letter spacing workaround — draw char by char
-  const letterSpacing = fontSize * 0.04;
-  const padX = w * 0.06;
-  const lineH = fontSize * 1.08;
-  const totalH = lines.length * lineH;
-  let startY = h - (w * 0.08) - totalH + fontSize;
-
-  // Elevexy: NO outline, NO stroke, NO shadow — just clean bold semi-transparent text
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
-
-  lines.forEach((line, i) => {
-    const y = startY + i * lineH;
-    ctx.fillStyle = rgba;
-    drawTrackedText(ctx, line, padX, y, letterSpacing);
+function drawText(ctx,raw,w,h,font,ms,color,opacity,ls){
+  var r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+  var rgba='rgba('+r+','+g+','+b+','+opacity+')';
+  var lines=wrapText(raw),fs=getFontSize(w,lines,ms);
+  ctx.font='900 '+fs+'px "'+font+'", Anton, Impact, Arial Black, sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.shadowColor='transparent';ctx.shadowBlur=0;
+  var sp=fs*ls,lineH=fs*1.08,tx=textPos.x*w,ty=textPos.y*h;
+  lines.forEach(function(line,i){
+    var y=ty+i*lineH,cx=tx;ctx.fillStyle=rgba;
+    for(var j=0;j<line.length;j++){ctx.fillText(line[j],cx,y);cx+=ctx.measureText(line[j]).width+sp;}
   });
 }
 
-function drawTrackedText(ctx, text, x, y, spacing) {
-  let cx = x;
-  for (const ch of text) {
-    ctx.fillText(ch, cx, y);
-    cx += ctx.measureText(ch).width + spacing;
-  }
+function getBBox(raw,w,h,font,ms,ls){
+  if(!raw)return null;
+  var tmp=document.createElement('canvas');tmp.width=w;tmp.height=h;
+  var ctx=tmp.getContext('2d');
+  var lines=wrapText(raw),fs=getFontSize(w,lines,ms);
+  ctx.font='900 '+fs+'px "'+font+'", Anton, Impact, Arial Black, sans-serif';
+  var sp=fs*ls,maxW=0;
+  lines.forEach(function(line){var lw=0;for(var j=0;j<line.length;j++)lw+=ctx.measureText(line[j]).width+sp;if(lw>maxW)maxW=lw;});
+  return{x:textPos.x*w,y:textPos.y*h-fs*0.85,w:maxW,h:fs*1.08*lines.length,fs:fs};
 }
 
-let previewTimer = null;
-function livePreview() {
-  clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => {
-    const c = document.getElementById('output-canvas');
-    drawThumbnail(c);
-  }, 60);
+function drawBBox(ctx,raw,w,h,font,ms,ls){
+  var bb=getBBox(raw,w,h,font,ms,ls);if(!bb)return;
+  ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+  ctx.strokeRect(bb.x-8,bb.y-4,bb.w+16,bb.h+8);ctx.setLineDash([]);
 }
 
-function downloadThumb() {
-  const c = document.getElementById('output-canvas');
-  if (!c.width || !capturedFrame) { toast('Capture a frame first!'); return; }
-  drawThumbnail(c); // Final high-res draw
-  const a = document.createElement('a');
-  a.href = c.toDataURL('image/jpeg', 0.96);
-  const fmt = currentFormat === 'portrait' ? '1080x1920' : currentFormat === 'landscape' ? '1280x720' : '1080x1080';
-  a.download = `thumbnail-${fmt}.jpg`;
-  a.click();
-  toast('Downloading ✓', true);
+// ── Drag to move text ─────────────────────────────────────────────────────
+function getCanvasPos(e){
+  var rect=outputCanvas.getBoundingClientRect();
+  var cx=e.touches?e.touches[0].clientX:e.clientX;
+  var cy=e.touches?e.touches[0].clientY:e.clientY;
+  return{x:(cx-rect.left)*(outputCanvas.width/rect.width),y:(cy-rect.top)*(outputCanvas.height/rect.height)};
 }
 
-function toast(msg, success = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = success ? 'var(--success)' : 'var(--danger)';
-  t.style.color = success ? '#000' : '#fff';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+function isNearText(cx,cy){
+  var raw=document.getElementById('quote-text').value.trim();if(!raw)return false;
+  var dim=DIMS[currentFormat];
+  var ms=parseInt(document.getElementById('font-size').value);
+  var ls=parseInt(document.getElementById('letter-spacing').value)/100;
+  var bb=getBBox(raw,dim.w,dim.h,document.getElementById('font-select').value,ms,ls);
+  if(!bb)return false;
+  return cx>=bb.x-40&&cx<=bb.x+bb.w+40&&cy>=bb.y-40&&cy<=bb.y+bb.h+40;
 }
 
-// Init preview
-livePreview();
+outputCanvas.addEventListener('mousedown',startDrag);
+outputCanvas.addEventListener('touchstart',startDrag,{passive:false});
+window.addEventListener('mousemove',onDragMove);
+window.addEventListener('touchmove',onDragMove,{passive:false});
+window.addEventListener('mouseup',endDrag);
+window.addEventListener('touchend',endDrag);
+
+function startDrag(e){
+  var pos=getCanvasPos(e);if(!isNearText(pos.x,pos.y))return;
+  e.preventDefault();isDragging=true;
+  dragStart={mx:pos.x,my:pos.y,tx:textPos.x,ty:textPos.y};
+  outputCanvas.style.cursor='grabbing';
+  if(!hintHidden){document.getElementById('drag-hint').style.opacity='0';hintHidden=true;}
+}
+function onDragMove(e){
+  if(!isDragging)return;e.preventDefault();
+  var pos=getCanvasPos(e),dim=DIMS[currentFormat];
+  textPos.x=Math.max(0.01,Math.min(0.95,dragStart.tx+(pos.x-dragStart.mx)/dim.w));
+  textPos.y=Math.max(0.05,Math.min(0.98,dragStart.ty+(pos.y-dragStart.my)/dim.h));
+  redraw();
+}
+function endDrag(){isDragging=false;outputCanvas.style.cursor='move';}
+
+var pd=null;
+function redraw(){clearTimeout(pd);pd=setTimeout(function(){drawThumbnail(outputCanvas,false);},50);}
+
+function downloadThumb(){
+  if(!capturedFrame){toast('Capture a frame first!');return;}
+  var exp=document.createElement('canvas');drawThumbnail(exp,true);
+  var dim=DIMS[currentFormat];
+  var a=document.createElement('a');a.href=exp.toDataURL('image/jpeg',0.96);
+  a.download='thumbnail-'+dim.w+'x'+dim.h+'.jpg';a.click();
+  toast('Downloading',true);
+}
+
+function toast(msg,success){
+  var t=document.getElementById('toast');t.textContent=msg;
+  t.style.background=success?'var(--success)':'var(--danger)';
+  t.style.color=success?'#000':'#fff';t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3200);
+}
+
+redraw();
 </script>
 </body>
 </html>
