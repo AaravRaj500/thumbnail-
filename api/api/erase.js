@@ -5,7 +5,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Rate limit
   const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
   if (!global._eraseMap) global._eraseMap = {};
   const now = Date.now();
@@ -21,31 +20,22 @@ export default async function handler(req, res) {
     const GEMINI_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server not configured' });
 
-    // Use Gemini 2.0 Flash image editing (imagen-3 style inpainting via gemini)
-    // We send: original image + mask image + instruction to remove/fill
+    // gemini-2.5-flash-preview-05-20 supports image output (Nano Banana)
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{
             parts: [
-              {
-                inline_data: { mime_type: 'image/jpeg', data: imageBase64 }
-              },
-              {
-                inline_data: { mime_type: 'image/png', data: maskBase64 }
-              },
-              {
-                text: `The second image is a mask where white areas indicate regions the user wants removed from the first image.
-Remove everything in the white masked areas from the first image and fill the background naturally and seamlessly, as if those objects were never there.
-Return ONLY the edited image with objects removed. Make the fill look realistic and match the surrounding background.`
-              }
+              { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
+              { inline_data: { mime_type: 'image/png',  data: maskBase64  } },
+              { text: `The second image is a white-on-black mask. Remove everything in the white masked regions from the first image. Fill the removed areas naturally with the surrounding background so it looks like those objects were never there. Return the edited image only.` }
             ]
           }],
           generationConfig: {
-            responseModalities: ['IMAGE'],
+            responseModalities: ['IMAGE', 'TEXT'],
             temperature: 1,
             maxOutputTokens: 8192
           }
@@ -53,19 +43,25 @@ Return ONLY the edited image with objects removed. Make the fill look realistic 
       }
     );
 
+    const raw = await geminiRes.text();
+
     if (!geminiRes.ok) {
-      const err = await geminiRes.json();
-      throw new Error(err.error?.message || 'Gemini API failed');
+      let msg = 'Gemini API error';
+      try { msg = JSON.parse(raw).error?.message || msg; } catch(e) {}
+      throw new Error(msg);
     }
 
-    const data = await geminiRes.json();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 100)); }
 
-    // Find the image part in response
     const parts = data.candidates?.[0]?.content?.parts || [];
     const imagePart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
 
     if (!imagePart) {
-      throw new Error('Gemini did not return an edited image. Try a different model or brush area.');
+      // Log what we got for debugging
+      const textPart = parts.find(p => p.text);
+      throw new Error(textPart?.text?.slice(0, 120) || 'Gemini returned no image. Try painting a larger area.');
     }
 
     return res.status(200).json({
