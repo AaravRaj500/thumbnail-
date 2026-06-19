@@ -16,29 +16,22 @@ export default async function handler(req, res) {
   try {
     const { imageBase64 } = req.body;
     if (!imageBase64) return res.status(400).json({ error: 'No image provided' });
-
     const GEMINI_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server not configured' });
 
-    // Use gemini-2.5-flash-image on v1 to generate a cutout of the main subject
-    // We ask it to return the subject on transparent background as PNG
+    // v1beta + gemini-2.5-flash-image, NO responseModalities
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{
             parts: [
-              { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
-              { text: 'Remove the background from this image completely. Keep only the main person or subject. Return the result as a PNG image with a transparent background — the subject should be on transparent (checkerboard) background, everything else removed. Return only the edited PNG image.' }
+              { text: 'Remove the background from this image completely. Keep only the main person or subject. Make the background fully transparent. Return the result as a PNG with transparent background.' },
+              { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } }
             ]
-          }],
-          generationConfig: {
-            responseModalities: ['IMAGE', 'TEXT'],
-            temperature: 1,
-            maxOutputTokens: 8192
-          }
+          }]
         })
       }
     );
@@ -52,25 +45,18 @@ export default async function handler(req, res) {
 
     let data;
     try { data = JSON.parse(raw); }
-    catch(e) { throw new Error('Invalid response from Gemini: ' + raw.slice(0, 120)); }
+    catch(e) { throw new Error('Bad response: ' + raw.slice(0, 120)); }
 
     const parts = data.candidates?.[0]?.content?.parts || [];
     const imagePart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-
     if (!imagePart) {
-      const textPart = parts.find(p => p.text);
-      throw new Error(textPart?.text?.slice(0, 150) || 'No cutout returned. Make sure there is a clear person in the frame.');
+      const txt = parts.find(p => p.text);
+      throw new Error(txt?.text?.slice(0, 150) || 'No cutout returned. Make sure there is a clear person in the frame.');
     }
 
-    // For cutout we return the image directly (with transparency) instead of a mask
-    // The frontend will use it as a compositing layer directly
-    return res.status(200).json({
-      cutoutBase64: imagePart.inlineData.data,
-      mimeType: imagePart.inlineData.mimeType
-    });
-
+    return res.status(200).json({ cutoutBase64: imagePart.inlineData.data, mimeType: imagePart.inlineData.mimeType });
   } catch (err) {
-    console.error('Cutout API error:', err.message);
+    console.error('Cutout error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 }
