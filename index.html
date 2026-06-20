@@ -148,6 +148,35 @@ footer a{color:var(--accent);text-decoration:none}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:11px 22px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #frame-canvas{display:none}
+
+/* Mode tabs */
+.mode-tabs{display:flex;gap:0;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.mode-tab{flex:1;padding:13px 8px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all .2s;border-right:1px solid var(--border);user-select:none}
+.mode-tab:last-child{border-right:none}
+.mode-tab.active{background:var(--glow);color:var(--accent);border-bottom:2px solid var(--accent)}
+.mode-tab .tab-icon{display:block;font-size:1.3rem;margin-bottom:3px}
+
+/* Generate mode */
+#generate-mode{display:none}
+.mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.mood-opt{border:1px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);user-select:none}
+.mood-opt:hover{border-color:var(--accent);background:var(--glow)}
+.mood-opt.selected{border-color:var(--accent);background:var(--glow);box-shadow:0 0 0 1px var(--accent)}
+.mood-icon{font-size:1.4rem;display:block;margin-bottom:4px}
+.mood-name{font-size:11px;font-weight:600;color:var(--text)}
+.gen-image-btn{width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+.gen-image-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.gen-image-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.gen-status{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;font-family:var(--mono);min-height:16px}
+.gen-status.done{color:var(--success)}
+.gen-status.err{color:var(--danger)}
+.prompt-box{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:12px;display:none}
+.prompt-label{font-size:10px;color:var(--accent);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.prompt-text{font-size:12px;color:var(--text);line-height:1.5}
+.mood-detected{display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:100px;padding:4px 12px;font-size:12px;color:var(--success);margin-bottom:10px;font-family:var(--mono)}
+.gen-variations{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.var-btn{flex:1;padding:9px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;min-width:80px}
+.var-btn:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -159,8 +188,18 @@ footer a{color:var(--accent);text-decoration:none}
   <header>
     <div class="badge">&#10022; Elevexy Style &middot; Drag Text &middot; Object Eraser &middot; Cutout</div>
     <h1>Thumbnails that<br>stop the scroll</h1>
-    <p class="sub">Capture frame &middot; <strong>AI detects &amp; quotes</strong> &middot; erase objects &middot; drag text &middot; cutout underlay</p>
+    <p class="sub">Two modes: <strong>Video Frame</strong> for real footage · <strong>AI Generate</strong> for mood-matched cinematic portraits</p>
   </header>
+
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <div class="mode-tab active" id="tab-video" onclick="switchMode('video')">
+      <span class="tab-icon">&#127916;</span>Video Frame
+    </div>
+    <div class="mode-tab" id="tab-generate" onclick="switchMode('generate')">
+      <span class="tab-icon">&#10024;</span>AI Generate
+    </div>
+  </div>
 
   <div class="main-layout">
     <div class="controls-col">
@@ -316,7 +355,108 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
 
-    </div><!-- /controls-col -->
+    
+      <!-- GENERATE MODE (hidden by default) -->
+      <div id="generate-mode">
+
+        <div class="card">
+          <div class="step-label">01 &mdash; Detect Mood from Video (optional)</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5">Upload a video frame so AI can detect the mood automatically, or just pick a mood below.</p>
+          <div class="upload-zone" id="mood-upload-zone" style="padding:24px 16px">
+            <input type="file" id="mood-video-input" accept="video/*" onchange="loadMoodVideo(this)"/>
+            <span class="u-icon" style="font-size:1.8rem">&#127916;</span>
+            <div class="u-title" style="font-size:.85rem">Drop video to auto-detect mood</div>
+            <div class="u-sub">or just pick a mood below</div>
+          </div>
+          <div id="mood-video-wrap" style="display:none;margin-top:12px">
+            <video id="mood-vprev" playsinline muted style="width:100%;max-height:180px;border-radius:8px;object-fit:contain;background:#000;border:1px solid var(--border);display:block"></video>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <input type="range" id="mood-scrubber" min="0" max="100" value="25" step="0.01" oninput="onMoodScrub(this.value)" style="flex:1"/>
+              <button class="btn-sm primary" onclick="analyzeMood()" style="white-space:nowrap">&#10022; Analyze Mood</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="step-label">02 &mdash; Choose Mood</div>
+          <div id="mood-detected-bar" style="display:none;margin-bottom:10px"></div>
+          <div class="mood-grid">
+            <div class="mood-opt selected" data-mood="motivational" onclick="selectMood(this)"><span class="mood-icon">&#128170;</span><span class="mood-name">Motivational</span></div>
+            <div class="mood-opt" data-mood="intense" onclick="selectMood(this)"><span class="mood-icon">&#128293;</span><span class="mood-name">Intense</span></div>
+            <div class="mood-opt" data-mood="sad" onclick="selectMood(this)"><span class="mood-icon">&#128148;</span><span class="mood-name">Sad</span></div>
+            <div class="mood-opt" data-mood="romantic" onclick="selectMood(this)"><span class="mood-icon">&#10084;</span><span class="mood-name">Romantic</span></div>
+            <div class="mood-opt" data-mood="dark" onclick="selectMood(this)"><span class="mood-icon">&#127768;</span><span class="mood-name">Dark</span></div>
+            <div class="mood-opt" data-mood="uplifting" onclick="selectMood(this)"><span class="mood-icon">&#127775;</span><span class="mood-name">Uplifting</span></div>
+            <div class="mood-opt" data-mood="calm" onclick="selectMood(this)"><span class="mood-icon">&#129344;</span><span class="mood-name">Calm</span></div>
+            <div class="mood-opt" data-mood="aggressive" onclick="selectMood(this)"><span class="mood-icon">&#9889;</span><span class="mood-name">Aggressive</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="step-label">03 &mdash; Generate Cinematic Portrait</div>
+          <div class="prompt-box" id="prompt-box">
+            <div class="prompt-label">AI Prompt</div>
+            <div class="prompt-text" id="prompt-text"></div>
+          </div>
+          <button class="gen-image-btn" id="gen-image-btn" onclick="generateImage()">
+            <div class="spinner-sm" id="gen-spin" style="display:none"></div>
+            <span id="gen-btn-text">&#10022; Generate Cinematic Portrait</span>
+          </button>
+          <div class="gen-status" id="gen-status">AI will generate a mood-matched portrait for your thumbnail</div>
+          <div class="gen-variations" id="gen-variations" style="display:none">
+            <button class="var-btn" onclick="generateImage()">&#8635; Regenerate</button>
+            <button class="var-btn" onclick="generateImage(true)">&#127922; New Variation</button>
+            <button class="var-btn" onclick="useGeneratedAsFrame()" style="border-color:var(--accent);color:var(--accent)">&#10003; Use This</button>
+          </div>
+        </div>
+
+        <div class="card" id="gen-quote-card" style="display:none">
+          <div class="step-label">04 &mdash; Add Quote</div>
+          <label>Quote / Title <span style="color:var(--muted);font-weight:400">(drag on preview to reposition)</span></label>
+          <textarea id="gen-quote-text" placeholder="YOUR QUOTE HERE" oninput="redraw()" rows="3"></textarea>
+          <button class="gen-image-btn" onclick="generateQuoteForMood()" style="background:linear-gradient(135deg,#0f766e,#0891b2)">
+            <span>&#10022; AI Write Quote for This Mood</span>
+          </button>
+        </div>
+
+        <!-- Style card reused -->
+        <div class="card" id="gen-style-card" style="display:none">
+          <div class="step-label">05 &mdash; Style</div>
+          <label style="margin-bottom:7px">Format</label>
+          <div class="format-toggle">
+            <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait</button>
+            <button class="fmt-btn" data-fmt="landscape" onclick="selectFormat(this)">16:9 YouTube</button>
+            <button class="fmt-btn" data-fmt="square" onclick="selectFormat(this)">1:1 Square</button>
+          </div>
+          <label style="margin-bottom:7px">Preset</label>
+          <div class="preset-grid">
+            <div class="preset-opt selected" data-preset="elevexy" onclick="selectPreset(this)"><span class="p-icon">&#128420;</span><span class="p-name">Elevexy</span></div>
+            <div class="preset-opt" data-preset="cinematic" onclick="selectPreset(this)"><span class="p-icon">&#127902;</span><span class="p-name">Cinematic</span></div>
+            <div class="preset-opt" data-preset="neon" onclick="selectPreset(this)"><span class="p-icon">&#9889;</span><span class="p-name">Neon</span></div>
+            <div class="preset-opt" data-preset="fire" onclick="selectPreset(this)"><span class="p-icon">&#128293;</span><span class="p-name">Fire</span></div>
+            <div class="preset-opt" data-preset="gold" onclick="selectPreset(this)"><span class="p-icon">&#128081;</span><span class="p-name">Gold</span></div>
+            <div class="preset-opt" data-preset="minimal" onclick="selectPreset(this)"><span class="p-icon">&#10024;</span><span class="p-name">Minimal</span></div>
+          </div>
+          <div class="color-row">
+            <div class="color-item"><input type="color" id="gen-text-color" value="#ffffff" oninput="syncColors();redraw()"/><span>Text</span></div>
+          </div>
+          <div class="range-group">
+            <label>Text Opacity <span class="range-val" id="gen-to-val">80%</span></label>
+            <input type="range" id="gen-text-opacity" min="20" max="100" value="80" oninput="document.getElementById('gen-to-val').textContent=this.value+'%';syncColors();redraw()"/>
+          </div>
+          <div class="range-group">
+            <label>Font Size <span class="range-val" id="gen-fs-val">Auto</span></label>
+            <input type="range" id="gen-font-size" min="0" max="200" value="0" oninput="document.getElementById('gen-fs-val').textContent=this.value==0?'Auto':this.value+'px';syncColors();redraw()"/>
+          </div>
+          <div class="range-group">
+            <label>Dark Overlay <span class="range-val" id="gen-ov-val">35%</span></label>
+            <input type="range" id="gen-overlay-opacity" min="0" max="85" value="35" oninput="document.getElementById('gen-ov-val').textContent=this.value+'%';syncColors();redraw()"/>
+          </div>
+        </div>
+
+      </div><!-- /generate-mode -->
+
+</div><!-- /controls-col -->
 
     <!-- Preview -->
     <div class="preview-col">
@@ -817,6 +957,234 @@ function toast(msg,success){
   t.style.color=success?'#000':'#fff';t.classList.add('show');
   setTimeout(function(){t.classList.remove('show');},3200);
 }
+
+
+// ── Mode switching ────────────────────────────────────────────────────────
+var currentMode = 'video';
+var generatedImageUrl = null;
+var currentMood = 'motivational';
+var currentPrompt = '';
+var genSeed = Math.floor(Math.random()*99999);
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-video').classList.toggle('active', mode==='video');
+  document.getElementById('tab-generate').classList.toggle('active', mode==='generate');
+  // Show/hide sections
+  var videoCards = ['upload-zone-wrapper','vwrap','eraser-card','ai-card','cutout-card','style-card'];
+  document.getElementById('generate-mode').style.display = mode==='generate' ? 'block' : 'none';
+  // For video mode cards — just toggle the upload card visibility
+  var uploadCard = document.getElementById('upload-zone').closest('.card');
+  if (uploadCard) uploadCard.style.display = mode==='video' ? 'block' : 'none';
+  // Reset preview if switching modes
+  if (mode==='generate' && !generatedImageUrl) {
+    capturedFrame = null; redraw();
+  } else if (mode==='video') {
+    capturedFrame = null; redraw();
+  }
+}
+
+// ── Mood video ─────────────────────────────────────────────────────────────
+var moodVprev = null;
+function loadMoodVideo(input) {
+  if (!input.files[0]) return;
+  moodVprev = document.getElementById('mood-vprev');
+  moodVprev.src = URL.createObjectURL(input.files[0]);
+  moodVprev.addEventListener('loadedmetadata', function onMeta() {
+    moodVprev.removeEventListener('loadedmetadata', onMeta);
+    var dur = moodVprev.duration || 10;
+    var s = document.getElementById('mood-scrubber');
+    s.max = dur; s.step = dur/1000; s.value = dur*0.3;
+    moodVprev.currentTime = dur * 0.3;
+    document.getElementById('mood-video-wrap').style.display = 'block';
+  });
+  moodVprev.load();
+}
+
+function onMoodScrub(v) { if (moodVprev) moodVprev.currentTime = parseFloat(v); }
+
+async function analyzeMood() {
+  if (!moodVprev) { toast('Load a video first!'); return; }
+  // Capture frame from mood video
+  var hc = document.createElement('canvas');
+  hc.width = moodVprev.videoWidth || 1080;
+  hc.height = moodVprev.videoHeight || 720;
+  hc.getContext('2d').drawImage(moodVprev, 0, 0, hc.width, hc.height);
+  var b64 = hc.toDataURL('image/jpeg', 0.8).split(',')[1];
+
+  document.getElementById('gen-status').textContent = 'Analyzing video mood...';
+  document.getElementById('gen-status').className = 'gen-status';
+
+  try {
+    var res = await fetch('/api/generate', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ imageBase64: b64 })
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+
+    // Auto-select detected mood
+    currentMood = data.mood.toLowerCase().split(' ')[0];
+    currentPrompt = data.prompt;
+
+    var bar = document.getElementById('mood-detected-bar');
+    bar.innerHTML = '<span class="mood-detected">&#10022; Detected: ' + data.mood + '</span>';
+    bar.style.display = 'block';
+
+    // Highlight matching mood button
+    document.querySelectorAll('.mood-opt').forEach(function(o) {
+      o.classList.toggle('selected', o.dataset.mood === currentMood);
+    });
+
+    document.getElementById('prompt-box').style.display = 'block';
+    document.getElementById('prompt-text').textContent = data.prompt;
+    document.getElementById('gen-status').textContent = 'Mood detected! Hit Generate to create the portrait.';
+    document.getElementById('gen-status').className = 'gen-status done';
+    toast('Mood: ' + data.mood, true);
+
+  } catch(err) {
+    document.getElementById('gen-status').textContent = 'Error: ' + err.message;
+    document.getElementById('gen-status').className = 'gen-status err';
+    toast('Error: ' + err.message.slice(0,50));
+  }
+}
+
+function selectMood(el) {
+  document.querySelectorAll('.mood-opt').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  currentMood = el.dataset.mood;
+  currentPrompt = ''; // will be generated fresh
+  document.getElementById('prompt-box').style.display = 'none';
+}
+
+// ── Generate image via Pollinations ───────────────────────────────────────
+async function generateImage(newVariation) {
+  var btn = document.getElementById('gen-image-btn');
+  var spin = document.getElementById('gen-spin');
+  btn.disabled = true; spin.style.display = 'block';
+  document.getElementById('gen-btn-text').textContent = 'Generating portrait...';
+  document.getElementById('gen-status').textContent = 'Calling Pollinations.ai (free)...';
+  document.getElementById('gen-status').className = 'gen-status';
+
+  try {
+    // If no prompt yet, get one from the API
+    if (!currentPrompt) {
+      var res = await fetch('/api/generate', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ mood: currentMood })
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to get prompt');
+      currentPrompt = data.prompt;
+      document.getElementById('prompt-box').style.display = 'block';
+      document.getElementById('prompt-text').textContent = currentPrompt;
+    }
+
+    if (newVariation) genSeed = Math.floor(Math.random()*99999);
+
+    // Call Pollinations free image gen
+    var encodedPrompt = encodeURIComponent(currentPrompt + ', no text, no watermark');
+    var { w, h } = DIMS[currentFormat];
+    var pollinationsUrl = 'https://image.pollinations.ai/prompt/' + encodedPrompt +
+      '?width=' + w + '&height=' + h + '&seed=' + genSeed + '&model=flux&nologo=true&enhance=true';
+
+    document.getElementById('gen-status').textContent = 'Generating image... (10-20 seconds)';
+
+    // Load image
+    await new Promise(function(resolve, reject) {
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function() {
+        // Draw to canvas and use as capturedFrame
+        var hc = document.getElementById('frame-canvas');
+        hc.width = img.width || w;
+        hc.height = img.height || h;
+        hc.getContext('2d').drawImage(img, 0, 0);
+        capturedFrame = hc;
+        generatedImageUrl = pollinationsUrl;
+        resolve();
+      };
+      img.onerror = function() { reject(new Error('Image generation failed. Try again.')); };
+      img.src = pollinationsUrl;
+    });
+
+    document.getElementById('gen-status').textContent = 'Portrait generated!';
+    document.getElementById('gen-status').className = 'gen-status done';
+    document.getElementById('gen-variations').style.display = 'flex';
+    document.getElementById('gen-quote-card').style.display = 'block';
+    document.getElementById('gen-style-card').style.display = 'block';
+    toast('Portrait ready!', true);
+    redraw();
+
+  } catch(err) {
+    document.getElementById('gen-status').textContent = 'Error: ' + err.message;
+    document.getElementById('gen-status').className = 'gen-status err';
+    toast('Error: ' + err.message.slice(0,60));
+  } finally {
+    btn.disabled = false; spin.style.display = 'none';
+    document.getElementById('gen-btn-text').textContent = 'Generate Cinematic Portrait';
+  }
+}
+
+function useGeneratedAsFrame() {
+  if (!capturedFrame) { toast('Generate a portrait first!'); return; }
+  // Switch to video mode with the generated frame loaded
+  switchMode('video');
+  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  });
+  toast('Using generated portrait as frame', true);
+  redraw();
+}
+
+async function generateQuoteForMood() {
+  try {
+    var res = await fetch('/api/titles', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ mode: 'named', personName: 'a powerful ' + currentMood + ' person', imageBase64: '' })
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    if (data.quotes && data.quotes[0]) {
+      document.getElementById('gen-quote-text').value = data.quotes[0];
+      syncColors(); redraw();
+      toast('Quote applied', true);
+    }
+  } catch(err) { toast('Error: ' + err.message.slice(0,50)); }
+}
+
+function syncColors() {
+  // Sync gen mode controls to main controls for drawing
+  var gc = document.getElementById('gen-text-color');
+  var mc = document.getElementById('text-color');
+  if (gc && mc) mc.value = gc.value;
+  var go = document.getElementById('gen-text-opacity');
+  var mo = document.getElementById('text-opacity');
+  if (go && mo) { mo.value = go.value; document.getElementById('to-val').textContent = go.value+'%'; }
+  var gf = document.getElementById('gen-font-size');
+  var mf = document.getElementById('font-size');
+  if (gf && mf) mf.value = gf.value;
+  var gov = document.getElementById('gen-overlay-opacity');
+  var mov = document.getElementById('overlay-opacity');
+  if (gov && mov) { mov.value = gov.value; document.getElementById('ov-val').textContent = gov.value+'%'; }
+  // Quote text sync
+  var gq = document.getElementById('gen-quote-text');
+  var mq = document.getElementById('quote-text');
+  if (gq && mq && currentMode === 'generate') mq.value = gq.value;
+}
+
+// Patch redraw to also sync quote from generate mode
+var _origRedraw = redraw;
+redraw = function() {
+  if (currentMode === 'generate') {
+    var gq = document.getElementById('gen-quote-text');
+    var mq = document.getElementById('quote-text');
+    if (gq && mq) mq.value = gq.value;
+    syncColors();
+  }
+  _origRedraw();
+};
 
 redraw();
 </script>
