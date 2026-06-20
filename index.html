@@ -227,39 +227,11 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
 
-      <!-- Step 2: Object Eraser -->
-      <div class="card" id="eraser-card" style="display:none">
-        <div class="step-label">02 &mdash; Object Eraser</div>
-        <div class="eraser-box">
-          <div class="eraser-header">
-            <div class="eraser-label">&#9998; Samsung-style Object Eraser</div>
-            <span class="eraser-badge">AI Fill</span>
-          </div>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">Paint over anything to remove it. AI fills the background naturally.</p>
-          <div class="eraser-canvas-wrap">
-            <canvas id="eraser-canvas"></canvas>
-          </div>
-          <div class="eraser-tools">
-            <div class="brush-size-wrap">
-              <label>Brush</label>
-              <input type="range" id="brush-size" min="5" max="80" value="28" style="margin:0"/>
-              <span style="font-family:var(--mono);font-size:11px;color:var(--accent);min-width:28px" id="brush-val">28</span>
-            </div>
-          </div>
-          <div class="erase-actions">
-            <button class="btn-sm" onclick="clearMask()" style="flex:0 0 auto">&#8635; Clear</button>
-            <button class="erase-btn" id="erase-btn" onclick="doErase()">
-              <div class="spinner-sm" id="erase-spin" style="display:none"></div>
-              <span id="erase-btn-text">&#9986; Erase Selected</span>
-            </button>
-          </div>
-          <div class="erase-status" id="erase-status">Paint over objects you want removed</div>
-        </div>
-      </div>
+      
 
       <!-- Step 3: AI Quote -->
       <div class="card" id="ai-card" style="display:none">
-        <div class="step-label">03 &mdash; AI Detect &amp; Quote</div>
+        <div class="step-label">02 &mdash; AI Detect &amp; Quote</div>
         <div class="ai-box">
           <div class="ai-header">
             <div class="ai-label">Gemini Vision</div>
@@ -285,24 +257,11 @@ footer a{color:var(--accent);text-decoration:none}
         <textarea id="quote-text" placeholder="THE HARDER THING IS THE RIGHT THING" oninput="redraw()" rows="3"></textarea>
       </div>
 
-      <!-- Step 4: Cutout -->
-      <div class="card" id="cutout-card" style="display:none">
-        <div class="step-label">04 &mdash; Subject Cutout</div>
-        <button class="cutout-btn" id="cutout-btn" onclick="doCutout()">
-          <div class="spinner-sm" id="cutout-spin" style="display:none"></div>
-          <span id="cutout-btn-text">&#9986; Cut Out Subject (Instagram Style)</span>
-        </button>
-        <div class="cutout-status" id="cutout-status">Cuts the person out so text can go behind them</div>
-        <label>Text Layer</label>
-        <div class="layer-toggle">
-          <button class="layer-btn selected" id="layer-overlay" onclick="setLayer('overlay')">&#11014; Overlay &mdash; text in front</button>
-          <button class="layer-btn" id="layer-underlay" onclick="setLayer('underlay')" disabled>&#11015; Underlay &mdash; text behind</button>
-        </div>
-      </div>
+      
 
       <!-- Step 5: Style -->
       <div class="card" id="style-card" style="display:none">
-        <div class="step-label">05 &mdash; Style</div>
+        <div class="step-label">03 &mdash; Style</div>
         <label style="margin-bottom:7px">Format</label>
         <div class="format-toggle">
           <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait</button>
@@ -421,7 +380,7 @@ footer a{color:var(--accent);text-decoration:none}
 
         <!-- Style card reused -->
         <div class="card" id="gen-style-card" style="display:none">
-          <div class="step-label">05 &mdash; Style</div>
+          <div class="step-label">03 &mdash; Style</div>
           <label style="margin-bottom:7px">Format</label>
           <div class="format-toggle">
             <button class="fmt-btn selected" data-fmt="portrait" onclick="selectFormat(this)">9:16 Portrait</button>
@@ -477,7 +436,7 @@ footer a{color:var(--accent);text-decoration:none}
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────────
-var capturedFrame=null, cutoutImage=null;
+var capturedFrame=null, 
 var currentFormat='portrait', currentPreset='elevexy', textLayer='overlay', videoReady=false;
 var textPos={x:0.06,y:0.82}, isDragging=false, dragStart={mx:0,my:0,tx:0,ty:0}, hintHidden=false;
 
@@ -532,10 +491,10 @@ function loadVideoFile(file){
 
 function clearVideo(){
   vprev.src='';fileInput.value='';videoReady=false;
-  capturedFrame=null;cutoutImage=null;hasMask=false;
+  capturedFrame=null;
   document.getElementById('vwrap').style.display='none';
   uploadZone.style.display='block';
-  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){document.getElementById(id).style.display='none';});
+  ['ai-card','style-card'].forEach(function(id){document.getElementById(id).style.display='none';});
   resetCutoutUI();redraw();
 }
 
@@ -549,10 +508,10 @@ function captureFrame(){
   var hc=document.getElementById('frame-canvas');
   hc.width=vprev.videoWidth||1080;hc.height=vprev.videoHeight||1920;
   hc.getContext('2d').drawImage(vprev,0,0,hc.width,hc.height);
-  capturedFrame=hc;cutoutImage=null;hasMask=false;
+  capturedFrame=hc;
   resetCutoutUI();
   initEraserCanvas();
-  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){document.getElementById(id).style.display='block';});
+  ['ai-card','style-card'].forEach(function(id){document.getElementById(id).style.display='block';});
   document.getElementById('eraser-card').scrollIntoView({behavior:'smooth',block:'start'});
   textPos={x:0.06,y:0.82};
   toast('Frame captured',true);redraw();
@@ -664,7 +623,7 @@ async function doErase(){
       hc.width=img.width;hc.height=img.height;
       hc.getContext('2d').drawImage(img,0,0);
       capturedFrame=hc;
-      cutoutImage=null;resetCutoutUI();
+      resetCutoutUI();
       initEraserCanvas();
       document.getElementById('erase-status').textContent='Object removed! Paint again or continue.';
       document.getElementById('erase-status').className='erase-status done';
@@ -773,7 +732,7 @@ function applyCutout(b64, mime){
 }
 
 function resetCutoutUI(){
-  cutoutImage=null;
+  
   document.getElementById('layer-underlay').disabled=true;
   document.getElementById('cutout-status').textContent='Cuts the person out so text can go behind them';
   document.getElementById('cutout-status').className='cutout-status';
@@ -1130,7 +1089,7 @@ function useGeneratedAsFrame() {
   if (!capturedFrame) { toast('Generate a portrait first!'); return; }
   // Switch to video mode with the generated frame loaded
   switchMode('video');
-  ['ai-card','style-card','cutout-card','eraser-card'].forEach(function(id){
+  ['ai-card','style-card'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = 'block';
   });
