@@ -1,12 +1,6 @@
 {
   "functions": {
-    "api/titles.js": {
-      "maxDuration": 20
-    },
-    "api/cutout.js": {
-      "maxDuration": 30
-    },
-    "api/erase.js": {
+    "api/*.js": {
       "maxDuration": 30
     }
   }
