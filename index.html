@@ -316,7 +316,7 @@ footer a{color:var(--accent);text-decoration:none}
 
     
       <!-- GENERATE MODE (hidden by default) -->
-      <div id="generate-mode">
+      <div id="generate-mode" style="display:none">
 
         <div class="card">
           <div class="step-label">01 &mdash; Detect Mood from Video (optional)</div>
@@ -929,16 +929,26 @@ function switchMode(mode) {
   currentMode = mode;
   document.getElementById('tab-video').classList.toggle('active', mode==='video');
   document.getElementById('tab-generate').classList.toggle('active', mode==='generate');
-  // Show/hide sections
-  var videoCards = ['upload-zone-wrapper','vwrap','eraser-card','ai-card','cutout-card','style-card'];
-  document.getElementById('generate-mode').style.display = mode==='generate' ? 'block' : 'none';
-  // For video mode cards — just toggle the upload card visibility
-  var uploadCard = document.getElementById('upload-zone').closest('.card');
-  if (uploadCard) uploadCard.style.display = mode==='video' ? 'block' : 'none';
-  // Reset preview if switching modes
-  if (mode==='generate' && !generatedImageUrl) {
+
+  var generateDiv = document.getElementById('generate-mode');
+  var controlsCol = document.querySelector('.controls-col');
+
+  if (mode === 'generate') {
+    generateDiv.style.display = 'block';
+    // Hide all video-mode cards
+    controlsCol.querySelectorAll('.card').forEach(function(c) {
+      if (!c.closest('#generate-mode')) c.style.display = 'none';
+    });
     capturedFrame = null; redraw();
-  } else if (mode==='video') {
+  } else {
+    generateDiv.style.display = 'none';
+    // Show video-mode cards that should be visible
+    var uploadCard = document.getElementById('upload-zone').closest('.card');
+    if (uploadCard) uploadCard.style.display = 'block';
+    // ai-card and style-card only show after frame captured
+  }
+
+  if (false) { var dummy = if (mode==='video') {
     capturedFrame = null; redraw();
   }
 }
@@ -1132,18 +1142,6 @@ function syncColors() {
   var mq = document.getElementById('quote-text');
   if (gq && mq && currentMode === 'generate') mq.value = gq.value;
 }
-
-// Patch redraw to also sync quote from generate mode
-var _origRedraw = redraw;
-redraw = function() {
-  if (currentMode === 'generate') {
-    var gq = document.getElementById('gen-quote-text');
-    var mq = document.getElementById('quote-text');
-    if (gq && mq) mq.value = gq.value;
-    syncColors();
-  }
-  _origRedraw();
-};
 
 redraw();
 </script>
