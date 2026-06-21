@@ -1,4 +1,4 @@
-html = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -114,6 +114,16 @@ footer a{color:var(--accent);text-decoration:none}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);font-size:13px;font-weight:600;padding:11px 22px;border-radius:100px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #frame-canvas{display:none}
+
+.cutout-btn{width:100%;padding:11px;border-radius:9px;background:linear-gradient(135deg,#0f766e,#0891b2);border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.cutout-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+.cutout-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.cutout-status{font-size:11px;color:var(--muted);text-align:center;font-family:var(--mono);min-height:16px}
+.cutout-status.done{color:var(--success)}
+.cutout-status.err{color:var(--danger)}
+.layer-toggle{display:flex;gap:6px}
+.layer-btn{flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.layer-btn.selected{border-color:var(--accent2);color:#a78bfa;background:rgba(124,58,237,0.1)}
 </style>
 </head>
 <body>
@@ -234,6 +244,22 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
 
+      <div class="card" id="cutout-card" style="display:none">
+        <div class="step-label">04 &mdash; Subject Cutout</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5">AI detects the person's position so text can go <strong style="color:var(--accent)">behind</strong> them — like Instagram's cutout effect.</p>
+        <button class="cutout-btn" id="cutout-btn" onclick="doCutout()">
+          <div class="spinner-sm" id="cutout-spin" style="display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite"></div>
+          <span id="cutout-btn-text">&#9986; Detect Subject for Cutout</span>
+        </button>
+        <div class="cutout-status" id="cutout-status">Detects person position using AI</div>
+        <div id="layer-section" style="display:none;margin-top:12px">
+          <label>Text Layer</label>
+          <div class="layer-toggle">
+            <button class="layer-btn selected" id="layer-overlay" onclick="setLayer('overlay')">&#11014; Overlay — text in front</button>
+            <button class="layer-btn" id="layer-underlay" onclick="setLayer('underlay')">&#11015; Underlay — text behind</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="preview-col">
@@ -307,6 +333,7 @@ function clearVideo(){
   uploadZone.style.display='block';
   document.getElementById('ai-card').style.display='none';
   document.getElementById('style-card').style.display='none';
+  document.getElementById('cutout-card').style.display='none';
   redraw();
 }
 
@@ -322,6 +349,7 @@ function captureFrame(){
   capturedFrame=hc;
   document.getElementById('ai-card').style.display='block';
   document.getElementById('style-card').style.display='block';
+  document.getElementById('cutout-card').style.display='block';
   document.getElementById('ai-card').scrollIntoView({behavior:'smooth',block:'start'});
   textPos={x:0.06,y:0.82};
   toast('Frame captured',true);redraw();
@@ -523,6 +551,51 @@ function onDragMove(e){
   redraw();
 }
 function endDrag(){isDragging=false;outputCanvas.style.cursor='move';}
+
+
+// ── Cutout state ──────────────────────────────────────────────────────────
+var cutoutBbox = null; // {x1,y1,x2,y2} as fractions 0-1
+var textLayer = 'overlay';
+
+async function doCutout(){
+  if(!capturedFrame){toast('Capture a frame first!');return;}
+  var btn=document.getElementById('cutout-btn');
+  var spin=document.getElementById('cutout-spin');
+  btn.disabled=true;spin.style.display='block';
+  document.getElementById('cutout-btn-text').textContent='Detecting subject...';
+  document.getElementById('cutout-status').textContent='Gemini is locating the person...';
+  document.getElementById('cutout-status').className='cutout-status';
+  try{
+    var b64=capturedFrame.toDataURL('image/jpeg',0.85).split(',')[1];
+    var res=await fetch('/api/cutout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64})});
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Cutout failed');
+    // Convert percentage to fractions
+    cutoutBbox={
+      x1:data.bbox.x1/100, y1:data.bbox.y1/100,
+      x2:data.bbox.x2/100, y2:data.bbox.y2/100
+    };
+    document.getElementById('layer-section').style.display='block';
+    document.getElementById('cutout-status').textContent='Subject detected! Switch to Underlay to put text behind them.';
+    document.getElementById('cutout-status').className='cutout-status done';
+    toast('Subject detected!',true);
+    redraw();
+  }catch(err){
+    document.getElementById('cutout-status').textContent='Error: '+err.message;
+    document.getElementById('cutout-status').className='cutout-status err';
+    toast('Error: '+err.message.slice(0,60));
+  }finally{
+    btn.disabled=false;spin.style.display='none';
+    document.getElementById('cutout-btn-text').textContent='Detect Subject for Cutout';
+  }
+}
+
+function setLayer(mode){
+  textLayer=mode;
+  document.getElementById('layer-overlay').classList.toggle('selected',mode==='overlay');
+  document.getElementById('layer-underlay').classList.toggle('selected',mode==='underlay');
+  redraw();
+}
 
 var pd=null;
 function redraw(){clearTimeout(pd);pd=setTimeout(function(){drawThumbnail(outputCanvas,false);},50);}
